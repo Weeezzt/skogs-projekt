@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Allmänna regler",
+    "id": "allmanna-regler",
+    "ctaLink": {
+      "label": "Se lantmäteriets fastighetskarta",
+      "imageSrc": "JAKTKARTA.png"
+    },
+    "content": [
+      "Kontrollera alltid att du har jakträtt inom aktuellt område.",
+      "Observera att det finns privatägda ströängar inom allmänningsskogen.",
+      "Se detaljerad information på Lantmäteriets fastighetskarta."
+    ]
+  },
+  {
+    "title": "Älgjakt",
+    "id": "algjakt",
+    "content": [
+      "Älgjakten är utarrenderad till jaktlag med avtal med SÖA.",
+      "Sex jaktområden, arrendeavgift 4:00 kr/ha och år.",
+      "Jakten bedrivs inom älgskötselområdet.",
+      "Delägare kan ansöka om plats i jaktlag. Icke-delägare kan anmäla intresse till styrelsen."
+    ]
+  },
+  {
+    "title": "Björnjakt",
+    "id": "bjornjakt",
+    "content": [
+      "Björnjakt ingår i älgjaktarrendet.",
+      "Delägare som inte ingår i jaktlag kan ansöka om tillstånd för björnjakt inom dessa områden."
+    ]
+  },
+  {
+    "title": "Småviltsjakt",
+    "id": "smaviltsjakt",
+    "content": [
+      "Småviltsjakten i område 5 är reserverad för arrendatorn.",
+      {
+        "heading": "Priser för småviltsjaktkort",
+        "items": [
+          "Delägare: Årskort 100 kr",
+          "Familjemedlem: Årskort 300 kr",
+          "Övriga: 1 dag 250 kr, 3 dagar 500 kr, 7 dagar 800 kr, Säsong 1500 kr"
+        ]
+      },
+      "Köp jaktkort via iJakt och Swish."
+    ]
+  },
+  {
+    "title": "Fångstpremier",
+    "id": "fangstpremier",
+    "content": [
+      "Fångstpremier för vissa rovdjur:",
+      "Mink: 500 kr, Mård: 500 kr, Räv: 400 kr",
+      "Endast delägare kan delta. Djur ska uppvisas på skogskontoret."
+    ]
+  }
+]

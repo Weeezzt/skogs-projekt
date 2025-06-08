@@ -1,0 +1,90 @@
+[
+  {
+    "title": "Köp fiskekort",
+    "id": "fiskekort",
+    "description": "Fiskekort köps enkelt via iFiske. Där hittar du aktuella priser, regler och områdesinformation.",
+    "ctaLink": {
+      "label": "Gå till iFiske",
+      "href": "https://www.ifiske.se"
+    }
+  },
+  {
+    "title": "Populära sjöar",
+    "id": "sjöar",
+    "description": "Sorseleområdet bjuder på ett rikt sjöfiske med chans till stor öring, harr, gädda och abborre.",
+    "content": [
+      {
+        "name": "Gukkis",
+        "fisk": ["Öring", "Harr"]
+      },
+      {
+        "name": "Gipper",
+        "fisk": ["Öring", "Abborre"]
+      },
+      {
+        "name": "Harrträsket",
+        "fisk": ["Harr"],
+        "info": "Här fångas årligen harrar över två kilo. Båt och boende finns."
+      },
+      {
+        "name": "Svergoträsket",
+        "fisk": ["Öring", "Röding"]
+      },
+      {
+        "name": "Osaträsket",
+        "fisk": ["Gädda", "Abborre"]
+      },
+      {
+        "name": "Snorsen",
+        "fisk": ["Harr"],
+        "info": "Känd för stora harrar, ofta över två kilo. Boende finns."
+      }
+    ]
+  },
+  {
+    "title": "Vindelälven",
+    "id": "vindelalven",
+    "description": "Vindelälven rinner genom hela kommunen och erbjuder förstklassigt fiske efter öring och harr.",
+    "content": [
+      "Stensundsforsen nära Sorsele är en het harrplats.",
+      "Ammarnäsområdet bjuder på chans till stor Ammarnäsöring.",
+      "I Gargnäs och Blattnicksele fiskas lax under sensommaren."
+    ]
+  },
+  {
+    "title": "Laisälven",
+    "id": "laisalven",
+    "description": "Laisälven är känd för sin starka harrstam och fina öringfiske i forsar och grusbottnar.",
+    "content": [
+      "Kända platser: Hällforsen, Trollforsen, Vitforsen, Kvarnforsen, Gargesonforsen.",
+      "Långforsen och Storforsen erbjuder också spännande fiske.",
+      "Mycket stenblock i vissa delar gör fisket extra utmanande."
+    ]
+  },
+  {
+    "title": "Intima vattendrag",
+    "id": "doldisar",
+    "description": "Mindre vattendrag som ofta fungerar bäst under försommaren.",
+    "content": ["Olsbäcken", "Gargån", "Giertsbäcken"]
+  },
+  {
+    "title": "Juktån",
+    "id": "juktan",
+    "description": "Sagolik å för den som vill fånga stor öring, särskilt runt midsommar.",
+    "content": [
+      "Övre sträckan: Överstjuktan – Rastiselet",
+      "Nedre sträckan: Storjuktans utlopp – Lomsele",
+      "Fisket varierar med vattenståndet"
+    ]
+  },
+  {
+    "title": "Sjöar och tjärnar",
+    "id": "sjotjarn",
+    "description": "Området kryllar av vatten. Trolling i Storjuktan och Överstjuktan, flugfiske i mindre tjärnar.",
+    "content": [
+      "Kanadaröding i Storjuktan",
+      "Öring och röding i Norra Svergoträsket",
+      "Sörslåttjärn, Sarvesträsket och Njuktjaure är premiumsjöar för harr"
+    ]
+  }
+]

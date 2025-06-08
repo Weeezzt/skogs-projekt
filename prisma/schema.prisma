@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id        Int        @id @default(autoincrement())
+  name      String
+  slug      String     @unique
+  documents Document[]
+  folders   Folder[]
+  members   Member[]
+  news      News[]
+  admins    Admin[]    @relation("OrganizationAdmins")
+}
+
+model Folder {
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String?
+  year           Int?
+  category       String?
+  createdAt      DateTime     @default(now())
+  organizationId Int
+  documents      Document[]
+  organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Document {
+  id             Int          @id @default(autoincrement())
+  title          String
+  fileType       String
+  path           String
+  tags           String[]
+  preview        Boolean
+  uploadedAt     DateTime     @default(now())
+  description    String?
+  category       String
+  year           Int?
+  organizationId Int
+  folderId       Int?
+  folder         Folder?      @relation(fields: [folderId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  newsItems      News[]       @relation("NewsDocuments")
+}
+
+model News {
+  id             Int          @id @default(autoincrement())
+  title          String
+  content        String
+  publishedAt    DateTime     @default(now())
+  image          String?
+  organizationId Int
+  author         String?      @default("Admin")
+  href           String?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  documents      Document[]   @relation("NewsDocuments")
+}
+
+model Admin {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  createdAt     DateTime       @default(now())
+  organizations Organization[] @relation("OrganizationAdmins")
+}
+
+model Member {
+  id             Int          @id @default(autoincrement())
+  name           String
+  role           String
+  address        String
+  phone          String
+  email          String?
+  imageUrl       String?
+  organizationId Int
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+}

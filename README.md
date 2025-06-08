@@ -19,6 +19,7 @@ A modern, bilingual website for Sorsele Övre Allmänningsskog and Tärna-Stense
 ## 📁 Features
 
 ### ✅ Public Information Pages
+
 - 📰 News & Announcements (per organization)
 - 📄 Meeting Documents & Files
 - 🎣 Fishing Licenses & Lake Info
@@ -26,9 +27,11 @@ A modern, bilingual website for Sorsele Övre Allmänningsskog and Tärna-Stense
 - 🌱 Forestry & Environmental Info
 
 ### 🧭 Multi-Organization Support
+
 Each route and database query is scoped by organization (`/sorsele`, `/stensele`) using dynamic routing and `organizationId` in the DB.
 
 ### 🌍 Bilingual Support (Coming soon)
+
 Pages are being structured to support Swedish and English content side-by-side.
 
 ---
@@ -37,6 +40,25 @@ Pages are being structured to support Swedish and English content side-by-side.
 
 ### 1. Clone the repo
 
-```bash
+````bash
 git clone https://github.com/YOUR-USERNAME/allmanningsskog.git
 cd allmanningsskog
+
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+````
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
