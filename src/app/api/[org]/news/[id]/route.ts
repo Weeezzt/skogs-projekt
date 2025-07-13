@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
-import { use } from "react";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +7,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ org: string; id: string }> }
 ) {
-  const { org, id } = use(params);
+  const { org, id } = await params;
 
   // Find organization
   const organization = await prisma.organization.findUnique({
