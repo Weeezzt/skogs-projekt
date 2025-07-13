@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
+import { use } from "react";
 
 const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
-  context: { params: { org: string; id: string } }
+  { params }: { params: Promise<{ id: string; org: string }> }
 ) {
-  const { id } = context.params;
+  const { id, org } = use(params);
 
   const document = await prisma.document.findUnique({
     where: { id: Number(id) },
   });
 
   if (!document) {
-    return NextResponse.json({ error: "Document not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Document not found" + org },
+      { status: 404 }
+    );
   }
 
   return NextResponse.json(document);

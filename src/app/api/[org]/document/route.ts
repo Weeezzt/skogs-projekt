@@ -4,6 +4,7 @@ import { DocumentDTO } from "@/types/dtos";
 import { writeFile } from "fs/promises";
 import path from "path";
 import fs from "fs";
+import { use } from "react";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ org: string }> }
 ) {
-  const { org } = await params;
+  const { org } = use(params);
 
   // Find the organization by slug
   const organization = await prisma.organization.findUnique({
@@ -38,7 +39,7 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ org: string }> }
 ) {
-  const { org } = await params;
+  const { org } = use(params);
   const formData = await req.formData();
 
   // Accept either folderId (existing) or folderName (new)
