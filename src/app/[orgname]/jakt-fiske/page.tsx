@@ -27,7 +27,7 @@ export default function JaktFiskePage() {
         </button>
       </div>
 
-      <div className="p-4 border border-t-0 rounded-b-md bg-white shadow-md">
+      <div className="">
         {activeTab === "fiske" ? <FiskeContent /> : <JaktContent />}
       </div>
     </div>

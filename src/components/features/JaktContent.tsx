@@ -14,11 +14,6 @@ const ctaButtons = [
     href: "https://allmskog-ac.nu/jaktkort/",
     bgColor: "bg-forest",
   },
-  {
-    label: "Information om Fiske",
-    href: "/fiske",
-    bgColor: "bg-red-800",
-  },
 ];
 
 const sections = jaktData.map((data) => ({

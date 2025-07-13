@@ -9,9 +9,9 @@ const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { org: string } }
+  { params }: { params: Promise<{ org: string }> }
 ) {
-  const { org } = params;
+  const { org } = await params;
 
   // Find the organization by slug
   const organization = await prisma.organization.findUnique({
@@ -36,9 +36,9 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { org: string } }
+  { params }: { params: Promise<{ org: string }> }
 ) {
-  const { org } = params;
+  const { org } = await params;
   const formData = await req.formData();
 
   // Accept either folderId (existing) or folderName (new)

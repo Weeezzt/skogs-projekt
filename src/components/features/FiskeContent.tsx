@@ -3,7 +3,6 @@ import InfoSection from "@/features/InfoSection";
 import PageSearch from "@/features/search/PageSearch";
 import fiskeData from "@/data/fiskeData.json";
 import ThumbnailSlider from "@/features/sliders/ThumbnailSlider";
-import { title } from "process";
 
 const ctaButtons = [
   {
@@ -15,11 +14,6 @@ const ctaButtons = [
     label: "Köp fiskekort",
     href: "https://allmskog-ac.nu/fiskekort/",
     bgColor: "bg-forest",
-  },
-  {
-    label: "Information om Jakt",
-    href: "/jakt",
-    bgColor: "bg-red-800",
   },
 ];
 

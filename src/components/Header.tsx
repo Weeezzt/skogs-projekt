@@ -5,7 +5,6 @@ import { useUserSession } from "@/hooks/useUserSession";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import LoginModal from "./LoginModal";
-import path from "path";
 
 const organizations = [
   { label: "Sorsele", slug: "sorsele" },
@@ -22,10 +21,17 @@ const orgNavLinks = [
   { href: "/kontakt", label: "Kontakt" },
 ];
 
+interface orgTabLink {
+  label: string;
+}
+
 export default function Header() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [activeOrg, setActiveOrg] = useState<string | null>(null);
   const [opendropDown, setOpendropDown] = useState(false);
+  // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeTabSorsele, setActiveTabSorsele] = useState<orgTabLink>();
+  const [activeTabStensele, setActiveTabStensele] = useState<orgTabLink>();
   const { isLoggedIn, user } = useUserSession();
   const pathname = usePathname();
 
@@ -36,6 +42,20 @@ export default function Header() {
   const onOrganisationClick = (orgSlug: string) => {
     setActiveOrg(orgSlug);
     setOpendropDown(true);
+  };
+
+  const handleActiveTabForOrg = (tab: string) => {
+    if (activeOrg == "sorsele") {
+      setActiveTabSorsele({
+        label: tab,
+      });
+    }
+    if (activeOrg == "tarna-stensele") {
+      setActiveTabStensele({
+        label: tab,
+      });
+    }
+    setOpendropDown(false);
   };
 
   const buildOrgUrl = (orgSlug: string, href: string) => `/${orgSlug}${href}`;
@@ -51,12 +71,12 @@ export default function Header() {
         <div className="text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
           <a href="/">SÖA</a>
         </div>
-        <nav className="hidden md:flex flex-1 justify-center gap-8">
+        <nav className="hidden md:flex flex-1 justify-center gap-8 xl:gap-20">
           {organizations.map((org) => (
             <button
               key={org.slug}
               onClick={() => onOrganisationClick(org.slug)}
-              className={`text-xl font-semibold px-2 py-1 transition-colors duration-200 hover:text-orange cursor-pointer ${
+              className={`text-xl xl:text-3xl  font-semibold px-2 py-1 transition-colors duration-200 hover:text-orange cursor-pointer ${
                 activeOrg === org.slug
                   ? "text-orange border-b-2 border-orange"
                   : "text-beige"
@@ -107,9 +127,12 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={buildOrgUrl(activeOrg, link.href)}
-                  onClick={() => setOpendropDown(false)}
+                  onClick={() => handleActiveTabForOrg(link.label)}
                   className={`text-beige text-lg font-medium hover:text-orange transition-colors ${
-                    pathname === buildOrgUrl(activeOrg, link.href)
+                    (link.label === activeTabSorsele?.label &&
+                      activeOrg === "sorsele") ||
+                    (link.label === activeTabStensele?.label &&
+                      activeOrg === "tarna-stensele")
                       ? "underline text-orange"
                       : ""
                   }`}

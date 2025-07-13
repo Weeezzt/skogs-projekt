@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen flex flex-col">
+    <html lang="en" className={`${inter.variable}`}>
+      <body className="w-full min-h-screen flex flex-col">
         <SessionProviderWrapper>
           {/* SessionProvider wraps the entire app to provide session context */}
           <Header />

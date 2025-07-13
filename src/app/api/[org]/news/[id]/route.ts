@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { org: string; id: string } }
+  { params }: { params: Promise<{ org: string; id: string }> }
 ) {
-  const { org, id } = params;
+  const { org, id } = await params;
 
   // Find organization
   const organization = await prisma.organization.findUnique({
