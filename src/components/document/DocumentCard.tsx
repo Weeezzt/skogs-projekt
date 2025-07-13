@@ -1,7 +1,8 @@
 import { DocumentDTO } from "@/types/dtos";
 import FileTypeIcon from "./FileTypeIcon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
+import TooltipZone from "../TooltipZone";
 
 interface DocumentCardProps {
   documentData: DocumentDTO;
@@ -50,27 +51,32 @@ export default function DocumentCard({
         className={`w-full flex-1 ${variant === "grid" ? "text-center" : ""}`}
       >
         <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-          <div className="font-semibold text-lg hover:text-orange truncate">
-            {title}
-          </div>
+          <TooltipZone tooltip={description ? description : ""}>
+            <div className="font-semibold text-lg hover:text-orange truncate">
+              {title}
+            </div>
+          </TooltipZone>
         </a>
         <div className="text-xs text-gray-500 mb-1">
           {category}
           {year && ` • ${year}`}
         </div>
-        {description && (
-          <h3 className="text-xs text-gray-700 mb-1 truncate">{description}</h3>
-        )}
-        {tags && tags.length > 0 && (
+        {tags && tags.length > 0 ? (
           <div className="flex flex-wrap gap-1 justify-center mt-1">
             {tags.map((tag) => (
               <span
                 key={tag}
                 className="bg-orange/10 text-orange px-2 py-0.5 rounded text-xs"
               >
-                {tag}
+                {tag ? tag : "dokument"}
               </span>
             ))}
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-1 justify-center mt-1">
+            <span className="bg-orange/10 text-orange px-2 py-0.5 rounded text-xs">
+              Ingen tagg
+            </span>
           </div>
         )}
       </div>
