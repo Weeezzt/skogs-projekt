@@ -12,12 +12,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
-      <body className="w-full min-h-screen flex flex-col">
+    <html lang="en" className="scroll-smooth w-full h-full">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Sorsele Övre Allmänningsskog</title>
+      </head>
+      <body className={`min-h-screen w-full flex flex-col ${inter.variable}`}>
         <SessionProviderWrapper>
           {/* SessionProvider wraps the entire app to provide session context */}
           <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main className="flex-1 flex flex-col w-full mx-auto">
+            {children}
+          </main>
           <Footer />
         </SessionProviderWrapper>
       </body>

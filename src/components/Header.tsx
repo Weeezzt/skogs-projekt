@@ -29,7 +29,8 @@ export default function Header() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [activeOrg, setActiveOrg] = useState<string | null>(null);
   const [opendropDown, setOpendropDown] = useState(false);
-  // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMobileDropDown, setOpenMobileDropDown] = useState(false);
   const [activeTabSorsele, setActiveTabSorsele] = useState<orgTabLink>();
   const [activeTabStensele, setActiveTabStensele] = useState<orgTabLink>();
   const { isLoggedIn, user } = useUserSession();
@@ -40,8 +41,13 @@ export default function Header() {
   const handleLogOut = () => signOut({ callbackUrl: "/" });
 
   const onOrganisationClick = (orgSlug: string) => {
+    console.log("Clicked org:", orgSlug);
     setActiveOrg(orgSlug);
     setOpendropDown(true);
+  };
+  const onOrganisationClickMobile = (orgSlug: string) => {
+    setActiveOrg(orgSlug);
+    setOpenMobileDropDown(true);
   };
 
   const handleActiveTabForOrg = (tab: string) => {
@@ -58,6 +64,10 @@ export default function Header() {
     setOpendropDown(false);
   };
 
+  const handleHamburgerClick = () => {
+    setMobileMenuOpen((open) => !open);
+    setOpenMobileDropDown(false);
+  };
   const buildOrgUrl = (orgSlug: string, href: string) => `/${orgSlug}${href}`;
 
   useEffect(() => {
@@ -71,7 +81,7 @@ export default function Header() {
         <div className="text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
           <a href="/">SÖA</a>
         </div>
-        <nav className="hidden md:flex flex-1 justify-center gap-8 xl:gap-20">
+        <nav className="hidden lg:flex flex-1 justify-center gap-8 xl:gap-20">
           {organizations.map((org) => (
             <button
               key={org.slug}
@@ -88,7 +98,7 @@ export default function Header() {
         </nav>
 
         {/* Auth Button */}
-        <div className="hidden md:flex items-center">
+        <div className="hidden lg:flex items-center">
           {isLoggedIn && user ? (
             <button
               onClick={handleLogOut}
@@ -107,12 +117,65 @@ export default function Header() {
         </div>
 
         {/* Hamburger (Mobile only) */}
-        <button className="md:hidden p-2 ml-auto" aria-label="Open menu">
+        <button
+          className="lg:hidden p-2 ml-auto"
+          aria-label="Open menu"
+          onClick={() => handleHamburgerClick()}
+        >
           <span className="block w-6 h-0.5 bg-current mb-1"></span>
           <span className="block w-6 h-0.5 bg-current mb-1"></span>
           <span className="block w-6 h-0.5 bg-current"></span>
         </button>
       </header>
+      {mobileMenuOpen && (
+        <div className="lg:hidden w-full bg-[#2F5D50] shadow-inner">
+          <div className="flex flex-col items-center gap-4 py-4">
+            {organizations.map((org) => (
+              <button
+                key={org.slug}
+                onClick={() => {
+                  onOrganisationClickMobile(org.slug);
+                }}
+                className={`text-xl font-semibold px-2 py-1 transition-colors duration-200 hover:text-orange cursor-pointer ${
+                  activeOrg === org.slug
+                    ? "text-orange border-b-2 border-orange"
+                    : "text-beige"
+                }`}
+              >
+                {org.label}
+              </button>
+            ))}
+            {/* Add auth buttons here if you want */}
+          </div>
+        </div>
+      )}
+      {/* Mobile Dropdown */}
+      {openMobileDropDown && (
+        <div className="lg:hidden w-full bg-[#2F5D50] shadow-inner">
+          <div className="flex flex-col items-center gap-4 py-4">
+            {orgNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={buildOrgUrl(activeOrg || "", link.href)}
+                onClick={() => {
+                  handleActiveTabForOrg(link.label);
+                  setOpenMobileDropDown(false);
+                }}
+                className={`text-lg font-medium text-beige hover:text-orange transition-colors ${
+                  (link.label === activeTabSorsele?.label &&
+                    activeOrg === "sorsele") ||
+                  (link.label === activeTabStensele?.label &&
+                    activeOrg === "tarna-stensele")
+                    ? "underline text-orange"
+                    : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Org Submenu with transition */}
       {opendropDown && (

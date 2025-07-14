@@ -50,17 +50,17 @@ export default function NewsCard({
   };
   return (
     <div
-      className="flex flex-col md:flex-row bg-beige rounded-xl shadow-lg overflow-hidden w-full cursor-pointer"
+      className="flex flex-col lg:flex-row bg-beige rounded-xl shadow-lg overflow-hidden w-full cursor-pointer"
       id={id.toString()}
       onClick={onClickCard}
     >
       {imageSrc && (
-        <div className="relative w-full md:w-64 aspect-video md:aspect-auto md:h-auto flex-shrink-0">
+        <div className="w-full relative aspect-[16/9] lg:w-64 lg:aspect-auto lg:h-auto flex-shrink-0">
           <Image
             src={imageSrc}
             alt={imageAlt || "News Image"}
             fill
-            className="object-cover"
+            className="object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
             style={{
               borderTopLeftRadius: "0.75rem",
               borderBottomLeftRadius: "0.75rem",

@@ -112,7 +112,7 @@ export default function Dokument() {
   }, [docsData]);
 
   return (
-    <div className="mt-8 grid">
+    <main className="w-full mx-auto mt-8 grid">
       <div className="w-full flex justify-between px-4 items-center md:w-[600px] lg:w-[800px] xl:w-[1000px] shadow-md bg-beige min-h-20 mx-auto mb-6">
         <div className="flex w-full gap-4">
           <DocumentSearchBar query={query} onQueryChange={handleQueryChange} />
@@ -167,6 +167,6 @@ export default function Dokument() {
           // send to backend or handle locally
         }}
       />
-    </div>
+    </main>
   );
 }

@@ -41,13 +41,13 @@ export default function Nyheter() {
   };
   const { isLoggedIn, user } = useUserSession();
   return (
-    <main className="max-w-5xl mx-auto px-4 py-8">
+    <main className="w-full max-w-screen-5xl mx-auto px-4 py-8">
       {/* Carousel */}
 
       <HorizontalSlider />
 
       {/* Filter & Search */}
-      <div className="flex flex-col md:flex-row gap-4 my-8 items-center">
+      <div className="flex flex-col lg:flex-row gap-4 my-8 items-center">
         <PageSearch
           sections={newsData.map((news) => ({
             ...news,
@@ -81,7 +81,7 @@ export default function Nyheter() {
       </div>
 
       {/* News List */}
-      <section className="flex flex-col gap-10">
+      <section className="flex flex-col gap-10 px-4">
         {newsData.map((news, idx) => (
           <NewsCard
             key={news.id || idx}
