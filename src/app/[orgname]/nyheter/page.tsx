@@ -20,7 +20,7 @@ export default function Nyheter() {
   const pathname = usePathname();
   const org = pathname.split("/")[1];
 
-  useEffect(() => {
+  const fetchNews = () => {
     setLoading(true);
     setError(null);
     fetch(`/api/${org}/news`)
@@ -31,9 +31,14 @@ export default function Nyheter() {
       .then((data) => setNewsData(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchNews();
   }, [org]);
 
   const onCloseModal = () => {
+    fetchNews();
     setIsOpen(false);
   };
   const onUploadNews = () => {
@@ -41,27 +46,27 @@ export default function Nyheter() {
   };
   const { isLoggedIn, user } = useUserSession();
   return (
-    <main className="w-full max-w-screen-5xl mx-auto px-4 py-8">
+    <main className="w-full max-w-screen-2xl mx-auto px-4 py-8">
       {/* Carousel */}
 
       <HorizontalSlider />
 
       {/* Filter & Search */}
-      <div className="flex flex-col lg:flex-row gap-4 my-8 items-center">
+      <div className="flex flex-col lg:flex-row gap-4 my-8 px-4 items-center">
         <PageSearch
           sections={newsData.map((news) => ({
             ...news,
             id: news.id.toString(),
           }))}
         />
-        <select className="border-2 rounded px-3 py-2 w-40 cursor-pointer">
+        <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
           <option value="">Alla år</option>
           <option value="2025">2025</option>
           <option value="2024">2024</option>
           <option value="2023">2023</option>
           <option value="Tidigare">Tidigare</option>
         </select>
-        <select className="border-2 rounded px-3 py-2 w-40 cursor-pointer">
+        <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
           <option value="">Typ av nyhet</option>
           <option value="JF">Jakt & Fiske</option>
           <option value="Stämma">Stämma</option>

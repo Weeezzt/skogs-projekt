@@ -33,7 +33,7 @@ export default function Dokument() {
   const pathname = usePathname();
   const org = pathname.split("/")[1];
 
-  useEffect(() => {
+  const fetchDocuments = () => {
     setLoading(true);
     setError(null);
     fetch(`/api/${org}/document`)
@@ -44,6 +44,10 @@ export default function Dokument() {
       .then((data) => setDocsData(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchDocuments();
   }, [org]);
 
   const [filteredDocuments, setFilteredDocuments] =
@@ -161,10 +165,9 @@ export default function Dokument() {
       <UploadDocumentModal
         existingFolders={allFolders}
         isOpen={uploadModalOpen}
-        onClose={() => setUploadModalOpen(false)}
-        onUpload={(files, folder) => {
-          console.log("Files:", files, "Folder:", folder);
-          // send to backend or handle locally
+        onClose={() => {
+          fetchDocuments(); // Refetch after upload
+          setUploadModalOpen(false);
         }}
       />
     </main>

@@ -4,14 +4,12 @@ import { useRef, useState } from "react";
 interface UploadDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload: (files: File[], folder: string) => void;
   existingFolders: string[];
 }
 
 export default function UploadDocumentModal({
   isOpen,
   onClose,
-  onUpload,
   existingFolders,
 }: UploadDocumentModalProps) {
   const [files, setFiles] = useState<File[]>([]);
@@ -19,8 +17,6 @@ export default function UploadDocumentModal({
   const [newFolder, setNewFolder] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
-
-  if (!isOpen) return null;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -88,6 +84,7 @@ export default function UploadDocumentModal({
       alert("Kunde inte ladda upp dokument.");
     }
   };
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">

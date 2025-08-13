@@ -45,7 +45,7 @@ export default function PageSearch({ sections }: { sections: Section[] }) {
         placeholder="Sök på denna sida..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="text-black border-2 rounded-md w-full px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
+        className="text-black border-2 border-forest rounded-md w-full px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
       />
       {filtered.length > 0 && (
         <ul className="absolute bg-white w-full mt-1 border rounded shadow z-10">

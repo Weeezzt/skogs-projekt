@@ -1,90 +1,158 @@
-[
-  {
-    "title": "Köp fiskekort",
-    "id": "fiskekort",
-    "description": "Fiskekort köps enkelt via iFiske. Där hittar du aktuella priser, regler och områdesinformation.",
-    "ctaLink": {
-      "label": "Gå till iFiske",
-      "href": "https://www.ifiske.se"
-    }
-  },
-  {
-    "title": "Populära sjöar",
-    "id": "sjöar",
-    "description": "Sorseleområdet bjuder på ett rikt sjöfiske med chans till stor öring, harr, gädda och abborre.",
-    "content": [
-      {
-        "name": "Gukkis",
-        "fisk": ["Öring", "Harr"]
-      },
-      {
-        "name": "Gipper",
-        "fisk": ["Öring", "Abborre"]
-      },
-      {
-        "name": "Harrträsket",
-        "fisk": ["Harr"],
-        "info": "Här fångas årligen harrar över två kilo. Båt och boende finns."
-      },
-      {
-        "name": "Svergoträsket",
-        "fisk": ["Öring", "Röding"]
-      },
-      {
-        "name": "Osaträsket",
-        "fisk": ["Gädda", "Abborre"]
-      },
-      {
-        "name": "Snorsen",
-        "fisk": ["Harr"],
-        "info": "Känd för stora harrar, ofta över två kilo. Boende finns."
+{
+  "sorsele": [
+    {
+      "title": "Köp fiskekort",
+      "id": "fiskekort",
+      "description": "Fiskekort köps enkelt via iFiske. Där hittar du aktuella priser, regler och områdesinformation.",
+      "ctaLink": {
+        "label": "Gå till iFiske",
+        "href": "https://www.ifiske.se/en/fishing-permit-sorsele-ovre-allmanningsskog.htm"
       }
-    ]
-  },
-  {
-    "title": "Vindelälven",
-    "id": "vindelalven",
-    "description": "Vindelälven rinner genom hela kommunen och erbjuder förstklassigt fiske efter öring och harr.",
-    "content": [
-      "Stensundsforsen nära Sorsele är en het harrplats.",
-      "Ammarnäsområdet bjuder på chans till stor Ammarnäsöring.",
-      "I Gargnäs och Blattnicksele fiskas lax under sensommaren."
-    ]
-  },
-  {
-    "title": "Laisälven",
-    "id": "laisalven",
-    "description": "Laisälven är känd för sin starka harrstam och fina öringfiske i forsar och grusbottnar.",
-    "content": [
-      "Kända platser: Hällforsen, Trollforsen, Vitforsen, Kvarnforsen, Gargesonforsen.",
-      "Långforsen och Storforsen erbjuder också spännande fiske.",
-      "Mycket stenblock i vissa delar gör fisket extra utmanande."
-    ]
-  },
-  {
-    "title": "Intima vattendrag",
-    "id": "doldisar",
-    "description": "Mindre vattendrag som ofta fungerar bäst under försommaren.",
-    "content": ["Olsbäcken", "Gargån", "Giertsbäcken"]
-  },
-  {
-    "title": "Juktån",
-    "id": "juktan",
-    "description": "Sagolik å för den som vill fånga stor öring, särskilt runt midsommar.",
-    "content": [
-      "Övre sträckan: Överstjuktan – Rastiselet",
-      "Nedre sträckan: Storjuktans utlopp – Lomsele",
-      "Fisket varierar med vattenståndet"
-    ]
-  },
-  {
-    "title": "Sjöar och tjärnar",
-    "id": "sjotjarn",
-    "description": "Området kryllar av vatten. Trolling i Storjuktan och Överstjuktan, flugfiske i mindre tjärnar.",
-    "content": [
-      "Kanadaröding i Storjuktan",
-      "Öring och röding i Norra Svergoträsket",
-      "Sörslåttjärn, Sarvesträsket och Njuktjaure är premiumsjöar för harr"
-    ]
-  }
-]
+    },
+    {
+      "title": "Populära fiskarter",
+      "id": "arter",
+      "description": "Här är de vanligaste fiskarterna du kan stöta på i området.",
+      "content": [
+        {
+          "fisk": "Abborre",
+          "förekomst": "Normalt"
+        },
+        {
+          "fisk": "Gädda",
+          "förekomst": "Normalt"
+        },
+        {
+          "fisk": "Öring",
+          "förekomst": "Normalt"
+        },
+        {
+          "fisk": "Harr",
+          "förekomst": "Normalt"
+        },
+        {
+          "fisk": "Sik",
+          "förekomst": "Normalt"
+        },
+        {
+          "fisk": "Id",
+          "förekomst": "Lite"
+        },
+        {
+          "fisk": "Lake",
+          "förekomst": "Lite"
+        },
+        {
+          "fisk": "Kanadaröding",
+          "förekomst": "Lite"
+        },
+        {
+          "fisk": "Röding",
+          "förekomst": "Sällsynt"
+        },
+        {
+          "fisk": "Lax",
+          "förekomst": "Sällsynt"
+        },
+        {
+          "fisk": "Mört",
+          "förekomst": "Sällsynt"
+        }
+      ]
+    },
+    {
+      "title": "Områdestyp",
+      "id": "omrade",
+      "description": "Variationen i terräng och vatten gör området idealiskt för både flugfiske och trolling.",
+      "content": [
+        "Sjöar, tjärnar och strömmande vattendrag – möjlighet till flugfiske efter harr, trolling i sjöar med grov fisk.",
+        "Mindre skogsbekar för stillsamt flugfiske och flytringsmetoder.",
+        "Flera vatten med Catch & Release (återutsättning) tillåtet."
+      ]
+    },
+    {
+      "title": "Grannområden",
+      "id": "grannar",
+      "description": "Närliggande fiskeområden inkluderade i kortet eller i närheten.",
+      "content": [
+        "Grannäs Risnäs, Nedre Giertsbäcken",
+        "Hemsjön, Lilla Stenträsk m fl vatten",
+        "Gardsjöbäcken",
+        "Luspholmens Skifteslag",
+        "Kraddselefiske",
+        "Örnäs Forsnäs"
+      ]
+    }
+  ],
+
+  "tarnaStensele": [
+    {
+      "title": "Köp fiskekort",
+      "id": "fiskekort",
+      "description": "Fiskekort köps smidigt via iFiske – detaljer om regler, priser och vatten framgår där.",
+      "ctaLink": {
+        "label": "Gå till iFiske",
+        "href": "https://www.ifiske.se/fiskekort-storumansjon-umnassjon-girjesan-m-fl-vatten.htm"
+      }
+    },
+    {
+      "title": "Populära fiskarter",
+      "id": "arter",
+      "description": "Vanliga arter i området enligt Stensele FVO:s egen info.",
+      "content": [
+        {
+          "fisk": "Abborre",
+          "förekomst": "Rikligt"
+        },
+        {
+          "fisk": "Gädda",
+          "förekomst": "Rikligt"
+        },
+        {
+          "fisk": "Regnbåge",
+          "förekomst": "Rikligt"
+        },
+        {
+          "fisk": "Harr",
+          "förekomst": "Rikligt"
+        },
+        {
+          "fisk": "Sik",
+          "förekomst": "Rikligt"
+        },
+        {
+          "fisk": "Öring",
+          "förekomst": "Normalt"
+        },
+        {
+          "fisk": "Röding",
+          "förekomst": "Sällsynt"
+        },
+        {
+          "fisk": "Lake",
+          "förekomst": "Sällsynt"
+        }
+      ]
+    },
+    {
+      "title": "Om områdestyp",
+      "id": "omrade",
+      "description": "Beskrivning av själva landskapet och fiskemöjligheter.",
+      "content": [
+        "Omfattar sjöar som Storumansjön och Umnässjön, samt vattendrag som Girjesån.",
+        "Skogsklädd vildmark med både lättillgängligt och mer kuperat terräng.",
+        "Tillgänglighetsanpassade fiskeplatser (t ex vid kanalen), vindskydd finns på södra sidan."
+      ]
+    },
+    {
+      "title": "Grannområden",
+      "id": "grannar",
+      "description": "Närliggande fiskevatten enligt iFiske.",
+      "content": [
+        "Granträsket, Fäbodträsket, Kalvträsket, Grubbträsket",
+        "Kamsjöbäcken, Mjösjön, Ristjärnen, Storsandsjön",
+        "Anslutna fiskeområden i länet (via Stensele FVO) :contentReference[oaicite:5]{index=5}"
+      ]
+    }
+  ]
+}

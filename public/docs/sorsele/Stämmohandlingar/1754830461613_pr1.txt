@@ -1,0 +1,2050 @@
+4  
+manga-tracker-fe/src/components/common/Header.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -12,7 +12,7 @@ export default function Header() {
+  const [manga1, setManga1] = useState<MangaDto[]>([]);
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The state variable manga1 appears to be redundant as it serves a similar purpose to the manga state variable. Having multiple state variables for the same type of data can lead to confusion and maintenance challenges.
+
+Recommendation:
+Consider consolidating manga1 and manga into a single state variable to manage the manga data more efficiently and reduce complexity.
+
+@Weeezzt	Reply...
+
+  const location = useLocation();
+  const { dbUser, logout } = useAuthContext(); // Access user and logout from context
+  const { dbUser, logout } = useAuthContext();
+
+  const handleMobileMenu = () => {
+    setIsMobile(!isMobile);
+Comment on lines 12 to 18
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The state variable manga1 is initialized but does not appear to be used anywhere within the visible code. This could lead to confusion and unnecessary memory usage.
+
+Recommendation:
+
+Verify if manga1 is required. If it is not used, consider removing it to clean up the code and avoid potential confusion.
+@Weeezzt	Reply...
+@@ -71,7 +71,7 @@ export default function Header() {
+                <SearchInput setMangas={setManga} />
+                <MangaModal mangas={manga} />
+              </div>
+              {dbUser ? ( // Show logout button if the user is logged in
+              {dbUser ? (
+                <button
+                  onClick={logout}
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The logout function is directly attached to the onClick event of the logout button without any confirmation dialog or error handling. This could lead to accidental logouts and a poor user experience if the logout process fails.
+
+Recommendation:
+Implement a confirmation dialog before executing the logout to prevent accidental logouts. Additionally, consider adding error handling to manage any issues that may occur during the logout process.
+
+@Weeezzt	Reply...
+                  className="hidden lg:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
+Comment on lines 71 to 77
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The logout functionality is directly attached to the onClick event of a button without any confirmation dialog. This could lead to accidental logouts which might frustrate users.
+
+Recommendation:
+
+Implement a confirmation step before executing the logout function to enhance user experience and prevent accidental logouts.
+@Weeezzt	Reply...
+  2 changes: 1 addition & 1 deletion2  
+manga-tracker-fe/src/components/common/ProfileHeader.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -71,7 +71,7 @@ export default function ProfileHeader() {
+                <SearchInput setMangas={setManga} />
+                <MangaModal mangas={manga} />
+              </div>
+              {dbUser ? ( // Show logout button if the user is logged in
+              {dbUser ? (
+                <button
+                  onClick={logout}
+                  className="hidden md:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
+Comment on lines 71 to 77
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Redundancy and Performance Concerns
+The SearchInput component is instantiated twice with separate states (setManga and setManga1). This could lead to redundancy and potential performance issues, especially if both components manage large datasets. Consider consolidating these into a single state if they are intended to hold similar data, which would simplify state management and potentially improve performance.
+
+Recommendation:
+
+Evaluate if both SearchInput components are necessary. If they serve the same purpose, use a single state to manage the data. This change would reduce redundancy and improve the component's efficiency.
+@Weeezzt	Reply...
+Comment on lines 71 to 77
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Redundant State Management
+The use of separate states manga and manga1 for similar functionalities in different parts of the application could lead to unnecessary complexity and potential bugs. Consider consolidating these states if they serve the same purpose, or clearly differentiate their roles if they are intended for different functionalities. This will enhance the maintainability and clarity of your state management strategy.
+
+Recommended Action
+Evaluate the necessity of having separate states for manga and manga1.
+If they serve similar purposes, refactor the code to use a single state variable.
+If they serve different purposes, document their roles clearly to avoid confusion.
+@Weeezzt	Reply...
+Comment on lines +74 to 77
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Security and Reliability in Conditional Rendering
+The logout button is conditionally rendered based on the presence of dbUser. Ensure that the state of dbUser is reliably updated across the application to prevent unauthorized access or UI inconsistencies. Additionally, verify that the logout function securely handles the session termination and user redirection to prevent any security loopholes.
+
+Recommended Action
+Implement robust state management for dbUser to ensure it accurately reflects the user's authentication status.
+Securely implement the logout functionality to handle session termination and redirection properly.
+@Weeezzt	Reply...
+  15 changes: 8 additions & 7 deletions15  
+manga-tracker-fe/src/components/individualPage/ReviewDesktop.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -10,12 +10,12 @@ interface Props {
+
+const ReviewDesktop = ({ mangaid, userid }: Props) => {
+  const [showModal, setShowModal] = useState(false);
+  const [showThread, setShowThread] = useState(false);
+
+  const neededAttributesMobile = {
+    userid,
+    mangaId: parseInt(mangaid),
+    setShowModal,
+  const handleShowThread = () => {
+    setShowThread(!showThread);
+  };
+
+  const neededAttributes = {
+    userid,
+    mangaId: parseInt(mangaid),
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Potential Runtime Error with parseInt
+The conversion of mangaid to an integer using parseInt(mangaid) assumes that mangaid is always a valid numeric string. If mangaid is not a valid number, this will result in NaN, which could lead to runtime errors or unexpected behavior.
+
+Recommendation:
+
+Validate mangaid before converting it to an integer. Consider using a conditional check or a utility function to ensure it's a valid number. If it's not, handle the error appropriately or default to a safe value.
+@Weeezzt	Reply...
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Potential Issue with parseInt
+Using parseInt(mangaid) directly without checking if mangaid is a valid integer string can lead to NaN errors if mangaid is not properly formatted. This can cause issues where mangaId is used in the application.
+
+Recommendation:
+Add a validation step before parsing to ensure mangaid is a valid integer string. If not, handle the error appropriately or provide a default value.
+
+const mangaId = isNaN(parseInt(mangaid)) ? defaultValue : parseInt(mangaid);
+@Weeezzt	Reply...
+@@ -24,8 +24,6 @@ const ReviewDesktop = ({ mangaid, userid }: Props) => {
+
+  const { reviews, isLoading, isError } = useFetchReviews(mangaid);
+  console.log(reviews);
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Security Issue: Logging Sensitive Data
+The use of console.log(reviews) can expose sensitive data in the production environment. Logging such information can lead to security vulnerabilities and should be avoided.
+
+Recommendation:
+
+Remove or replace console.log statements with appropriate logging mechanisms that ensure sensitive data is protected. Consider using environment-based logging levels to prevent logging sensitive data in production.
+@Weeezzt	Reply...
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Security Risk: Logging Sensitive Data
+Logging reviews directly to the console can expose sensitive data which might include user-generated content or personal information. This is particularly risky in a production environment.
+
+Recommendation:
+Remove or replace console.log(reviews) with a more secure logging mechanism that filters sensitive information, or ensure logs are only written in a development environment.
+
+if (process.env.NODE_ENV === 'development') {
+  console.log(reviews);
+}
+@Weeezzt	Reply...
+  const text =
+    "Naruto is an unforgettable journey of perseverance, friendship, and epic ninja action! From the moment we meet the quirky and determined Naruto Uzumaki in the Hidden Leaf Village, it's impossible not to root for him as he chases his dream of becoming Hokage. The show balances heart-pounding battles with heartfelt moments that make you laugh, cry, and cheer. The character development is stellar—watching";
+
+  const truncateLongReview = (review: string) => {
+    if (review.length > 200) {
+@@ -84,7 +82,10 @@ const ReviewDesktop = ({ mangaid, userid }: Props) => {
+                <div className="w-full px-3  mt-2 max-h-32 ">
+                  "{truncateLongReview(review.reviewText)}"
+                </div>
+                <p className="w-full text-end pr-3 text-purple-600 font-semibold">
+                <p
+                  className="w-full text-end pr-3 text-purple-600 font-semibold cursor-pointer hover:text-purple-700"
+                  onClick={handleShowThread}
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Accessibility Issue: Lack of Visual Feedback on Interactive Elements
+The 'See thread' text on line 87 is interactive but does not provide any visual feedback when hovered or focused. This can affect users with disabilities or those using keyboard navigation.
+
+Recommendation:
+Enhance the CSS for this element to include styles for :hover and :focus states to improve visual feedback and accessibility.
+
+.text-purple-600:hover, .text-purple-600:focus {
+  color: #9b4dca; /* Example hover/focus color */
+}
+@Weeezzt	Reply...
+                >
+                  See thread
+                </p>
+              </div>
+  44 changes: 40 additions & 4 deletions44  
+manga-tracker-fe/src/components/individualPage/ReviewMobile.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -1,7 +1,8 @@
+import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFetchReviews } from "../../services/ReviewService";
+import { MangaDto, ReviewDto } from "../../types/mangaTypes";
+import ReviewModalMobile from "../modals/ReviewModalMobile";
+import ReviewThreadModal from "../modals/ReviewThreadModal";
+
+interface Props {
+  userid: string;
+@@ -10,14 +11,37 @@ interface Props {
+
+const ReviewMobile = ({ mangaid, userid }: Props) => {
+  const [showModal, setShowMobileModal] = useState(false);
+  const [currentReview, setCurrentReview] = useState<ReviewDto | null>(null);
+  const [showThread, setShowThread] = useState(false);
+  const [hasCommented, setHasCommented] = useState(false);
+
+  const handleShowThread = (review: ReviewDto) => {
+    setCurrentReview(review);
+    setShowThread(!showThread);
+  };
+  const neededAttributes = {
+    userid,
+    mangaId: parseInt(mangaid),
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Data Parsing and Validation Issue
+The mangaid is directly parsed to an integer without validation on line 24. This can lead to unexpected behavior or errors if mangaid is not a valid integer string.
+
+Recommendation:
+
+Validate mangaid before parsing it to ensure it contains only numeric characters. This can be done using a simple regex check or by using JavaScript's isNaN function after attempting to parse it. This will prevent runtime errors and ensure that the data is correctly formatted before use.
+@Weeezzt	Reply...
+    setShowMobileModal,
+  };
+Comment on lines 22 to 26
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The neededAttributes object is defined inside the component function but does not depend on any component state or props that change over renders. This leads to unnecessary recalculations and object re-creation on each render, which can be optimized.
+
+Recommendation:
+
+Consider defining neededAttributes outside of the component or using useMemo to memoize it. This will prevent the object from being recreated on every render unless its dependent values (userid, mangaid, setShowMobileModal) change, improving performance and reducing unnecessary re-renders.
+@Weeezzt	Reply...
+
+  const { reviews, isLoading, isError } = useFetchReviews(mangaid);
+  const { reviews, isLoading, refetch, isError } = useFetchReviews(mangaid);
+
+  useEffect(() => {
+    if (hasCommented) {
+      refetch().then(() => {
+        // Find the current review after the refetch
+        const updatedReview = reviews?.find(
+          (review) => review.reviewId === currentReview?.reviewId
+        );
+        if (updatedReview) {
+          setCurrentReview(updatedReview); // Update currentReview with new data
+        }
+      });
+      setHasCommented(false);
+    }
+  }, [hasCommented, reviews, currentReview?.reviewId, refetch]);
+Comment on lines +30 to +43
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The useEffect hook used for refetching reviews might cause performance issues due to its dependency array. Including reviews and currentReview?.reviewId could lead to unnecessary refetches if these values change for reasons other than a new comment being added. This not only affects performance by making redundant network requests but also risks using stale data when updating currentReview.
+
+Recommendation:
+
+Consider removing reviews and currentReview?.reviewId from the dependency array if they are not directly related to the action of commenting. Ensure that the refetch logic is tightly coupled only with the commenting logic to avoid unnecessary operations.
+@Weeezzt	Reply...
+Comment on lines 24 to +43
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Potential Performance Issue and Error Handling in useEffect
+The useEffect hook is used to refetch reviews when hasCommented is true. However, this hook is also dependent on reviews and currentReview?.reviewId, which could lead to unnecessary re-renders if these values change frequently but do not impact the need to refetch.
+
+Recommendation:
+
+Consider removing reviews and currentReview?.reviewId from the dependency array if they do not directly influence the decision to refetch. This would prevent unnecessary re-renders and potential performance issues.
+Implement error handling for the refetch promise to manage failures gracefully and improve the robustness of your component.
+@Weeezzt	Reply...
+
+  console.log(reviews);
+  const text =
+    "Naruto is an unforgettable journey of perseverance, friendship, and epic ninja action! From the moment we meet the quirky and determined Naruto Uzumaki in the Hidden Leaf Village, it's impossible not to root for him as he chases his dream of becoming Hokage. The show balances heart-pounding battles with heartfelt moments that make you laugh, cry, and cheer. The character development is stellar—watching";
+@@ -76,13 +100,25 @@ const ReviewMobile = ({ mangaid, userid }: Props) => {
+                <p className="px-3 pt-3 text-purple-900 font-semibold">
+                  {review.username}
+                </p>
+                <div className="w-full px-3  mt-2 max-h-32 ">
+                <div className="w-full px-3 mt-2 max-h-32 ">
+                  "{truncateLongReview(review.reviewText)}"
+                </div>
+                <p className="w-full text-end pr-3 text-purple-600 font-semibold">
+                <p
+                  className="w-full text-end pr-3 text-purple-600 font-semibold cursor-pointer"
+                  onClick={() => handleShowThread(review)}
+                >
+                  See thread
+                </p>
+              </div>
+              {showThread && currentReview && (
+                <div className="fixed inset-0 w-full h-full px-5 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+                  <ReviewThreadModal
+                    review={currentReview}
+                    setShowThread={setShowThread}
+                    setHasCommented={setHasCommented}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        {showModal && (
+ 238 changes: 238 additions & 0 deletions238  
+manga-tracker-fe/src/components/manga/ListItem.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,238 @@
+import { useState, useEffect } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+import { ListDtoWithId } from "../../services/ListService";
+import MangaDropdownModal from "../modals/MangaDropdownModal";
+import { useAddMangaToList } from "../../services/ListService";
+import EditSavedMangaModal from "../modals/EditSavedMangaModal";
+import { SaveMangaDto } from "../../services/SaveMangaService";
+type Status = "Reading" | "Completed" | "On Hold" | "Dropped" | "Plan to read";
+
+interface ListItemProps {
+  list: ListDtoWithId;
+}
+export default function ListItem({ list }: ListItemProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
+  const [currentManga, setCurrentManga] = useState<SaveMangaDto>();
+  const [selectedSeries, setSelectedSeries] = useState<number[]>([]);
+  const [selectedMangas, setSelectedMangas] = useState<number[]>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+Comment on lines +19 to +20
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The component uses two separate state variables, modalVisible and isModalOpen, to manage the visibility of modals. This redundancy can lead to confusion and bugs due to the potential for these states to get out of sync.
+
+Recommended Solution:
+Consider consolidating these into a single state variable. This change will simplify the component's state management and make the modal's visibility logic easier to follow and maintain. For example, you could use only modalVisible and remove isModalOpen, adjusting all relevant logic to reflect this change.
+
+@Weeezzt	Reply...
+  const [sortedList, setSortedList] = useState<ListDtoWithId | null>(null);
+  const { mutate, isLoading, isError } = useAddMangaToList();
+
+  const handleOpenSavedMangaModal = (manga: SaveMangaDto) => {
+    setIsModalOpen(true);
+    setCurrentManga(manga);
+  };
+
+  const sortedListForRating = (list: ListDtoWithId) => {
+    list.savedMangas.sort((a, b) => {
+      return b.score - a.score;
+    });
+    setSortedList(list);
+Comment on lines +29 to +33
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The function sortedListForRating directly mutates the list object by sorting list.savedMangas. This mutation can lead to unintended side effects if other parts of the application rely on the original order or state of list.savedMangas.
+
+Recommendation:
+To avoid this issue, create a new array from list.savedMangas before sorting, ensuring that the original list object remains unchanged. This can be done using the spread operator to copy the array:
+
+const sortedMangas = [...list.savedMangas].sort((a, b) => b.score - a.score);
+setSortedList({ ...list, savedMangas: sortedMangas });
+@Weeezzt	Reply...
+Comment on lines +29 to +33
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The function sortedListForRating directly mutates the list object by sorting list.savedMangas. In React, directly mutating props or state (even indirectly through a function) can lead to unpredictable component behavior and bugs, as React may not detect changes correctly.
+
+Recommended Solution:
+Create a new sorted array and then update the state, rather than mutating the original list directly. Here's a suggested modification:
+
+const sortedListForRating = (list: ListDtoWithId) => {
+  const sortedMangas = [...list.savedMangas].sort((a, b) => b.score - a.score);
+  setSortedList({ ...list, savedMangas: sortedMangas });
+};
+@Weeezzt	Reply...
+  };
+
+  useEffect(() => {
+    sortedListForRating(list);
+  }, [list.savedMangas]);
+
+  const handleAddMangaToList = (listId: string, mangaIds: number[]) => {
+    console.log("Adding manga to list with id:", listId);
+    console.log("Manga id:", mangaIds);
+Comment on lines +41 to +42
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The handleAddMangaToList function logs potentially sensitive information to the console, including listId and mangaIds. This practice is not recommended for production environments as it can expose sensitive data and lead to security vulnerabilities.
+
+Recommendation:
+Remove the console.log statements from the production code or replace them with a logging mechanism that respects the environment (e.g., only logging in development environments).
+
+@Weeezzt	Reply...
+    mutate({ listId, mangaIds });
+  };
+
+  const handleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleBgColorPercentagePerStatus = (statuses: Status[]) => {
+    const total = statuses.length;
+
+    const statusCounts: Record<Status, number> = {
+      Reading: 0,
+      Completed: 0,
+      "On Hold": 0,
+      Dropped: 0,
+      "Plan to read": 0,
+    };
+
+    statuses.forEach((status) => {
+      statusCounts[status]++;
+    });
+
+    if (total === 0) {
+      return Object.keys(statusCounts).map((status) => ({
+        status: status as Status,
+        percentage: 0,
+      }));
+    }
+
+    // Calculate percentages only for present statuses
+    const presentStatuses = Object.entries(statusCounts).filter(
+      ([, count]) => count > 0
+    );
+
+    const distribution = presentStatuses.map(([status, count]) => ({
+      status: status as Status,
+      percentage: (count / total) * 100,
+    }));
+
+    // Adjust to ensure total percentage equals 100%
+    const totalPercentage = distribution.reduce(
+      (sum, { percentage }) => sum + percentage,
+      0
+    );
+
+    if (totalPercentage < 100) {
+      const adjustment = (100 - totalPercentage) / distribution.length;
+      return distribution.map(({ status, percentage }) => ({
+        status,
+        percentage: percentage + adjustment,
+      }));
+    }
+
+    return distribution;
+  };
+
+  const distribution = handleBgColorPercentagePerStatus(
+    list.savedMangas.map((manga) => manga.status as Status)
+  );
+
+  // Map statuses to colors
+  const statusColors: Record<Status, string> = {
+    Reading: "bg-blue-400",
+    Completed: "bg-green-400",
+    "On Hold": "bg-yellow-400",
+    Dropped: "bg-red-400",
+    "Plan to read": "bg-gray-400",
+  };
+
+  const handleModalVisibility = () => {
+    if (!modalVisible) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+    setModalVisible(!modalVisible);
+  };
+
+  const handleCancel = () => {
+    setSelectedMangas([]);
+    setSelectedSeries([]);
+    setModalVisible(false);
+  };
+  return (
+    <>
+      <div className="w-full h-full flex justify-between border-2 shadow-md border-gray-300 mt-4">
+        <div className="w-full flex flex-col pt-6">
+          <div className="px-5 pb-4 w-full flex justify-between">
+            <h3 className="text-2xl">{list.listName}</h3>
+            <div className="flex justify-center items-center w-20 h-8 shadow-md rounded-md bg-gray-200">
+              <p className="mx-auto my-auto">{list.savedMangas.length}</p>
+            </div>
+          </div>
+          <div className="mt-2 h-6 w-full flex shadow-md overflow-hidden">
+            {distribution.map(({ status, percentage }) => (
+              <div
+                key={status}
+                className={`h-full ${statusColors[status]}`}
+                style={{ width: `${percentage}%` }}
+              ></div>
+            ))}
+          </div>
+        </div>
+        <div
+          className="w-10 flex items-center min-h-full bg-purple-600 cursor-pointer hover:bg-purple-700 "
+          onClick={handleDropdown}
+        >
+          {isDropdownOpen ? (
+            <p className="text-center text-2xl flex font-semibold justify-center w-full text-white">
+              <IoIosArrowUp />
+            </p>
+          ) : (
+            <p className="text-center text-2xl flex font-semibold justify-center w-full text-white">
+              <IoIosArrowDown />
+            </p>
+          )}
+        </div>
+      </div>
+      {isDropdownOpen && (
+        <div className="w-full h-full bg-gray-200">
+          <div className="w-full h-full">
+            <p className="p-2 mx-auto w-11/12">
+              First choose what mangas you would like to add to your list, then
+              after you've saved those you press the "Add series to list" button
+              to add them to your list
+            </p>
+            <div className="relative w-full gap-4 flex justify-evenly my-2">
+              <div
+                onClick={handleModalVisibility}
+                className="p-2 w-48 md:w-full rounded-md shadow-md bg-purple-600 hover:bg-purple-700 cursor-pointer text-center text-white text-lg lg:text-xl "
+              >
+                Choose Mangas
+              </div>
+              <button
+                className="p-2 w-48 md:w-full rounded-md shadow-md bg-purple-600 hover:bg-purple-700 cursor-pointer text-white text-lg lg:text-xl "
+                onClick={() => handleAddMangaToList(list.id, selectedMangas)}
+              >
+                Add series to list
+              </button>
+
+              {modalVisible && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                  <MangaDropdownModal
+                    setSelectedSeries={setSelectedSeries}
+                    setIsModalVisible={setModalVisible}
+                    setSelectedMangas={setSelectedMangas}
+                    selectedMangas={selectedMangas}
+                    handleCancel={handleCancel}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div>
+            {sortedList?.savedMangas?.map((manga) => {
+              return (
+                <div
+                  key={manga.mangaid}
+                  className="w-full h-12 flex justify-between items-center border-b-2 bg-white border-gray-300 p-4 "
+                >
+                  <p
+                    className="ml-4 text-md font-semibold truncate w-2/4"
+                    onClick={() => handleOpenSavedMangaModal(manga)}
+                  >
+                    {manga.title}
+                  </p>
+                  <div className="w-20 h-8 shadow-md rounded-md bg-gray-200 flex items-center">
+                    <p className="mx-auto my-auto text-center font-semibold">
+                      {manga.score}/10
+                    </p>
+                  </div>
+                  <div className="w-20 md:w-[120px] h-8 shadow-md rounded-md bg-gray-200 flex items-center">
+                    <p className="mx-auto truncate md:text-clip text-center ">
+                      {manga.status}
+                    </p>
+                  </div>
+                  {isModalOpen && currentManga && (
+                    <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
+                      <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
+                        <EditSavedMangaModal
+                          manga={currentManga}
+                          setIsModalOpen={setIsModalOpen}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+  84 changes: 13 additions & 71 deletions84  
+manga-tracker-fe/src/components/manga/ListView.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+import CreateListModalDashboard from "../modals/CreateListModalDashboard";
+import ListItem from "./ListItem";
+import {
+  useFetchAllLists,
+  useAddMangaToList,
+} from "../../services/ListService";
+import { useAuthContext } from "../../provider/AuthProvider";
+type Status = "Reading" | "Completed" | "On-Hold" | "Dropped" | "Plan to Read";
+
+const testStatuses: Status[] = [
+@@ -21,42 +27,10 @@ const testStatuses: Status[] = [
+export default function ListView() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
+  const [modalVisible, setModalVisible] = useState<Boolean>(false);
+Comment on lines 28 to 29
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The use of Boolean as a type in useState is unconventional and incorrect in TypeScript. The correct type should be lowercase boolean. This ensures type safety and consistency with TypeScript's typing conventions.
+
+Recommended Change:
+
+const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+const [modalVisible, setModalVisible] = useState<boolean>(false);
+@Weeezzt	Reply...
+Comment on lines 28 to 29
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The use of Boolean (capitalized) in useState is unconventional in TypeScript, where boolean (lowercase) is the standard type for boolean values. Using Boolean can lead to unexpected behavior or confusion.
+
+Recommended Change:
+
+const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+const [modalVisible, setModalVisible] = useState<boolean>(false);
+@Weeezzt	Reply...
+  const { dbUser } = useAuthContext();
+  const { data: lists } = useFetchAllLists(dbUser?.id || "");
+
+  const handleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleBgColorPercentagePerStatus = (statuses: Status[]) => {
+    const total = statuses.length;
+
+    const statusCounts: Record<Status, number> = {
+      Reading: 0,
+      Completed: 0,
+      "On-Hold": 0,
+      Dropped: 0,
+      "Plan to Read": 0,
+    };
+
+    statuses.forEach((status) => {
+      statusCounts[status]++;
+    });
+
+    if (total === 0) {
+      return Object.keys(statusCounts).map((status) => ({
+        status: status as Status,
+        percentage: 0,
+      }));
+    }
+
+    const distribution = Object.entries(statusCounts).map(
+      ([status, count]) => ({
+        status: status as Status,
+        percentage: (count / total) * 100,
+      })
+    );
+
+    return distribution;
+  };
+  console.log("Lists:", lists);
+
+  const handleModalVisibility = () => {
+    if (!modalVisible) {
+Comment on lines 35 to 36
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Direct manipulation of document.body.style to control scrolling is not recommended in React components. Instead, use React state and effects to manage DOM properties indirectly for better maintainability and to avoid potential side effects in larger applications.
+
+Recommended Change:
+Encapsulate the scrolling behavior in a useEffect that depends on modalVisible, ensuring that the scroll is only adjusted when modalVisible changes.
+
+useEffect(() => {
+  document.body.style.overflow = modalVisible ? 'hidden' : 'auto';
+}, [modalVisible]);
+@Weeezzt	Reply...
+@@ -73,8 +47,6 @@ export default function ListView() {
+    };
+  }, []);
+
+  const distribution = handleBgColorPercentagePerStatus(testStatuses);
+
+  // Map statuses to colors
+  const statusColors: Record<Status, string> = {
+    Reading: "bg-blue-400",
+@@ -83,7 +55,6 @@ export default function ListView() {
+    Dropped: "bg-red-400",
+    "Plan to Read": "bg-gray-400",
+  };
+
+  return (
+    <div className="w-full h-full flex justify-center flex-col">
+      <button
+@@ -102,39 +73,10 @@ export default function ListView() {
+          ))}
+        </div>
+      </div>
+      <div className="w-full h-full flex justify-between border-2 shadow-md border-gray-300 ">
+        <div className="w-full flex flex-col  pt-6">
+          <div className="px-5 pb-4 w-full flex justify-between">
+            <h3 className="text-2xl">Reading list 2025</h3>
+            <div className="flex justify-center items-center w-20 h-8 shadow-md rounded-md bg-gray-200">
+              <p className="mx-auto my-auto">12 Series</p>
+            </div>
+          </div>
+          <div className="mt-2 h-6 w-full mx-auto flex shadow-md overflow-hidden">
+            {distribution.map(({ status, percentage }) => (
+              <div
+                key={status}
+                className={`h-full ${statusColors[status]}`}
+                style={{ width: `${percentage}%` }}
+              ></div>
+            ))}
+          </div>
+        </div>
+        <div
+          className="w-10 flex items-center min-h-full bg-purple-600 cursor-pointer hover:bg-purple-700 "
+          onClick={handleDropdown}
+        >
+          {isDropdownOpen ? (
+            <p className="text-center text-2xl flex font-semibold justify-center w-full text-white">
+              <IoIosArrowUp />
+            </p>
+          ) : (
+            <p className="text-center text-2xl flex font-semibold justify-center w-full text-white">
+              <IoIosArrowDown />
+            </p>
+          )}
+        </div>
+      </div>
+      {lists &&
+        lists.map((list) => {
+          return <ListItem list={list} />;
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The ListItem component rendered inside a map function lacks a key prop. In React, each child in a list should have a unique key prop to optimize re-renders and improve performance.
+
+Recommended Change:
+
+{lists && lists.map((list) => (
+  <ListItem key={list.id} list={list} />
+))}
+@Weeezzt	Reply...
+        })}
+      {modalVisible && (
+        <div className="fixed inset-0 w-full h-full px-5 bg-black bg-opacity-50 z-50 flex justify-center items-center overflow-hidden">
+          <CreateListModalDashboard setModalVisible={setModalVisible} />
+  17 changes: 16 additions & 1 deletion17  
+manga-tracker-fe/src/components/manga/MangaListItem.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
+import { IoIosArrowForward } from "react-icons/io";
+import { SaveMangaDto } from "../../services/SaveMangaService";
+import EditSavedMangaModal from "../modals/EditSavedMangaModal";
+
+type Props = {
+  manga: SaveMangaDto;
+};
+export default function MangaListItem({ manga }: Props) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chapterStatus, setChapterStatus] = useState<string>(
+    `Chapter ${manga.chaptersRead}`
+  );
+Comment on lines +10 to 13
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The initialization and subsequent update of chapterStatus using useState and useEffect based on manga.chaptersRead could lead to unnecessary re-renders if manga.chaptersRead changes frequently. Consider deriving chapterStatus directly in the component's body or memoizing it using useMemo to avoid unnecessary state updates and re-renders.
+
+Suggested Change:
+
+const chapterStatus = useMemo(() => `Chapter ${manga.chaptersRead}`, [manga.chaptersRead]);
+This change ensures that chapterStatus is recalculated only when manga.chaptersRead changes, improving performance.
+
+@Weeezzt	Reply...
+@@ -76,9 +78,22 @@ export default function MangaListItem({ manga }: Props) {
+          </div>
+        </div>
+      </div>
+      <p className="text-2xl text-gray-700 cursor-pointer hover:bg-gray-200 p-2 rounded-full">
+      <p
+        className="text-2xl text-gray-700 cursor-pointer hover:bg-gray-200 p-2 rounded-full"
+        onClick={() => setIsModalOpen(true)}
+Comment on lines +82 to +83
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The modal toggle is triggered by clicking on an icon without any textual content or accessibility features such as aria-label. This can hinder accessibility for users who rely on screen readers or keyboard navigation.
+
+Suggested Change:
+Add an aria-label to improve accessibility and ensure that all users can understand and interact with the UI element.
+
+<p
+  className="text-2xl text-gray-700 cursor-pointer hover:bg-gray-200 p-2 rounded-full"
+  onClick={() => setIsModalOpen(true)}
+  aria-label="Open edit manga modal"
+>
+  <IoIosArrowForward />
+</p>
+This addition helps users with screen readers understand the purpose of the clickable element, enhancing the accessibility of the component.
+
+@Weeezzt	Reply...
+      >
+        <IoIosArrowForward />
+      </p>
+      {isModalOpen && (
+        <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
+            <EditSavedMangaModal
+              manga={manga}
+              setIsModalOpen={setIsModalOpen}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+  46 changes: 28 additions & 18 deletions46  
+manga-tracker-fe/src/components/modals/CreateListModalDashboard.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -1,6 +1,8 @@
+import { useState } from "react";
+import MangaDropdownModal from "./MangaDropdownModal";
+import { IoMdClose } from "react-icons/io";
+import { useCreateNewList } from "../../services/ListService";
+import { useAuthContext } from "../../provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+
+interface CreateListModalDashboardProps {
+  setModalVisible: any;
+@@ -9,49 +11,57 @@ interface CreateListModalDashboardProps {
+export default function CreateListModalDashboard({
+  setModalVisible,
+}: CreateListModalDashboardProps) {
+  const { dbUser } = useAuthContext();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [selectedSeries, setSelectedSeries] = useState<string[]>([]);
+  const [listName, setListName] = useState<string>("");
+  const { mutate } = useCreateNewList();
+
+  const handleModalVisibility = () => {
+    setIsModalVisible(!isModalVisible);
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0);
+  };
+
+  const createList = () => {
+    if (!dbUser) {
+      return;
+    }
+    if (listName.length > 0) {
+      const list = {
+        listName: listName,
+        userId: dbUser.id,
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Potential Security and Data Integrity Issue
+The createList function uses dbUser.id directly without any validation (line 33). This assumes that the dbUser object is always correctly formatted and contains an id. If dbUser is malformed or does not contain an id, this could lead to runtime errors or incorrect data being sent to the server.
+
+Recommendation:
+Add checks to ensure that dbUser is not only non-null but also contains all necessary properties, including id, before proceeding with the list creation. This will help prevent potential data integrity issues and enhance the security of the application.
+
+@Weeezzt	Reply...
+      };
+Comment on lines +30 to +34
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Potential Security Risk with Unsanitized Input
+The createList function uses the listName directly from the state without any form of validation or sanitization. This could pose a security risk, particularly if the backend does not adequately handle potentially malicious inputs.
+
+Recommendation:
+Implement input validation and sanitization for listName before it is used to create a new list. This could include checking for valid characters, length constraints, and potentially dangerous inputs. This will help ensure that only safe and intended data is sent to the backend, enhancing the security of the application.
+
+@Weeezzt	Reply...
+      console.log("Creating new list:", list);
+      mutate(list);
+      setModalVisible(false);
+    }
+Comment on lines +26 to +38
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Lack of User Feedback on Failed Conditions
+The createList function does not provide any feedback or error handling when the conditions !dbUser or listName.length > 0 are not met. This can lead to a confusing user experience where the 'Create' button does nothing without any indication of what went wrong.
+
+Recommendation:
+Implement error messages or visual feedback when the user attempts to create a list without meeting the necessary conditions. This could be done using a state variable to show error messages in the UI or by disabling the 'Create' button until all conditions are met.
+
+@Weeezzt	Reply...
+Comment on lines +26 to +38
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Lack of User Feedback on Failed List Creation
+The createList function does not provide any feedback to the user when the list creation fails due to an undefined dbUser or an empty listName. This can lead to a poor user experience as users might not understand why their actions are not resulting in a new list.
+
+Recommendation:
+Implement a mechanism to display error messages or alerts when the list creation conditions are not met. This could involve setting an error state and displaying it in the UI, which would inform users of the specific issue preventing list creation.
+
+@Weeezzt	Reply...
+  };
+
+  return (
+    <>
+      <div className="relative w-full h-full flex flex-col justify-between max-h-[300px] px-6 py-6 rounded-lg bg-white shadow-md">
+      <div className="relative w-[400px] h-full flex flex-col justify-between max-h-[250px] px-6 py-6 rounded-lg bg-white shadow-md">
+        <div
+          className="absolute right-5 top-5 text-2xl cursor-pointer"
+          onClick={() => setModalVisible(false)}
+        >
+          <IoMdClose />
+        </div>
+        <h2 className="text-xl">Create a new list</h2>
+        <h2 className="text-xl font-semibold">Create a new list</h2>
+        <label htmlFor="listName" className="text-lg">
+          List name:
+        </label>
+        <input
+          type="text"
+          id="listName"
+          name="listName"
+          placeholder="Enter list name"
+          className="p-1 w-full border border-gray-300 rounded-md mt-2"
+          onChange={(e) => setListName(e.target.value)}
+        />
+        <h3 className="text-lg mt-6">Choose Series to add</h3>
+        <button
+          className="border rounded px-2 py-1 mt-2 w-full text-left"
+          onClick={handleModalVisibility}
+        >
+          {selectedSeries.length > 0 ? "Good choices!" : "Add series"}
+        </button>
+        {isModalVisible && (
+          <MangaDropdownModal
+            setSelectedSeries={setSelectedSeries}
+            setIsModalVisible={setIsModalVisible}
+          />
+        )}
+        <button
+          type="submit"
+          onClick={createList}
+          className="bg-purple-600 text-white py-2 rounded-md shadow-sm hover:bg-purple-700 mt-4"
+        >
+          Create
+ 214 changes: 214 additions & 0 deletions214  
+manga-tracker-fe/src/components/modals/EditSavedMangaModal.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,214 @@
+import {
+  SaveMangaDto,
+  useUpdateSavedManga,
+} from "../../services/SaveMangaService";
+import { useAuthContext } from "../../provider/AuthProvider";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useMangaById } from "../../services/MangaService";
+
+type Props = {
+  manga: SaveMangaDto;
+  setIsModalOpen: (isOpen: boolean) => void;
+};
+
+export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
+  const { dbUser } = useAuthContext();
+  const { mutate, isLoading, isError, isSuccess } = useUpdateSavedManga();
+  const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] =
+    useState<Boolean>(false);
+  const [isScoreDropdownOpen, setIsScoreDropdownOpen] =
+    useState<Boolean>(false);
+  const [selectedChapter, setSelectedChapter] = useState<string>("");
+  const [readingStatus, setReadingStatus] = useState<string>("");
+  const [score, setScore] = useState<number>(0);
+
+  const { data: mangaData } = useMangaById(manga.mangaid.toString());
+
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0); // React Router 6+ supports reloading the current route
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Using navigate(0) to refresh the page can be disruptive as it reloads the entire application, which might not be necessary and could lead to a poor user experience. This approach also does not handle potential errors in navigation.
+
+Recommendation:
+Instead of reloading the entire page, consider updating the component or page state to reflect the changes. This can be achieved by re-fetching the relevant data or updating the state locally. This approach is more efficient and provides a smoother user experience.
+
+Example:
+
+// Assuming `fetchMangaData` is a function to fetch manga details
+fetchMangaData(manga.mangaid).then(updatedManga => {
+  setMangaData(updatedManga);
+}).catch(error => {
+  console.error('Failed to fetch updated manga details:', error);
+});
+@Weeezzt	Reply...
+  };
+Comment on lines +32 to +33
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Reloading the entire page using navigate(0) is not typical in React applications and can lead to a poor user experience due to the full page reload. Consider managing state changes reactively within the application. If you need to refresh data or components, look into using state management or React's context features to trigger updates without reloading the entire page.
+
+@Weeezzt	Reply...
+
+  const handleSave = () => {
+    mutate({
+      userid: dbUser ? parseInt(dbUser.id) : 0,
+      mangaid: manga.mangaid,
+      status: readingStatus || "",
+      score: score || 0,
+      chaptersRead: selectedChapter
+        ? parseInt(selectedChapter.split(" ")[1])
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Using parseInt without specifying a radix can lead to unexpected results if the input string has a leading zero, as it might be interpreted as an octal number. To ensure consistent behavior across different environments, always specify the radix parameter:
+
+parseInt(selectedChapter.split(' ')[1], 10)
+@Weeezzt	Reply...
+Comment on lines +41 to +42
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The parsing of selectedChapter to extract a chapter number is potentially error-prone. The current implementation assumes the chapter string is always in a correct format (Chapter X). If the format is incorrect or the split results in an undefined or non-numeric value, this could lead to runtime errors or incorrect data being sent to the server.
+
+Recommendation:
+Add validation to ensure the string is correctly formatted before attempting to parse it. Consider using a regular expression to validate and extract the chapter number. This would make the parsing more robust and less susceptible to errors.
+
+Example:
+
+const chapterMatch = selectedChapter.match(/Chapter (\d+)/);
+const chaptersRead = chapterMatch ? parseInt(chapterMatch[1]) : 0;
+@Weeezzt	Reply...
+        : 0,
+      title: manga.title,
+    });
+    setIsModalOpen(false);
+    refreshPage();
+  };
+
+  const handleOptionClick = (option: string) => {
+    setSelectedChapter(option);
+    setIsDropdownOpen(false);
+  };
+
+  const handleStatusOptionClick = (option: string) => {
+    setReadingStatus(option);
+    setIsStatusDropdownOpen(false);
+  };
+
+  const handleScoreOptionClick = (score: number) => {
+    setScore(score);
+    setIsScoreDropdownOpen(false);
+  };
+
+  // Handle opening a dropdown and closing others
+  const toggleChapterDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    setIsStatusDropdownOpen(false);
+    setIsScoreDropdownOpen(false);
+  };
+
+  const toggleStatusDropdown = () => {
+    setIsStatusDropdownOpen(!isStatusDropdownOpen);
+    setIsDropdownOpen(false);
+    setIsScoreDropdownOpen(false);
+  };
+
+  const toggleScoreDropdown = () => {
+    setIsScoreDropdownOpen(!isScoreDropdownOpen);
+    setIsDropdownOpen(false);
+    setIsStatusDropdownOpen(false);
+  };
+
+  const handleTextForChapter = () => {
+    if (manga.chaptersRead) {
+      return `Chapter ${manga.chaptersRead}`;
+    }
+    if (selectedChapter == "" && !mangaData?.chapters) {
+      return "No chapters available";
+    } else if (selectedChapter == "") {
+      return "Choose chapter";
+    } else {
+      return selectedChapter;
+    }
+  };
+
+  return (
+    <div className="h-[400px] sm:h-[390px] flex flex-row py-2 mb-3">
+      <div className="w-full">
+        <h1 className="font-semibold text-2xl truncate">{manga.title}</h1>
+        <div className="w-full flex sm:flex-row mt-4">
+          <img
+            className="hidden sm:block sm:mr-10 rounded-md shadow-md max-h-[300px]"
+            src={mangaData?.images[0].imageUrl}
+          />
+
+          <div className="w-full flex flex-col space-y-4 sm:justify-between">
+            <div className="w-ful">
+              <p className="font-semibold">Last Read Chapter</p>
+              <button
+                className="border rounded px-2 mt-2 py-1 w-full text-left"
+                onClick={toggleChapterDropdown}
+              >
+                {handleTextForChapter()}
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
+                  <ul>
+                    {Array.from(
+                      { length: mangaData?.chapters || 0 },
+                      (_, i) => i
+                    ).map((i) => (
+                      <li
+                        key={i}
+                        className="hover:bg-gray-200 p-1"
+                        onClick={() => handleOptionClick(`Chapter ${i}`)}
+                      >
+                        {`Chapter ${i}`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full mt-4">
+              <p className="font-semibold">Status</p>
+              <button
+                className="border rounded px-2 py-1 mt-2 w-full text-left"
+                onClick={toggleStatusDropdown}
+              >
+                {readingStatus || manga.status}
+              </button>
+              {isStatusDropdownOpen && (
+                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
+                  <ul>
+                    {[
+                      "Reading",
+                      "Completed",
+                      "On Hold",
+                      "Dropped",
+                      "Plan to read",
+                    ].map((status) => (
+                      <li
+                        key={status}
+                        className="hover:bg-gray-200 p-1"
+                        onClick={() => handleStatusOptionClick(status)}
+                      >
+                        {status}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full mt-4">
+              <p className="font-semibold">Rate</p>
+              <button
+                className="border rounded px-2 py-1 mt-2 w-full text-left"
+                onClick={toggleScoreDropdown}
+              >
+                {score || manga.score || "Select a rating"}
+              </button>
+              {isScoreDropdownOpen && (
+                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50  max-h-44 overflow-y-scroll w-[320px]">
+                  <ul>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
+                      <li
+                        key={score}
+                        className="hover:bg-gray-200 p-1"
+                        onClick={() => handleScoreOptionClick(score)}
+                      >
+                        {score}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <div className="w-full">
+              <button
+                className="w-full p-2 bg-purple-600 rounded-md shadow-md text-white mb-2 mt-4 sm:my-0"
+                onClick={handleSave}
+                disabled={isLoading}
+              >
+                Update Series
+              </button>
+              {isLoading && <p>Saving...</p>}
+              {isError && <p>Failed to save the manga.</p>}
+              {isSuccess && <p>Manga saved successfully!</p>}
+            </div>
+          </div>
+        </div>
+        <button
+          className="text-red-400 text-xl font-thin font-mono mt-3 cursor-pointer hover:text-red-500"
+          onClick={() => setIsModalOpen(false)}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+  26 changes: 13 additions & 13 deletions26  
+manga-tracker-fe/src/components/modals/MangaDropdownModal.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -6,38 +6,38 @@ import { IoReturnDownBack } from "react-icons/io5";
+import { IoIosSave } from "react-icons/io";
+
+interface MangaDropdownModalProps {
+  setSelectedSeries: any;
+  setIsModalVisible: any;
+  selectedMangas: number[];
+  setSelectedMangas: React.Dispatch<React.SetStateAction<number[]>>;
+  setSelectedSeries: React.Dispatch<React.SetStateAction<number[]>>;
+  setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCancel: () => void;
+}
+
+export default function MangaDropdownModal({
+  setSelectedSeries,
+  setIsModalVisible,
+  setSelectedMangas,
+  selectedMangas,
+  handleCancel,
+}: MangaDropdownModalProps) {
+  const { dbUser } = useAuthContext();
+  const { data, error, isLoading } = useFetchUsersSavedMangas(
+    dbUser ? dbUser.id : ""
+Comment on lines 24 to 25
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The function useFetchUsersSavedMangas is called with dbUser.id or an empty string if dbUser is null. This could lead to unintended API calls with invalid parameters, potentially causing errors or security issues if the API endpoint is not properly secured against such inputs.
+
+Recommendation:
+Ensure that the API call is only made when dbUser is not null. You could add a conditional check to prevent the API call if dbUser is null, or handle this scenario appropriately within the useFetchUsersSavedMangas function to ensure it deals with null or empty inputs securely.
+
+@Weeezzt	Reply...
+  );
+Comment on lines 24 to 26
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The error state returned from useFetchUsersSavedMangas is not handled in the component. This can lead to a scenario where users are not informed of issues when the data fetching fails, potentially leading to confusion and a poor user experience.
+
+Recommended Solution: Implement error handling by checking the error state and displaying an appropriate message or UI element to inform the user of the issue. For example:
+
+if (error) {
+  return <p>Error fetching data: {error.message}</p>;
+}
+@Weeezzt	Reply...
+
+  const [selectedMangas, setSelectedMangas] = useState<number[]>([]);
+
+  const addMangasToSelectedSeries = (id: number) => {
+    setSelectedSeries((prev: string[]) => [...prev, id]);
+    setSelectedMangas((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    setSelectedSeries((prev: number[]) => [...prev, id]);
+    setSelectedMangas((prev) =>
+      prev.includes(id) ? prev.filter((manga) => manga !== id) : [...prev, id]
+    );
+Comment on lines 28 to +32
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The function addMangasToSelectedSeries toggles the presence of an ID in selectedMangas and adds it to selectedSeries. The dual responsibility and the toggling logic within a single function can lead to confusion and make the code harder to maintain.
+
+Recommendation:
+Consider splitting this function into two separate functions: one for adding to selectedSeries and another for toggling in selectedMangas. This separation will make the code easier to understand and maintain. Additionally, renaming the functions to more clearly reflect their actions could improve code readability and maintainability.
+
+@Weeezzt	Reply...
+Comment on lines 28 to +32
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The addMangasToSelectedSeries function may cause unnecessary re-renders due to the way state is updated. The use of the spread operator and conditional operations within setSelectedMangas can be optimized to reduce the complexity and improve performance.
+
+Recommended Solution: Consider restructuring the state updates to minimize the number of operations and re-renders. For instance, you could calculate the new state first and then apply it in a single update, or use more efficient data structures like Set for operations that involve checking for inclusion.
+
+@Weeezzt	Reply...
+  };
+
+  const handleSaveAndGoBack = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setSelectedMangas([]);
+    setSelectedSeries([]);
+    setIsModalVisible(false);
+  };
+
+  return (
+    <div className="w-full h-full absolute left-0 top-0 bg-white pb-4 rounded-md shadow-md overflow-y-scroll">
+    <div className="w-10/12 h-1/2 bg-white pb-4 rounded-md shadow-md overflow-y-scroll">
+      <div className="w-full flex gap-2 items-center p-4">
+        <button
+          className="w-full flex justify-center items-center h-8 p-2 border-2 border-red-600 rounded-md "
+  26 changes: 9 additions & 17 deletions26  
+manga-tracker-fe/src/components/modals/ReviewModalDesktop.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -1,7 +1,6 @@
+import { useState } from "react";
+import { IoMdClose } from "react-icons/io";
+import { useAddReview } from "../../services/ReviewService";
+import { useNavigate } from "react-router-dom";
+
+interface Props {
+  neededAttributes: {
+@@ -11,17 +10,12 @@ interface Props {
+  };
+}
+
+export default function ReviewModalDesktop({ neededAttributes }: Props) {
+export default function ReviewModalMobile({ neededAttributes }: Props) {
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The component is named ReviewModalMobile which is inconsistent with the file name ReviewModalDesktop.tsx. This discrepancy can lead to confusion about the component's intended use or platform.
+
+Recommendation: Rename the component to ReviewModalDesktop to match the file name and clarify its intended usage context.
+
+@Weeezzt	Reply...
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The component is named ReviewModalMobile but the file is named ReviewModalDesktop.tsx. This inconsistency in naming could lead to confusion about the component's intended use or platform. Recommendation: Rename the component to match the file name or vice versa to maintain consistency and clarity.
+
+@Weeezzt	Reply...
+  const [value, setValue] = useState<number>(0);
+  const [spoiler, setSpoiler] = useState<boolean>(false);
+  const [reviewText, setReviewText] = useState<string>("");
+  const { mutate, isSuccess } = useAddReview();
+  const { userid, mangaId, setShowModal } = neededAttributes;
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0); // React Router 6+ supports reloading the current route
+  };
+
+  const handleAddReview = () => {
+    console.log("Adding review");
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The use of console.log for debugging purposes should be avoided in production code as it can lead to performance issues and unintended exposure of application logic. Recommendation: Remove the console.log statement or replace it with a more robust logging mechanism that can be disabled in production environments.
+
+@Weeezzt	Reply...
+@@ -37,7 +31,6 @@ export default function ReviewModalDesktop({ neededAttributes }: Props) {
+      reviewText: reviewText,
+    });
+    setShowModal(false);
+Comment on lines 31 to 33
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The review submission function handleAddReview lacks error handling for the mutate operation. This can lead to a poor user experience if the network request fails or if there's a server error, as the user would not be informed of the failure.
+
+Recommendation: Implement error handling for the mutate function. Use the onError callback provided by useAddReview to handle and display errors to the user appropriately.
+
+@Weeezzt	Reply...
+    refreshPage();
+  };
+
+  const handleValueChangeUp = () => {
+@@ -62,15 +55,15 @@ export default function ReviewModalDesktop({ neededAttributes }: Props) {
+  };
+  return (
+    <>
+      <div className="relative w-1/2 lg:w-1/3 p-6 bg-white rounded-lg shadow-lg">
+      <div className="relative w-[500px] p-6 bg-white rounded-lg shadow-lg">
+        <div
+          className="absolute right-5 top-5 text-2xl"
+          className="absolute right-5 top-5 text-2xl cursor-pointer"
+          onClick={() => setShowModal(false)}
+        >
+          <IoMdClose />
+        </div>
+        <div className="w-full">
+          <h2 className="text-black text-xl font-semibold">Review </h2>
+          <h2 className="text-black text-xl font-semibold">Review</h2>
+          <textarea
+            placeholder=" Write your review..."
+            className="mt-3 h-36 border-2 w-full rounded-sm p-2"
+@@ -87,12 +80,11 @@ export default function ReviewModalDesktop({ neededAttributes }: Props) {
+              >
+                <p className="text-center text-xl font-bold text-gray-500">-</p>
+              </button>
+              <input
+                type="number"
+                className="w-14 border-2 border-gray-300 rounded-md text-center text-xl"
+                value={value}
+                readOnly
+              />
+              <div className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center">
+                <p className="text-center text-xl font-bold text-gray-500">
+                  {value}
+                </p>
+              </div>
+              <button
+                className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center"
+                onClick={handleValueChangeUp}
+  15 changes: 7 additions & 8 deletions15  
+manga-tracker-fe/src/components/modals/ReviewModalMobile.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -55,15 +55,15 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
+  };
+  return (
+    <>
+      <div className="relative w-5/6 p-6 bg-white rounded-lg shadow-lg">
+      <div className="relative w-[400px] p-6 bg-white rounded-lg shadow-lg">
+        <div
+          className="absolute right-5 top-5 text-2xl cursor-pointer"
+          onClick={() => setShowMobileModal(false)}
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Using inline arrow functions in event handlers, like onClick={() => setShowMobileModal(false)}, can lead to performance issues due to unnecessary re-renders, as a new function is created on each render. Consider using useCallback to memoize this handler to improve performance.
+
+Recommended Change:
+
+const handleClose = useCallback(() => setShowMobileModal(false), [setShowMobileModal]);
+Then use onClick={handleClose} in your component.
+
+@Weeezzt	Reply...
+        >
+          <IoMdClose />
+        </div>
+        <div className="w-full">
+          <h2 className="text-black text-xl font-semibold">Review </h2>
+          <h2 className="text-black text-xl font-semibold">Review</h2>
+          <textarea
+            placeholder=" Write your review..."
+            className="mt-3 h-36 border-2 w-full rounded-sm p-2"
+@@ -80,12 +80,11 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
+              >
+                <p className="text-center text-xl font-bold text-gray-500">-</p>
+              </button>
+              <input
+                type="number"
+                className="w-14 border-2 border-gray-300 rounded-md text-center text-xl"
+                value={value}
+                readOnly
+              />
+              <div className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center">
+                <p className="text-center text-xl font-bold text-gray-500">
+                  {value}
+                </p>
+              </div>
+              <button
+                className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center"
+                onClick={handleValueChangeUp}
+Comment on lines 80 to 90
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Performance Consideration for State Updates
+The buttons for adjusting the rating value (value) directly update the component's state on each click, which triggers a re-render. For better performance, especially on lower-end devices, consider debouncing the state updates or using a more efficient method of handling rapid state changes.
+
+Suggested Improvement
+Implement a debouncing mechanism or batch the state updates to minimize the number of re-renders, enhancing the responsiveness and performance of the modal.
+
+@Weeezzt	Reply...
+Comment on lines 80 to 90
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Enhancing Accessibility
+The buttons for increasing and decreasing the rating value use simple '+' and '-' symbols. This might not be clear for all users, especially those with visual impairments or who rely on screen readers.
+
+Suggested Improvement
+Add aria-label attributes to these buttons to clearly describe their functions, such as aria-label="Increase rating" and aria-label="Decrease rating". This will make the modal more accessible and user-friendly.
+
+@Weeezzt	Reply...
+ 116 changes: 116 additions & 0 deletions116  
+manga-tracker-fe/src/components/modals/ReviewThreadModal.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,116 @@
+import { useEffect, useState } from "react";
+import { CommentDto, ReviewDto } from "../../types/mangaTypes";
+import { useAddComment } from "../../services/ReviewService";
+import { useAuthContext } from "../../provider/AuthProvider";
+
+interface ReviewThreadModalProps {
+  review: ReviewDto;
+  setShowThread: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasCommented: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ReviewThreadModal({
+  review,
+  setShowThread,
+  setHasCommented,
+}: ReviewThreadModalProps) {
+  const { dbUser } = useAuthContext();
+  const { mutate } = useAddComment();
+  const [comment, setComment] = useState<string>("");
+  const [comments, setComments] = useState<CommentDto[]>([]);
+
+  useEffect(() => {
+    setComments(
+      [...review.comments].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )
+    );
+  }, [review.comments]);
+
+  const handleAddComment = (comment: string) => {
+    if (!comment.trim()) return;
+    mutate(
+      {
+        reviewId: review.reviewId,
+        userId: dbUser ? dbUser.id : "",
+        commentText: comment,
+      },
+      {
+        onSuccess: (newComment: CommentDto) => {
+          // Update comments state with the new comment and re-sort
+          setComments((prev) =>
+            [...prev, newComment].sort(
+              (a, b) =>
+                new Date(a.createdAt).getTime() -
+                new Date(b.createdAt).getTime()
+            )
+Comment on lines +22 to +47
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The comments are sorted every time they are set in the state, both initially in the useEffect hook and after adding a new comment in the onSuccess callback. This redundancy can be optimized by ensuring that comments are sorted once upon initial load and then maintaining the order when adding new comments. Consider appending the new comment in a sorted manner rather than sorting the entire array again, which can improve performance especially with a large number of comments.
+
+Recommended Change:
+
+// Append new comment in a sorted manner
+setComments((prev) => {
+  const index = prev.findIndex(c => new Date(c.createdAt).getTime() > new Date(newComment.createdAt).getTime());
+  const newComments = [...prev.slice(0, index), newComment, ...prev.slice(index)];
+  return newComments;
+});
+@Weeezzt	Reply...
+Comment on lines +23 to +47
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The comments are being sorted every time they are updated, which occurs both in the useEffect hook and in the onSuccess callback of the mutate function. This redundant sorting could lead to performance issues, especially with a large number of comments.
+
+Recommendation:
+Consider sorting the comments only once upon initial fetch and then maintaining the order by inserting new comments in their correct position. This approach reduces the need for repeated sorting and can improve the performance of the component.
+
+@Weeezzt	Reply...
+          );
+          setShowThread(false);
+          setHasCommented(true);
+          setComment(""); // Clear input
+        },
+      }
+    );
+Comment on lines +32 to +54
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The mutate function used to add a new comment lacks error handling. If the API call fails, there is no feedback provided to the user, which can lead to confusion and a poor user experience.
+
+Recommendation:
+Implement an onError callback within the mutate function's options to handle potential errors. This callback should inform the user of the failure and possibly revert any optimistic UI updates or provide other recovery options.
+
+@Weeezzt	Reply...
+  };
+Comment on lines +31 to +55
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The handleAddComment function does not handle errors that might occur during the comment submission process. This can lead to a poor user experience where users are not informed of failures, and the application might appear unresponsive or broken. It's important to handle these errors and provide appropriate feedback.
+
+Recommended Solution:
+Add an onError callback in the options object passed to the mutate function to handle potential errors and update the UI accordingly.
+
+mutate(
+  {
+    reviewId: review.reviewId,
+    userId: dbUser ? dbUser.id : "",
+    commentText: comment,
+  },
+  {
+    onSuccess: (newComment: CommentDto) => {
+      // existing success logic
+    },
+    onError: (error) => {
+      // Handle error, e.g., show an error message
+      console.error('Failed to add comment:', error);
+    }
+  }
+);
+@Weeezzt	Reply...
+
+  const handleTimeText = (createdAt: string) => {
+    const date = new Date(createdAt);
+    return date.toLocaleString();
+  };
+
+  return (
+    <div className="relative w-full min-h-[400px] max-w-[800px] flex flex-col bg-white p-4 rounded-lg shadow-lg">
+      <div className="w-full flex flex-col">
+        <div className="flex justify-between">
+          <h2 className="text-xl font-semibold text-purple-700 p-2">
+            {review?.username}
+          </h2>
+          <h3 className="text-xl font-semibold p-2">
+            Rating: {review.rating}/10
+          </h3>
+          <span className="text-md font-semibold p-3">
+            {handleTimeText(review.createdAt)}
+          </span>
+        </div>
+        <div className="mb-2 p-2 border-gray-300 rounded-md w-full min-h-20">
+          <p className="text-lg italic">
+            <span className="font-semibold">Review: </span>
+            {review?.reviewText}
+          </p>
+        </div>
+      </div>
+      <div className="overflow-y-scroll max-h-60">
+        {comments &&
+          comments.map((comment) => (
+            <div className="pl-4">
+              <p className="font-semibold">{comment.username}</p>
+              <h3 className="text-md">{comment.commentText}</h3>
+            </div>
+          ))}
+      </div>
+      <div className="w-full px-2 mt-4">
+        <div className="w-full flex flex-col pb-3">
+          <textarea
+            value={comment}
+            placeholder="Write your comment..."
+            className="border-2 border-gray-300 w-full rounded-md my-2 p-2 h-18 text-left align-top "
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <button
+            className="bg-purple-600 text-white p-2 rounded-md shadow-md"
+            onClick={() => handleAddComment(comment)}
+          >
+            Submit
+          </button>
+        </div>
+        <span
+          onClick={() => setShowThread(false)}
+          className="text-red-500 cursor-pointer hover:text-red-700"
+        >
+          Close
+        </span>
+      </div>
+    </div>
+  );
+}
+ 75 changes: 75 additions & 0 deletions75  
+manga-tracker-fe/src/services/ListService.tsx
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,75 @@
+import axiosInstance from "./axiosInstance";
+import { useMutation, useQuery } from "react-query";
+import { SaveMangaDto } from "./SaveMangaService";
+
+interface ListDto {
+  listName: string;
+  userId: string;
+}
+
+export interface ListDtoWithId extends ListDto {
+  id: string;
+  savedMangas: SaveMangaDto[];
+}
+
+const createNewList = async (list: ListDto): Promise<ListDto> => {
+  try {
+    console.log("Creating new list:", list);
+    const response = await axiosInstance.post("/user/list", list);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to create new list:", error);
+    return list;
+  }
+Comment on lines +15 to +23
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The createNewList function handles errors by logging them and returning the original list object. This approach can be misleading as it does not clearly communicate to the caller that an error occurred, potentially leading to incorrect assumptions about the state of the data.
+
+Recommendation:
+Instead of returning the original input, consider throwing an error or returning a specific error object. This would make it clear that the operation failed, allowing the caller to handle the error appropriately.
+
+@Weeezzt	Reply...
+Comment on lines +15 to +23
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Inconsistent Error Handling in createNewList
+In the createNewList function, when an error occurs, the function logs the error and returns the original list object. This approach can be misleading as it does not clearly indicate that an error occurred unless the caller explicitly checks if the returned object is unchanged.
+
+Recommendation:
+Instead of returning the original input, consider throwing an error or returning a specific error object. This would make it clear to the caller that an error has occurred and allow for more appropriate handling upstream.
+
+@Weeezzt	Reply...
+};
+
+export const useCreateNewList = () => {
+  return useMutation(createNewList, {
+    onError: () => console.log("Failed to create new list"),
+  });
+};
+
+const fetchAllLists = async (userId: string): Promise<ListDtoWithId[]> => {
+  try {
+    console.log("Fetching all lists for user with id:", userId);
+    const response = await axiosInstance.get(`/user/${userId}/lists`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch lists:", error);
+    return [];
+  }
+Comment on lines +32 to +40
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Error Handling Issue in fetchAllLists
+In the fetchAllLists function, when an error occurs, the function returns an empty array. This behavior does not differentiate between an actual empty list and an error condition, potentially leading to misleading results.
+
+Recommendation:
+Instead of returning an empty array, consider throwing an error or returning a specific error object. This would clearly communicate to the caller that an error has occurred, allowing for more appropriate error handling.
+
+@Weeezzt	Reply...
+};
+
+export const useFetchAllLists = (userId: string) => {
+  return useQuery(["lists", userId], () => fetchAllLists(userId), {
+    retry: false,
+    enabled: !!userId,
+    onError: () =>
+      console.log("Failed to fetch lists for user with id:", userId),
+  });
+};
+
+const addMangaToList = async (
+  listId: string,
+  mangaIds: number[]
+): Promise<void> => {
+  try {
+    console.log("Adding manga with id:", mangaIds, "to list with id:", listId);
+    await axiosInstance.post(`/user/list/add/${listId}`, mangaIds);
+  } catch (error) {
+    console.error("Failed to add manga to list:", error);
+    throw error; // Ensure errors are properly propagated
+  }
+Comment on lines +52 to +62
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The addMangaToList function directly sends an array of manga IDs (mangaIds) to the server without any validation or sanitization. This practice can expose the server to injection attacks if the input is not properly handled on the server side.
+
+Recommendation:
+Implement input validation or sanitization before sending the data to the server. This could include checking that each ID in the array is a valid number and does not contain any malicious code. Additionally, ensure that the server-side code is also robust against potential injection attacks.
+
+@Weeezzt	Reply...
+};
+
+export const useAddMangaToList = () => {
+  return useMutation(
+    ({ listId, mangaIds }: { listId: string; mangaIds: number[] }) =>
+      addMangaToList(listId, mangaIds),
+    {
+      onError: (error) => {
+        console.error("Failed to add manga to list:", error);
+      },
+    }
+  );
+};
+  19 changes: 17 additions & 2 deletions19  
+manga-tracker-fe/src/services/ReviewService.ts
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -1,7 +1,7 @@
+import { useQuery, useMutation } from "react-query";
+import axiosInstance from "./axiosInstance";
+import { ReviewDto, AddReviewDto
+ } from "../types/mangaTypes";
+import { ReviewDto, AddReviewDto} from "../types/mangaTypes";
+import { CommentDto, AddCommentDto } from "../types/mangaTypes";
+
+
+const fetchReviews = async (mangaId: string) => {
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Error Handling Improvement
+The function fetchReviews currently logs errors to the console and returns null in case of an error (line 14). This approach might not be sufficient for proper error handling in a production environment.
+
+Recommendation:
+
+Instead of returning null, consider throwing a custom error or using an error handling framework that allows the calling function to handle the error more gracefully. This could involve displaying a user-friendly error message or performing other error recovery operations.
+@Weeezzt	Reply...
+@@ -44,4 +44,19 @@ export const useFetchReviews = (mangaId: string) => {
+
+    export const useAddReview = () => {
+        return useMutation(addReview);
+    }
+
+    const addComment = async (comment: AddCommentDto) => {
+        try {
+            console.log("Adding comment:", comment);
+            const response = await axiosInstance.post("/review/comment", comment);
+            return response.data;
+        } catch (error) {
+            console.error("Failed to add comment:", error);
+            return null;
+Comment on lines +55 to +56
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Error Handling in Mutation Hooks
+Similar to fetchReviews, the addComment function logs errors and returns null when an exception occurs (line 55). This might lead to unhandled cases in the UI where the error state isn't properly managed.
+
+Recommendation:
+
+Enhance error handling by using the error state provided by useMutation. You can pass an onError callback to useMutation to handle errors more effectively. This allows for better integration with the UI components, enabling them to react appropriately to errors (e.g., displaying error messages).
+@Weeezzt	Reply...
+        }
+    }
+
+    export const useAddComment = () => {
+        return useMutation(addComment);
+    }
+  19 changes: 19 additions & 0 deletions19  
+manga-tracker-fe/src/services/SaveMangaService.ts
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -12,6 +12,8 @@ export interface SaveMangaDto {
+    title: string;
+}
+
+
+
+const saveManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
+    try {
+        console.log("Saving manga:", manga);
+Comment on lines 17 to 19
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The error handling in the saveManga function logs the error but returns the original manga object. This could mislead the calling function or component into thinking that the operation was successful when it actually failed. It is recommended to throw an error or return a specific error object to ensure that the calling function can appropriately handle the failure.
+
+Suggested Change:
+
+} catch (error) {
+    console.error("Failed to save manga:", error);
+    throw error; // Propagate the error
+}
+@Weeezzt	Reply...
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The error handling in the saveManga function could be improved. Currently, it logs the error and returns the original manga object, which does not inform the caller of the function that an error occurred. This could lead to misleading behavior in the application where it seems like the operation was successful when it was not.
+
+Recommended Solution:
+Modify the error handling to throw an exception or return a specific error object. This way, the caller can appropriately handle the failure scenario, possibly by informing the user or attempting a retry.
+
+@Weeezzt	Reply...
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Logging sensitive information using console.log in the saveManga function could pose a security risk, especially in a production environment. This could expose user data or system details that could be exploited.
+
+Recommended Solution:
+Consider using a more secure logging approach that restricts sensitive information from being logged, or use environment-based logging levels to prevent such logs in production.
+
+@Weeezzt	Reply...
+@@ -80,4 +82,21 @@ export const useFetchUsersSavedMangas = (userId: string) => {
+        enabled: !!userId,
+        onError: () => console.log("Failed to fetch saved mangas for user with id:", userId),
+    });
+};
+
+const updateSavedManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
+    try {
+        console.log("Updating saved manga:", manga);
+        const response = await axiosInstance.put("/user/manga/edit", manga);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to update saved manga:", error);
+        return manga;
+    }
+Comment on lines +87 to +95
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+Similar to the saveManga function, the updateSavedManga function also logs the error but returns the original manga object on failure. This approach can be misleading and does not allow the calling component to handle the error effectively. It is advisable to either throw the error or return a distinct error response.
+
+Suggested Change:
+
+} catch (error) {
+    console.error("Failed to update saved manga:", error);
+    throw error; // Propagate the error
+}
+@Weeezzt	Reply...
+}
+
+export const useUpdateSavedManga = () => {
+    return useMutation(updateSavedManga, {
+        onError: () => console.log("Failed to update saved manga"),
+    });
+};
+  15 changes: 12 additions & 3 deletions15  
+manga-tracker-fe/src/types/mangaTypes.ts
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -31,28 +31,37 @@ export interface MangaDto {
+  ranking: number;
+  score: number | null;
+  scoredBy: number;
+Comment on lines 32 to 33
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The score field in MangaDto is nullable (number | null), which is appropriate given that not all manga might be scored. However, the scoredBy field is a non-nullable number, which could lead to misleading information (e.g., scoredBy is 0 but score is null). It would be more consistent and safer to also make scoredBy nullable (number | null). This change would better represent situations where no scoring data is available.
+
+Recommended Change:
+
+scoredBy: number | null;
+@Weeezzt	Reply...
+  publishedFrom: string;  // ISO 8601 format date string
+  publishedTo: string;    // ISO 8601 format date string
+  publishedFrom: string;
+  publishedTo: string;
+Comment on lines +34 to +35
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The publishedFrom and publishedTo fields in MangaDto are currently typed as string. This could lead to inconsistencies in date handling across different parts of the application. Consider using a more specific type like Date or specifying a string format (e.g., ISO 8601 format) to ensure consistency and avoid potential bugs related to date parsing and formatting.
+
+Recommended Solution:
+Change the type definitions to:
+
+publishedFrom: Date;
+publishedTo: Date;
+Or ensure that the date strings follow a consistent format, such as:
+
+publishedFrom: 'YYYY-MM-DD';
+publishedTo: 'YYYY-MM-DD';
+@Weeezzt	Reply...
+  images: ImageDto[];
+  authors: AuthorDto[];
+  genres: GenreDto[];
+}
+
+export interface CommentDto {
+  commentText: string;
+  userId: number;
+  username: string;
+  reviewId:number;
+  createdAt: string;
+}
+
+export interface AddCommentDto {
+  commentText: string;
+  reviewId: number;
+  userId: string;
+Comment on lines +43 to +51
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+There is an inconsistency in user identification between CommentDto and AddCommentDto. CommentDto uses username while AddCommentDto uses userId. This inconsistency can lead to confusion and errors in handling user data across different parts of the application.
+
+Recommended Solution:
+Standardize the user identification method across interfaces. If user privacy is a concern, consider using userId consistently and handle username retrieval securely and internally:
+
+interface CommentDto {
+  userId: string; // instead of username
+  // other fields remain unchanged
+}
+
+interface AddCommentDto {
+  userId: string; // already present
+  // other fields remain unchanged
+}
+@Weeezzt	Reply...
+}
+
+export interface ReviewDto {
+  title: string;
+  reviewId: number;
+  reviewText: string;
+  spoiler: boolean;
+  rating:number;
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The rating field in ReviewDto is a plain number, which might not explicitly convey the range of valid values for a rating. This could lead to invalid data being stored if the rating is not validated properly elsewhere in the application. To improve data integrity and self-documentation of the interface, consider using a more descriptive type or adding a comment specifying the valid range (e.g., 1-10).
+
+Recommended Change:
+
+rating: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10; // assuming the rating is a scale from 1 to 10
+@Weeezzt	Reply...
+  userId: number;
+  mangaId:number;
+  comments: CommentDto[];
+  username: string;
+  createdAt: string;
+}
+
+export interface AddReviewDto {
+ 43 changes: 20 additions & 23 deletions43  
+manga-tracker-fe/src/types/pageType.ts
+Viewed
+Original file line number	Diff line number	Diff line change
+@@ -1,32 +1,29 @@
+// Define the Pageable interface
+interface Pageable {
+    pageNumber: number;   // Current page number
+    pageSize: number;     // Number of items per page
+    offset: number;       // Offset for the current page
+    paged: boolean;       // Whether pagination is applied
+    unpaged: boolean;     // Whether pagination is not applied
+    sort: Sort;           // Sorting information
+    pageNumber: number;
+    pageSize: number;
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+Comment on lines +5 to +6
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The properties paged and unpaged in the Pageable interface are redundant since they represent opposite states. Consider using a single boolean property, such as isPaged, to simplify the logic and reduce potential errors in handling these properties.
+
+Suggested Change:
+
+interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  offset: number;
+  isPaged: boolean; // true if paged, false if not
+  sort: Sort;
+}
+@Weeezzt	Reply...
+Comment on lines +5 to +6
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The paged and unpaged boolean properties in the Pageable interface are redundant. If a page is paged, it is implicitly not unpaged, and vice versa. Consider using a single boolean property, for example, isPaged, to simplify the logic and reduce potential errors.
+
+Suggested Change:
+
+interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  offset: number;
+  isPaged: boolean; // true if paged, false otherwise
+  sort: Sort;
+}
+@Weeezzt	Reply...
+    sort: Sort;
+  }
+
+  // Define the Sort interface
+  interface Sort {
+    empty: boolean;       // Whether the sort is empty
+    sorted: boolean;      // Whether sorting is applied
+    unsorted: boolean;    // Whether sorting is not applied
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+Comment on lines +11 to +13
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The Sort interface uses sorted and unsorted boolean properties, which are logically opposite. Using a single boolean, such as isSorted, would simplify the interface and make it more intuitive to use.
+
+Suggested Change:
+
+interface Sort {
+  empty: boolean;
+  isSorted: boolean; // true if sorted, false if unsorted
+}
+@Weeezzt	Reply...
+Comment on lines +12 to +13
+@codereviewbot-ai codereviewbot-ai bot 4 days ago
+The sorted and unsorted boolean properties in the Sort interface are also redundant. A single property can effectively represent the sorting state. Consider using a boolean property like isSorted or an enum to indicate the sorting state more clearly and to allow for future expansion of sorting options.
+
+Suggested Change:
+
+interface Sort {
+  isSorted: boolean; // true if sorted, false otherwise
+}
+@Weeezzt	Reply...
+  }
+
+  // Define the Page interface with generics
+  export interface Page<T> {
+    content: T[];               // Array of items in the current page
+    pageable: Pageable;         // Pageable metadata
+    last: boolean;              // Whether this is the last page
+    totalPages: number;         // Total number of pages
+    totalElements: number;      // Total number of items across all pages
+    first: boolean;             // Whether this is the first page
+    size: number;               // Number of items per page
+    number: number;             // Current page number
+    sort: Sort;                 // Sorting information
+    numberOfElements: number;   // Number of items in the current page
+    empty: boolean;             // Whether the current page is empty
+    content: T[];
+    pageable: Pageable;
+    last: boolean;
+    totalPages: number;
+    totalElements: number;
+    first: boolean;
+    size: number; 
+    number: number;
+    sort: Sort;
+    numberOfElements: number;
+    empty: boolean;
+  }
+
+Footer

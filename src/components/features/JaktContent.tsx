@@ -2,8 +2,10 @@ import InfoSection from "@/features/InfoSection";
 import PageSearch from "@/features/search/PageSearch";
 import StandardHero from "@/features/StandardHero";
 import jaktData from "@/data/jaktData.json";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
-const ctaButtons = [
+const ctaButtonsSorsele = [
   {
     label: "Ladda ner fullständiga regelr (PDF)",
     href: "https://allmskog-ac.nu/wp-content/uploads/2023/06/Beslutade-regler-och-priser-for-jakt-pa-SOA-2023-24.pdf",
@@ -16,6 +18,36 @@ const ctaButtons = [
   },
 ];
 
+const ctaButtonsTSA = [
+  {
+    label: "Ladda ner fullständiga regelr (PDF)",
+    href: "https://allmskog-ac.nu/wp-content/uploads/2023/06/Beslutade-regler-och-priser-for-jakt-pa-SOA-2023-24.pdf",
+    bgColor: "bg-orange",
+  },
+  {
+    label: "Köp jaktkort",
+    href: "https://allmskog-ac.nu/jaktkort/",
+    bgColor: "bg-forest",
+  },
+];
+const textContentPerOrg = {
+  sorsele: {
+    title: "Jakt i Sorsele Övre Allmänningsskog",
+    subtitle:
+      "Upplev naturen med ansvar – regler och priser för jaktåret 2024/25",
+    imageSrc: "/heromoose.jpg",
+    imageAlt: "scenic image",
+    jaktKartaImageSrc: "/JAKTKARTA.png",
+  },
+  tarnaStensele: {
+    title: "Jakt i Tärna-Stensele Allmänningsskog",
+    subtitle:
+      "Upplev naturen med ansvar – regler och priser för jaktåret 2024/25",
+    imageSrc: "/heromoose.jpg",
+    imageAlt: "scenic image",
+    jaktKartaImageSrc: "/Enkel-oversiktskarta-TSA-jakt.jpg",
+  },
+};
 const sections = jaktData.map((data) => ({
   title: data.title,
   id: data.id,
@@ -23,14 +55,24 @@ const sections = jaktData.map((data) => ({
 }));
 
 export default function JaktContent() {
+  const params = useParams();
+  const isSorsele = params.orgname === "sorsele";
   return (
     <div className="flex flex-col gap-4 items-center justify-center mt-5">
       <StandardHero
-        title="Jakt i Sorsele Övre Allmänningsskog"
-        subtitle="Upplev naturen med ansvar – regler och priser för jaktåret 2024/25"
+        title={
+          isSorsele
+            ? textContentPerOrg.sorsele.title
+            : textContentPerOrg.tarnaStensele.title
+        }
+        subtitle={
+          isSorsele
+            ? textContentPerOrg.sorsele.subtitle
+            : textContentPerOrg.tarnaStensele.subtitle
+        }
         imageAlt="scenic image"
         imageSrc="/heromoose.jpg"
-        ctaButtons={ctaButtons}
+        ctaButtons={isSorsele ? ctaButtonsSorsele : ctaButtonsTSA}
       />
       <PageSearch sections={sections} />
       <div className="w-full flex flex-col items-center mt-10 px-2">
@@ -39,7 +81,9 @@ export default function JaktContent() {
           id="allmanna-regler"
           ctaLink={{
             label: "Se lantmäteriets fastighetskarta",
-            imageSrc: "JAKTKARTA.png",
+            imageSrc: isSorsele
+              ? textContentPerOrg.sorsele.jaktKartaImageSrc
+              : textContentPerOrg.tarnaStensele.jaktKartaImageSrc,
           }}
         >
           <ul className="list-disc ml-5">

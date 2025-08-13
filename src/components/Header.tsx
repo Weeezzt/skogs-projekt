@@ -12,9 +12,10 @@ const organizations = [
 ];
 
 const orgNavLinks = [
+  { href: "/hem", label: "Hem" },
   { href: "/nyheter", label: "Nyheter" },
-  { href: "/jakt-fiske", label: "Jakt & Fiske" },
   { href: "/dokument", label: "Dokument" },
+  { href: "/jakt-fiske", label: "Jakt & Fiske" },
   { href: "/natur-miljo", label: "Natur & Miljö" },
   { href: "/skogsbruk", label: "Skogsbruk" },
   { href: "/styrelse-medlemmar", label: "Styrelse & Medlemmar" },
@@ -77,9 +78,8 @@ export default function Header() {
   return (
     <>
       <header className="w-full bg-[#2F5D50] h-16 flex items-center px-4 md:px-8 shadow relative z-50">
-        {/* Logo */}
         <div className="text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
-          <a href="/">SÖA</a>
+          <a href="/">Allmänningen</a>
         </div>
         <nav className="hidden lg:flex flex-1 justify-center gap-8 xl:gap-20">
           {organizations.map((org) => (
