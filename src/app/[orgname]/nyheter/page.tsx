@@ -10,6 +10,7 @@ import { useUserSession } from "@/hooks/useUserSession";
 import UploadNewsModal from "@/components/modals/UploadNewsModal";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import TooltipZone from "@/components/TooltipZone";
 
 export default function Nyheter() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -52,35 +53,53 @@ export default function Nyheter() {
       <HorizontalSlider />
 
       {/* Filter & Search */}
-      <div className="flex flex-col lg:flex-row gap-4 my-8 px-4 items-center">
+      <div className="flex flex-col md:flex-row gap-4 my-8 px-4 items-center">
         <PageSearch
           sections={newsData.map((news) => ({
             ...news,
             id: news.id.toString(),
           }))}
         />
-        <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
-          <option value="">Alla år</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="Tidigare">Tidigare</option>
-        </select>
-        <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
-          <option value="">Typ av nyhet</option>
-          <option value="JF">Jakt & Fiske</option>
-          <option value="Stämma">Stämma</option>
-          <option value="Dokument">Dokument</option>
-          <option value="Skog">Skog</option>
-        </select>
+        <div className="flex gap-4 items-center">
+          <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
+            <option value="">Alla år</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="Tidigare">Tidigare</option>
+          </select>
+          <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
+            <option value="">Typ av nyhet</option>
+            <option value="JF">Jakt & Fiske</option>
+            <option value="Stämma">Stämma</option>
+            <option value="Dokument">Dokument</option>
+            <option value="Skog">Skog</option>
+          </select>
+        </div>
 
         {isLoggedIn && user && (
-          <button
-            onClick={() => setIsOpen(true)}
-            className="ml-auto text-3xl text-forest border-2 border-forest rounded-lg w-10 h-10 flex items-center justify-center hover:border-orange hover:text-orange transition-colors duration-300 cursor-pointer"
-          >
-            <HiPlusSm />
-          </button>
+          <>
+            {/* Plus icon button for mobile */}
+            <TooltipZone
+              className="ml-auto lg:hidden"
+              tooltip="Lägg till nyhet"
+              variant="light"
+            >
+              <button
+                onClick={() => setIsOpen(true)}
+                className="ml-auto lg:hidden text-3xl text-forest border-2 border-forest rounded-lg w-11 h-11 flex items-center justify-center hover:border-orange hover:text-orange transition-colors duration-300 cursor-pointer"
+              >
+                <HiPlusSm />
+              </button>
+            </TooltipZone>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="ml-auto hidden lg:flex items-center gap-2 text-base font-semibold text-forest  border-2 border-forest rounded-lg px-4 py-2  hover:border-orange hover:text-forest transition-colors duration-300 cursor-pointer"
+            >
+              <HiPlusSm className="text-xl" />
+              Lägg till nyhet
+            </button>
+          </>
         )}
         {/* Add more filters as needed */}
       </div>

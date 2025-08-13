@@ -18,7 +18,7 @@ export default function Home() {
         </div>
       </section>
       <section className="mx-auto mb-4 w-full my-[-180px] z-10 relative">
-        <div className="flex justify-evenly min-h-[400px] w-full">
+        <div className="flex flex-col gap-6 md:flex-row items-center justify-evenly min-h-[400px] w-full px-2">
           <StandingCard
             title="Sorsele övre allmänningsskog"
             id="jakt"

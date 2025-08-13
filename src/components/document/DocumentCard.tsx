@@ -16,7 +16,7 @@ export default function DocumentCard({
   const { title, fileType, path, category, year, tags, description, preview } =
     documentData;
 
-  const fileUrl = `/docs/${path}`;
+  const fileUrl = path;
   const [numPages, setNumPages] = useState<number | null>(null);
 
   const handleDownload = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,7 +37,6 @@ export default function DocumentCard({
           ? "flex flex-col items-center p-4 gap-2 h-64 w-full"
           : "flex flex-row items-center p-4 gap-4 w-full"
       }`}
-      title={title}
     >
       <div
         className={`flex-shrink-0 ${
@@ -50,13 +49,23 @@ export default function DocumentCard({
       <div
         className={`w-full flex-1 ${variant === "grid" ? "text-center" : ""}`}
       >
-        <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-          <TooltipZone tooltip={description ? description : ""}>
-            <div className="font-semibold text-lg hover:text-orange truncate">
+        <TooltipZone
+          position="bottom"
+          variant="light"
+          tooltip={description ? description : title + " - " + fileType}
+        >
+          <a
+            href={path}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <div className="font-semibold text-lg hover:text-orange truncate w-full max-w-[220px] mx-auto whitespace-nowrap overflow-hidden">
               {title}
             </div>
-          </TooltipZone>
-        </a>
+          </a>
+        </TooltipZone>
+
         <div className="text-xs text-gray-500 mb-1">
           {category}
           {year && ` • ${year}`}

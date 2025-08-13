@@ -84,7 +84,7 @@ export async function POST(
     }
     const buffer = Buffer.from(await image.arrayBuffer());
     const fileName = `${uuidv4()}_${image.name}`;
-    const s3Key = `uploads/${org}/${fileName}`;
+    const s3Key = `uploads/${org}/images/${fileName}`;
 
     try {
       await s3.send(

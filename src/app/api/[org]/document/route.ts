@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
 import { DocumentDTO } from "@/types/dtos";
-import { writeFile } from "fs/promises";
-import path from "path";
-import fs from "fs";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { v4 as uuidv4 } from "uuid";
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 const prisma = new PrismaClient();
 
@@ -33,6 +40,8 @@ export async function GET(
 
   return NextResponse.json(docs);
 }
+
+// ...existing code...
 
 export async function POST(
   req: NextRequest,
@@ -97,33 +106,45 @@ export async function POST(
     const title = file.name.replace(/\.[^/.]+$/, "");
     const fileType = file.name.split(".").pop() || "";
 
-    let filePath: string | null = null;
+    let fileUrl: string | null = null;
     if (file && typeof file === "object" && "arrayBuffer" in file) {
       const buffer = Buffer.from(await file.arrayBuffer());
-      const uploadDir = path.join(
-        process.cwd(),
-        "public",
-        "docs",
-        org,
-        folderName || ""
-      );
-      await fs.promises.mkdir(uploadDir, { recursive: true });
-      const fileName = `${Date.now()}_${file.name}`;
-      const fullPath = path.join(uploadDir, fileName);
-      await writeFile(fullPath, buffer);
-      filePath = folderName
-        ? `${org}/${folderName}/${fileName}`
-        : `${org}/${fileName}`;
+      const fileName = `${uuidv4()}_${file.name}`;
+      const s3Key = folderName
+        ? `uploads/${org}/files/${folderName}/${fileName}`
+        : `uploads/${org}/files/${fileName}`;
+
+      try {
+        console.log("Uploading to S3:", {
+          Bucket: process.env.AWS_S3_BUCKET,
+          Key: s3Key,
+          ContentType: file.type,
+        });
+        await s3.send(
+          new PutObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET!,
+            Key: s3Key,
+            Body: buffer,
+            ContentType: file.type || "application/octet-stream",
+          })
+        );
+        fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+      } catch (err) {
+        console.error("S3 upload error:", err);
+        return NextResponse.json(
+          { error: "File upload to S3 failed" },
+          { status: 500 }
+        );
+      }
     }
 
     const document = await prisma.document.create({
       data: {
         title,
         fileType,
-        path: filePath ?? "",
+        path: fileUrl ?? "",
         category: folderName,
         folderId: folderId ?? undefined,
-        // Add other fields as needed, e.g. year, description, tags
         organizationId: organization.id,
         preview: fileType === "pdf",
       },

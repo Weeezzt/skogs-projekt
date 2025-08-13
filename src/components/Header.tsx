@@ -42,9 +42,12 @@ export default function Header() {
   const handleLogOut = () => signOut({ callbackUrl: "/" });
 
   const onOrganisationClick = (orgSlug: string) => {
-    console.log("Clicked org:", orgSlug);
-    setActiveOrg(orgSlug);
-    setOpendropDown(true);
+    if (activeOrg === orgSlug && opendropDown) {
+      setOpendropDown(false);
+    } else {
+      setActiveOrg(orgSlug);
+      setOpendropDown(true);
+    }
   };
   const onOrganisationClickMobile = (orgSlug: string) => {
     setActiveOrg(orgSlug);
@@ -77,7 +80,10 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full bg-[#2F5D50] h-16 flex items-center px-4 md:px-8 shadow relative z-50">
+      <header
+        aria-label="Huvudmeny"
+        className="w-full bg-[#2F5D50] h-16 flex items-center px-4 md:px-8 shadow relative z-50"
+      >
         <div className="text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
           <a href="/">Allmänningen</a>
         </div>
@@ -145,11 +151,9 @@ export default function Header() {
                 {org.label}
               </button>
             ))}
-            {/* Add auth buttons here if you want */}
           </div>
         </div>
       )}
-      {/* Mobile Dropdown */}
       {openMobileDropDown && (
         <div className="lg:hidden w-full bg-[#2F5D50] shadow-inner">
           <div className="flex flex-col items-center gap-4 py-4">
@@ -177,34 +181,47 @@ export default function Header() {
         </div>
       )}
 
-      {/* Org Submenu with transition */}
       {opendropDown && (
-        <div
-          className={`w-full bg-[#2F5D50] shadow-inner overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
-            activeOrg ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="flex justify-center gap-12 py-3">
-            {activeOrg &&
-              orgNavLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={buildOrgUrl(activeOrg, link.href)}
-                  onClick={() => handleActiveTabForOrg(link.label)}
-                  className={`text-beige text-lg font-medium hover:text-orange transition-colors ${
-                    (link.label === activeTabSorsele?.label &&
-                      activeOrg === "sorsele") ||
-                    (link.label === activeTabStensele?.label &&
-                      activeOrg === "tarna-stensele")
-                      ? "underline text-orange"
-                      : ""
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setOpendropDown(false)}
+            aria-hidden="true"
+          />
+          <div
+            className={`
+            absolute left-0 right-0 top-16 z-50
+          bg-[#2F5D50] shadow-inner
+            ${
+              activeOrg
+                ? "max-h-32 opacity-100 pointer-events-auto"
+                : "max-h-0 opacity-0 pointer-events-none"
+            }
+            `}
+            style={{ overflow: "hidden" }}
+          >
+            <div className="flex justify-center gap-12 py-3">
+              {activeOrg &&
+                orgNavLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={buildOrgUrl(activeOrg, link.href)}
+                    onClick={() => handleActiveTabForOrg(link.label)}
+                    className={`text-beige text-lg font-medium hover:text-orange transition-colors ${
+                      (link.label === activeTabSorsele?.label &&
+                        activeOrg === "sorsele") ||
+                      (link.label === activeTabStensele?.label &&
+                        activeOrg === "tarna-stensele")
+                        ? "underline text-orange"
+                        : ""
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Login Modal */}

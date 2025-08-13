@@ -3,16 +3,53 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+export const metadata: Metadata = {
+  title: "Sorsele Övre Allmänningsskog",
+  description:
+    "Information om jakt, fiske och verksamhet i Sorsele Övre Allmänningsskog.",
+  icons: {
+    icon: "/faviconlowe.png",
+    apple: "/favicon.png",
+  },
+  openGraph: {
+    title: "Sorsele Övre Allmänningsskog",
+    description:
+      "Utforska jakt- och fiskemöjligheter samt nyheter från Sorsele Övre Allmänningsskog.",
+    url: "https://allmskog-ac.nu", // change to your actual domain
+    siteName: "Sorsele Övre Allmänningsskog",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Sorsele Övre Allmänningsskog",
+      },
+    ],
+    locale: "sv_SE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sorsele Övre Allmänningsskog",
+    description: "Nyheter, jakt och fiske i Sorsele Övre Allmänningsskog.",
+    images: ["/og-image.jpg"],
+  },
+};
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth w-full h-full">
+    <html lang="sv" className="scroll-smooth w-full h-full">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Sorsele Övre Allmänningsskog</title>

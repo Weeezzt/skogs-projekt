@@ -11,6 +11,7 @@ import UploadDocumentModal from "@/components/modals/UploadDocumentModal";
 import { useUserSession } from "@/hooks/useUserSession";
 import { usePathname } from "next/navigation";
 import { DocumentDTO } from "@/types/dtos";
+import TooltipZone from "@/components/TooltipZone";
 
 const sortOptions = [
   { label: "Senaste", value: "latest" },
@@ -73,15 +74,15 @@ export default function Dokument() {
     (a: DocumentDTO, b: DocumentDTO) => number
   > = {
     latest: (a, b) =>
-      (a.uploadedAt.toString() || "").localeCompare(
-        b.uploadedAt.toString() || ""
+      (b.uploadedAt?.toString() || "").localeCompare(
+        a.uploadedAt?.toString() || ""
       ),
     oldest: (a, b) =>
-      (b.uploadedAt.toString() || "").localeCompare(
-        a.uploadedAt.toString() || ""
+      (a.uploadedAt?.toString() || "").localeCompare(
+        b.uploadedAt?.toString() || ""
       ),
-    title_az: (b, a) => a.title.localeCompare(b.title),
-    title_za: (b, a) => b.title.localeCompare(a.title),
+    title_az: (a, b) => a.title.localeCompare(b.title, "sv"), // A-Ö
+    title_za: (a, b) => b.title.localeCompare(a.title, "sv"), // Ö-A
   };
 
   useEffect(() => {
@@ -99,7 +100,7 @@ export default function Dokument() {
       );
     }
     if (selectedSort && sortFunctions[selectedSort]) {
-      filtered.sort(sortFunctions[selectedSort]);
+      filtered = [...filtered].sort(sortFunctions[selectedSort]); // sort a copy!
     }
 
     setFilteredDocuments(filtered);
@@ -137,12 +138,14 @@ export default function Dokument() {
           )}
         </div>
 
-        <button
-          className=" w-[44px] h-[44px] flex text-4xl cursor-pointer justify-center items-center rounded-lg border-2 border-forest text-forest hover:border-orange hover:text-orange transition-colors duration-300"
-          onClick={toggleLayout}
-        >
-          {!isGridLayout ? <CiGrid41 /> : <CiGrid2H />}
-        </button>
+        <TooltipZone variant="light" tooltip="Byt layout mellan grid och lista">
+          <button
+            className=" w-[44px] h-[44px] flex text-4xl cursor-pointer justify-center items-center rounded-lg border-2 border-forest text-forest hover:border-orange hover:text-orange transition-colors duration-300"
+            onClick={toggleLayout}
+          >
+            {!isGridLayout ? <CiGrid41 /> : <CiGrid2H />}
+          </button>
+        </TooltipZone>
       </div>
       <div className="mx-auto w-full flex justify-between items-center md:w-[600px] lg:w-[800px] xl:w-[1000px]">
         <FolderFilter
