@@ -12,19 +12,30 @@ export const viewport = {
   initialScale: 1,
 };
 export const metadata: Metadata = {
-  title: "Sorsele Övre Allmänningsskog",
+  title: "Sorsele Övre Allmänningsskog & Tärna-Stensele Allmänningsskog",
   description:
-    "Information om jakt, fiske och verksamhet i Sorsele Övre Allmänningsskog.",
+    "Information om jakt, fiske och verksamhet i Sorsele Övre Allmänningsskog och Tärna-Stensele Allmänningsskog.",
+  keywords: [
+    "Sorsele Övre Allmänning",
+    "Sorsele Övre Allmänningsskog",
+    "Tärna Stensele Allmänning",
+    "Tärna-Stensele Allmänningsskog",
+    "jakt",
+    "fiske",
+    "skog",
+    "Vindelälven",
+    "Laisälven",
+  ],
   icons: {
     icon: "/faviconlowe.png",
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "Sorsele Övre Allmänningsskog",
+    title: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
     description:
-      "Utforska jakt- och fiskemöjligheter samt nyheter från Sorsele Övre Allmänningsskog.",
+      "Utforska jakt- och fiskemöjligheter samt nyheter från Sorsele Övre & Tärna-Stensele Allmänningsskog.",
     url: "https://allmskog-ac.nu", // change to your actual domain
-    siteName: "Sorsele Övre Allmänningsskog",
+    siteName: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
     images: [
       {
         url: "/og-image.jpg",
@@ -39,7 +50,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sorsele Övre Allmänningsskog",
-    description: "Nyheter, jakt och fiske i Sorsele Övre Allmänningsskog.",
+    description:
+      "Nyheter, jakt och fiske i Sorsele Övre & Tärna-Stensele Allmänningsskog.",
     images: ["/og-image.jpg"],
   },
 };

@@ -82,7 +82,7 @@ export default function Header() {
     <>
       <header
         aria-label="Huvudmeny"
-        className="w-full bg-[#2F5D50] h-16 flex items-center px-4 md:px-8 shadow relative z-50"
+        className="w-full bg-forest h-16 flex items-center px-4 md:px-8 shadow relative z-50"
       >
         <div className="text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
           <a href="/">Allmänningen</a>
@@ -108,7 +108,7 @@ export default function Header() {
           {isLoggedIn && user ? (
             <button
               onClick={handleLogOut}
-              className="bg-rose-800 text-beige px-4 py-2 rounded-lg font-semibold hover:bg-rose-700 transition-colors"
+              className="bg-rose-800 text-beige px-4 py-2 rounded-lg font-semibold hover:cursor-pointer hover:bg-rose-700 transition-colors"
             >
               Logga ut
             </button>
@@ -134,7 +134,7 @@ export default function Header() {
         </button>
       </header>
       {mobileMenuOpen && (
-        <div className="lg:hidden w-full bg-[#2F5D50] shadow-inner">
+        <div className="lg:hidden w-full bg-forest shadow-inner">
           <div className="flex flex-col items-center gap-4 py-4">
             {organizations.map((org) => (
               <button
@@ -155,7 +155,7 @@ export default function Header() {
         </div>
       )}
       {openMobileDropDown && (
-        <div className="lg:hidden w-full bg-[#2F5D50] shadow-inner">
+        <div className="lg:hidden w-full bg-forest shadow-inner">
           <div className="flex flex-col items-center gap-4 py-4">
             {orgNavLinks.map((link) => (
               <Link
@@ -191,7 +191,7 @@ export default function Header() {
           <div
             className={`
             absolute left-0 right-0 top-16 z-50
-          bg-[#2F5D50] shadow-inner
+          bg-forest shadow-inner
             ${
               activeOrg
                 ? "max-h-32 opacity-100 pointer-events-auto"

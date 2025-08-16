@@ -8,15 +8,19 @@ import NewsCard from "@/features/cards/NewsCard";
 import PageSearch from "@/features/search/PageSearch";
 import { useUserSession } from "@/hooks/useUserSession";
 import UploadNewsModal from "@/components/modals/UploadNewsModal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import TooltipZone from "@/components/TooltipZone";
+import Link from "next/link";
+import FeaturedNewsHero from "@/components/FeaturedNewsHero";
 
 export default function Nyheter() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [newsData, setNewsData] = useState<NewsDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [yearFilter, setYearFilter] = useState<string>("");
 
   const pathname = usePathname();
   const org = pathname.split("/")[1];
@@ -42,16 +46,58 @@ export default function Nyheter() {
     fetchNews();
     setIsOpen(false);
   };
+
+  const yearsAvailable = useMemo(() => {
+    const set = new Set<string>();
+    newsData.forEach((n) => {
+      if (!n.publishedAt) return;
+      const y = new Date(n.publishedAt).getFullYear().toString();
+      set.add(y);
+    });
+    return Array.from(set).sort((a, b) => Number(b) - Number(a)); // newest first
+  }, [newsData]);
+
+  const filtered = useMemo(() => {
+    let arr = [...newsData];
+
+    if (yearFilter) {
+      if (yearFilter === "Tidigare") {
+        const cutoff = new Date().getFullYear() - 2; // define “earlier” as older than 2y
+        arr = arr.filter((n) => {
+          if (!n.publishedAt) return false;
+          return new Date(n.publishedAt).getFullYear() <= cutoff;
+        });
+      } else {
+        arr = arr.filter((n) => {
+          if (!n.publishedAt) return false;
+          return (
+            new Date(n.publishedAt).getFullYear().toString() === yearFilter
+          );
+        });
+      }
+    }
+
+    // sort newest first by date
+    arr.sort((a, b) => {
+      const da = a.publishedAt ? +new Date(a.publishedAt) : 0;
+      const db = b.publishedAt ? +new Date(b.publishedAt) : 0;
+      return db - da;
+    });
+
+    return arr;
+  }, [newsData, yearFilter]);
+
+  const featured = filtered[0];
+
+  const rest = filtered.slice(1);
+
   const onUploadNews = () => {
-    setIsOpen(true);
+    fetchNews();
   };
   const { isLoggedIn, user } = useUserSession();
   return (
     <main className="w-full max-w-screen-2xl mx-auto px-4 py-8">
-      {/* Carousel */}
-
-      <HorizontalSlider />
-
+      <FeaturedNewsHero item={featured} org={org} />
       {/* Filter & Search */}
       <div className="flex flex-col md:flex-row gap-4 my-8 px-4 items-center">
         <PageSearch
@@ -60,26 +106,26 @@ export default function Nyheter() {
             id: news.id.toString(),
           }))}
         />
+
         <div className="flex gap-4 items-center">
-          <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
+          <select
+            value={yearFilter}
+            onChange={(e) => setYearFilter(e.target.value)}
+            className="border-2 border-forest rounded px-3 py-2 w-40 hover:border-orange transition-colors duration-300 cursor-pointer"
+            aria-label="Filtrera på år"
+          >
             <option value="">Alla år</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
+            {yearsAvailable.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
             <option value="Tidigare">Tidigare</option>
-          </select>
-          <select className="border-2 border-forest rounded px-3 py-2 w-40 cursor-pointer">
-            <option value="">Typ av nyhet</option>
-            <option value="JF">Jakt & Fiske</option>
-            <option value="Stämma">Stämma</option>
-            <option value="Dokument">Dokument</option>
-            <option value="Skog">Skog</option>
           </select>
         </div>
 
         {isLoggedIn && user && (
           <>
-            {/* Plus icon button for mobile */}
             <TooltipZone
               className="ml-auto lg:hidden"
               tooltip="Lägg till nyhet"
@@ -101,26 +147,39 @@ export default function Nyheter() {
             </button>
           </>
         )}
-        {/* Add more filters as needed */}
       </div>
-
-      {/* News List */}
-      <section className="flex flex-col gap-10 px-4">
-        {newsData.map((news, idx) => (
-          <NewsCard
-            key={news.id || idx}
-            title={news.title}
-            id={news.id}
-            description={news.content}
-            imageSrc={news.image}
-            imageAlt={news.image ? news.title : null}
-            author={news.author}
-            date={news.publishedAt}
-            href={news.href}
-            documents={news.documents}
-          />
-        ))}
-      </section>
+      {loading && (
+        <p className="px-4 py-8 text-center text-gray-600">Laddar nyheter…</p>
+      )}
+      {error && (
+        <p className="px-4 py-8 text-center text-red-600 font-semibold">
+          {error}
+        </p>
+      )}
+      {!loading && !error && rest.length === 0 && (
+        <p className="px-4 py-8 text-center text-gray-600">
+          Inga fler nyheter att visa.
+        </p>
+      )}
+      {!loading && !error && rest.length > 0 && (
+        <section className="flex flex-col gap-10 px-4">
+          {rest.map((news, idx) => (
+            <NewsCard
+              key={news.id || idx}
+              title={news.title}
+              id={news.id}
+              description={news.content}
+              imageSrc={news.image}
+              imageAlt={news.image ? news.title : null}
+              author={news.author}
+              date={news.publishedAt}
+              href={news.href}
+              documents={news.documents}
+              orgname={org}
+            />
+          ))}
+        </section>
+      )}
       <UploadNewsModal
         isOpen={isOpen}
         onClose={onCloseModal}

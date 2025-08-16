@@ -54,17 +54,6 @@ export default function UploadNewsModal({
     }
   };
 
-  function isValidUrl(url: string) {
-    try {
-      // Accept empty string as "no link"
-      if (!url) return true;
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
   const handleOpenDocPicker = () => {
     setLoading(true);
     setError(null);
@@ -81,10 +70,6 @@ export default function UploadNewsModal({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!isValidUrl(link)) {
-      setLinkError("Länken måste vara en giltig URL (t.ex. https://...)");
-      return;
-    }
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -149,13 +134,13 @@ export default function UploadNewsModal({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={4}
+          required
         />
         <label className="block mb-2 font-medium">Länk (valfritt)</label>
         <input
           className="w-full border rounded px-3 py-2 mb-4"
           value={link}
           onChange={(e) => setLink(e.target.value)}
-          required
         />
         <label className="block mb-2 font-medium">Bild (valfritt)</label>
         <input
@@ -190,7 +175,7 @@ export default function UploadNewsModal({
           </button>
           <button
             type="submit"
-            className="px-4 py-2 rounded bg-[#2F5D50] text-white cursor-pointer hover:bg-[#2F5D50]/90 transition"
+            className="px-4 py-2 rounded bg-forest text-white cursor-pointer hover:bg-forest/90 transition"
           >
             Spara nyhet
           </button>

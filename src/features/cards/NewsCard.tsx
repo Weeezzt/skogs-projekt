@@ -1,5 +1,6 @@
 import { DocumentDTO } from "@/types/dtos";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
 interface NewsCardProps {
@@ -13,7 +14,8 @@ interface NewsCardProps {
   href: string | null;
   tags?: string[];
   children?: React.ReactNode;
-  documents: DocumentDTO[]; // Optional, if you want to link to a document
+  documents: DocumentDTO[];
+  orgname: string;
 }
 
 export default function NewsCard({
@@ -27,17 +29,9 @@ export default function NewsCard({
   href,
   tags,
   children,
-  documents, // Optional, if you want to link to a document
+  documents,
+  orgname,
 }: NewsCardProps) {
-  const router = useRouter();
-  const path = usePathname();
-  const onClickCard = () => {
-    const match = path.match(/^\/([^/]+)/);
-    const orgname = match ? match[1] : "";
-    if (orgname && id) {
-      router.push(`/${orgname}/nyheter/${id}`);
-    }
-  };
   const shortenDateAndConvertToLocale = (date: Date | string) => {
     if (typeof date === "string") {
       date = new Date(date);
@@ -48,11 +42,31 @@ export default function NewsCard({
       day: "2-digit",
     });
   };
+  const router = useRouter();
+  const to = `/${orgname}/nyheter/${id}`;
+
+  const onActivate = () => router.push(to);
+  const onKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onActivate();
+    }
+  };
   return (
-    <div
-      className="flex flex-col lg:flex-row bg-beige rounded-xl shadow-lg overflow-hidden w-full cursor-pointer"
+    <article
       id={id.toString()}
-      onClick={onClickCard}
+      role="link"
+      tabIndex={0}
+      aria-label={title}
+      onClick={onActivate}
+      onKeyDown={onKeyDown}
+      className="
+        flex flex-col lg:flex-row bg-beige rounded-xl shadow-md
+        overflow-hidden w-full cursor-pointer
+        transition transform duration-300
+        hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2F5D50]/20
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-orange/70
+      "
     >
       {imageSrc && (
         <div className="w-full relative aspect-[16/9] lg:w-64 lg:aspect-auto lg:h-auto flex-shrink-0">
@@ -95,9 +109,9 @@ export default function NewsCard({
         {href && (
           <a
             href={href}
-            className="mt-2 inline-block text-orange font-semibold hover:underline"
+            className="mt-2 inline-block max-w-2/5 text-orange font-semibold hover:underline"
           >
-            Läs mer &rarr;
+            {href} &rarr;
           </a>
         )}
         {documents?.length > 0 && (
@@ -105,12 +119,12 @@ export default function NewsCard({
             target="_blank"
             rel="noopener noreferrer"
             href={`/docs/${documents[0].path}`}
-            className="mt-2 inline-block text-forest font-semibold hover:underline"
+            className="mt-2 inline-block max-w-1/3 text-forest font-semibold hover:underline"
           >
             Förhandsgranska: <span>{documents[0].title}</span> &rarr;
           </a>
         )}
       </div>
-    </div>
+    </article>
   );
 }
