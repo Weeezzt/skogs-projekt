@@ -1,15 +1,58 @@
 "use client";
-import LayingCard from "@/features/cards/LayingCard";
+import DocumentCard from "@/components/document/DocumentCard";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
+import TooltipZone from "@/components/TooltipZone";
 import StandingCard from "@/features/cards/StandingCard";
+import { DocumentDTO, NewsDTO } from "@/types/dtos";
+import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  LatestNewsCard,
+  LatestNewsSkeleton,
+} from "@/features/cards/LatestNewsCard";
 
 export default function Home() {
-  const organisation = useParams().orgname || "sorsele";
+  const [latestNews, setLatestNews] = useState<NewsDTO | null>(null);
+  const [latestDocs, setLatestDocs] = useState<DocumentDTO | null>(null); // Adjust type as needed
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const organisation = useParams().orgname?.toString();
+
+  const fetchLatestNews = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/${organisation}/news/latest`);
+      const news = await response.json();
+      setLatestNews(news);
+      setLoading(false);
+    } catch (err) {
+      setError("Kunde inte hämta senaste nyheter");
+    }
+  };
+
+  const fetchLatestDocs = async () => {
+    try {
+      const response = await fetch(`/api/${organisation}/document/latest`);
+      if (!response.ok) throw new Error("Kunde inte hämta senaste dokument");
+      const docs = await response.json();
+      setLatestDocs(docs);
+    } catch (err) {
+      setError("Fel vid hämtning av senaste dokument");
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestNews();
+    fetchLatestDocs();
+  }, [organisation]);
+
   return (
-    <main>
-      <section className="relative flex flex-col items-center justify-center min-h-[45vh] rounded-b-xl shadow-lg overflow-hidden mb-12 bg-gradient-to-br from-orange via-forest to-forest/70">
-        <div className="absolute inset-0 bg-gradient-to-tl from-forest/40 via-transparent to-orange/20 z-0" />
-        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-4 pb-26">
+    <main className=" bg-gradient-to-br from-orange via-forest to-forest/90">
+      <section className="relative flex flex-col items-center justify-center min-h-[45vh] overflow-hidden mb-12">
+        <div className="relative flex flex-col items-center justify-center h-full w-full px-4 pb-26">
           <h1 className="text-4xl md:text-6xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
             Sorsele övre allmänningskog
           </h1>
@@ -19,47 +62,58 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <section className="mx-auto w-full my-[-180px] z-10 relative">
-        <div className="flex justify-evenly min-h-[400px] w-full">
-          <StandingCard
-            title="Jakt och Fiske"
-            id="jakt-fiske"
-            description="Information om fiskeregler, jaktsäsonger, tilldelningar och regler. Ta del av aktuella jakttillfällen och ansök om jakt inom våra marker."
-            imageSrc="/jaktbild.jpg"
-            href={`/${organisation}/jakt-fiske`}
-          />
-          <StandingCard
-            title="Dokument"
-            id="dokument"
-            description="Utforska viktiga dokument, protokoll, stadgar och kartor. Här hittar du allt du behöver för att hålla dig uppdaterad om beslut, regler och områden."
-            imageSrc="/karta.png"
-            href={`/${organisation}/dokument`}
-          />
-        </div>
-      </section>
-      <div className="mx-auto max-w-7xl px-4 mt-50">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-forest mb-8 text-center">
+      <section className="mx-auto w-3/3 my-[-200px] z-20 relative">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-beige mb-8 text-center">
           Senaste Nytt
         </h2>
-        <section className="mx-auto  w-full px-4 py-8 flex justify-center gap-20">
-          <LayingCard
-            id="/nyheter/skog-upphandling"
-            href="/nyheter/skog-upphandling"
-            imageSrc="/skog.png"
-            title="Upphandling av skog utanför Umeå"
-            size="large"
-            description="Vi söker leverantörer för avverkning och transport av skog utanför Umeå. Är du intresserad av att lämna anbud eller vill veta mer? Kontakta oss för fullständig information och anbudsunderlag."
-          ></LayingCard>
-          <LayingCard
-            id="/nyheter/arsstamma-2025"
-            href="/nyheter/arsstamma-2025"
-            imageSrc="/skog.png"
-            title="Inför Årstämma 2025"
-            size="large"
-            description="Välkommen till årsstämman 2025! Här får du information om datum, plats och dagordning samt hur du kan delta och påverka beslut för Sorsele övre allmänningskog."
-          ></LayingCard>
-        </section>
-      </div>
+
+        <div className="flex justify md:h-[300px] justify-evenly w-full">
+          {loading && <LatestNewsSkeleton />}
+
+          {!loading && latestNews && (
+            <LatestNewsCard news={latestNews} organisation={organisation!} />
+          )}
+
+          {!loading && !latestNews && (
+            <div className="text-center text-forest/80">Inga nyheter ännu.</div>
+          )}
+        </div>
+      </section>
+      <section className="w-full flex flex-col items-center justify-center mt-50 py-12 ">
+        <div className="max-w-4xl w-full px-4">
+          <h3 className="text-center font-bold mb-4 text-xl lg:text-2xl xl:text-3xl text-beige">
+            Senaste Dokumentet
+          </h3>
+          {latestDocs ? (
+            <DocumentCard variant="list" documentData={latestDocs} />
+          ) : (
+            <p>Inga dokument tillgängliga</p>
+          )}
+        </div>
+      </section>
+      <section className="w-full flex flex-col items-center gap-4 md:flex-row sm:w-4/5  md:w-3/4 lg:w-2/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around mb-20 mx-auto">
+        <StandingCard
+          title="Jakt och Fiske"
+          id="jakt-fiske"
+          description="Information om fiskeregler, jaktsäsonger, tilldelningar och regler. Ta del av aktuella jakttillfällen och ansök om jakt inom våra marker."
+          imageSrc="/jaktbild.jpg"
+          href={`/${organisation}/jakt-fiske`}
+        />
+        <StandingCard
+          title="Nyheter"
+          id="nyheter"
+          description="Bläddra bland de senaste nyheterna, evenemangen och uppdateringarna. Håll dig informerad om vad som händer i vår skog."
+          imageSrc="/buyforest.jpeg"
+          href={`/${organisation}/nyheter`}
+        />
+        <StandingCard
+          title="Dokument"
+          id="dokument"
+          description="Utforska viktiga dokument, protokoll, stadgar och kartor. Här hittar du allt du behöver för att hålla dig uppdaterad om beslut, regler och områden."
+          imageSrc="/icons/pdf-icon.png"
+          href={`/${organisation}/dokument`}
+        />
+      </section>
     </main>
   );
 }

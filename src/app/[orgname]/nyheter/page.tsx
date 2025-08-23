@@ -11,8 +11,7 @@ import UploadNewsModal from "@/components/modals/UploadNewsModal";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import TooltipZone from "@/components/TooltipZone";
-import Link from "next/link";
-import FeaturedNewsHero from "@/components/FeaturedNewsHero";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 export default function Nyheter() {
   const [isOpen, setIsOpen] = useState(false);
@@ -87,17 +86,15 @@ export default function Nyheter() {
     return arr;
   }, [newsData, yearFilter]);
 
-  const featured = filtered[0];
-
-  const rest = filtered.slice(1);
-
   const onUploadNews = () => {
     fetchNews();
   };
   const { isLoggedIn, user } = useUserSession();
   return (
     <main className="w-full max-w-screen-2xl mx-auto px-4 py-8">
-      <FeaturedNewsHero item={featured} org={org} />
+      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl text-forest font-bold mb-8">
+        Bläddra bland de senaste nyheterna
+      </h1>
       {/* Filter & Search */}
       <div className="flex flex-col md:flex-row gap-4 my-8 px-4 items-center">
         <PageSearch
@@ -149,21 +146,26 @@ export default function Nyheter() {
         )}
       </div>
       {loading && (
-        <p className="px-4 py-8 text-center text-gray-600">Laddar nyheter…</p>
+        <LoadingIndicator
+          variant="bars" // "bars" or "ring"
+          message="Laddar…"
+          size={80}
+          tintOpacity={0.0}
+        />
       )}
       {error && (
         <p className="px-4 py-8 text-center text-red-600 font-semibold">
           {error}
         </p>
       )}
-      {!loading && !error && rest.length === 0 && (
+      {!loading && !error && filtered.length === 0 && (
         <p className="px-4 py-8 text-center text-gray-600">
           Inga fler nyheter att visa.
         </p>
       )}
-      {!loading && !error && rest.length > 0 && (
+      {!loading && !error && filtered.length > 0 && (
         <section className="flex flex-col gap-10 px-4">
-          {rest.map((news, idx) => (
+          {filtered.map((news, idx) => (
             <NewsCard
               key={news.id || idx}
               title={news.title}

@@ -1,3 +1,4 @@
+import { Mobile } from "@/hooks/Mobile";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -17,6 +18,8 @@ export default function UploadDocumentModal({
   const [newFolder, setNewFolder] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
+
+  const isMobile = Mobile();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -99,7 +102,9 @@ export default function UploadDocumentModal({
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={(e) => e.preventDefault()}
-          className={`border-2 border-dashed rounded-md p-6 text-center text-gray-600 mb-4 cursor-pointer transition-colors
+          className={`${
+            isMobile ? "hidden md:block" : ""
+          } border-2 border-dashed rounded-md p-6 text-center text-gray-600 mb-4 cursor-pointer transition-colors
             ${
               isDragActive
                 ? "border-orange bg-orange/10"
@@ -112,18 +117,19 @@ export default function UploadDocumentModal({
 
         <div className="text-center text-gray-500 mb-2">eller</div>
 
-        {/* File picker */}
-        <div className="flex justify-start items-center mb-4">
+        {/* File picker – touch first */}
+        <div className="flex flex-wrap items-center gap-3 mb-4">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-orange text-white px-4 py-2 rounded cursor-pointer hover:bg-orange/90 font-semibold"
+            className="bg-[var(--color-orange)] text-white px-4 py-2 rounded-lg hover:opacity-90 font-semibold"
           >
-            Välj fil(er)
+            {isMobile ? "Välj eller fota" : "Välj fil(er)"}
           </button>
           <input
             type="file"
             multiple
+            accept="application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*"
             ref={fileInputRef}
             onChange={handleFileChange}
             className="hidden"

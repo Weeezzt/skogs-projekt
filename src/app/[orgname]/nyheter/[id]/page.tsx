@@ -1,15 +1,19 @@
 "use client";
-import PageSpinner from "@/components/features/PageSpinner";
+
+import Image from "next/image";
+import Link from "next/link";
 import { NewsDTO } from "@/types/dtos";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import SmartImage from "@/components/SmartImage";
+import { useEffect, useState } from "react";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
+
+const FALLBACK_IMG = "/images/news-fallback-16x9.png"; // put the file in /public/images
 
 export default function NewsPage() {
   const [news, setNews] = useState<NewsDTO>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [imgError, setImgError] = useState(false);
 
   const param = useParams();
   const org = param.orgname as string | undefined;
@@ -18,26 +22,20 @@ export default function NewsPage() {
   useEffect(() => {
     if (!org || !id) return;
     setLoading(true);
-    fetch(`/api/${org}/news/${id}`)
+    fetch(`/api/${org}/news/${id}`, { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Kunde inte hämta nyheter");
         return res.json();
       })
-      .then((data) => setNews(data))
+      .then((data) => {
+        setNews(data);
+        setImgError(false);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [org, id]);
 
-  const paragraphs = useMemo(() => {
-    if (!news || !news.content) return [];
-    if (!news.content) return [];
-    return news.content
-      .split(/\n{2,}/g)
-      .map((p) => p.trim())
-      .filter(Boolean);
-  }, [news]);
-
-  if (loading) return <PageSpinner />;
+  if (loading) return <NewsDetailSkeleton />;
 
   if (error)
     return (
@@ -53,10 +51,15 @@ export default function NewsPage() {
       </div>
     );
 
+  const imageSrc = !imgError && news.image ? news.image : FALLBACK_IMG;
+
   return (
-    <article className="w-full max-w-4xl mx-auto px-4 py-8 text-black">
+    <article className="w-full max-w-5xl mx-auto px-4 py-8 text-black">
+      {/* Title + meta */}
       <header className="mb-6">
-        <h1 className="text-4xl font-bold text-green-900">{news.title}</h1>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-forest leading-tight">
+          {news.title}
+        </h1>
         <p className="text-sm text-gray-600 mt-2">
           {news.author && (
             <>
@@ -72,34 +75,32 @@ export default function NewsPage() {
         </p>
       </header>
 
-      {news.image && (
-        <div className="mb-6">
-          <SmartImage
-            src={news.image}
-            alt={news.title}
-            // clamp tall portraits on big screens, looser on mobile
-            maxHeight={520}
-            // don’t let tiny uploads stretch and get blurry
-            preventUpscale
-            // optional: start with a safe fallback size before load
-            defaultWidth={1200}
-            defaultHeight={800}
-            framed
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 800px"
-          />
-        </div>
-      )}
+      {/* Hero media (fixed 16:9) */}
+      <div className="relative rounded-xl overflow-hidden shadow-lg mb-8">
+        {/* Aspect box (16:9). If you use the Tailwind aspect-ratio plugin, you can replace with `aspect-video`. */}
+        <div className="w-full pb-[56.25%]" />
+        <Image
+          src={imageSrc}
+          alt={news.title}
+          fill
+          priority
+          onError={() => setImgError(true)}
+          className="object-cover brightness-95 contrast-110"
+          sizes="(max-width: 768px) 100vw, 900px"
+        />
+        {/* Readability scrims */}
+        <div className="pointer-events-none absolute inset-0 bg-black/20 mix-blend-multiply" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+      </div>
 
-      <section className="prose max-w-none prose-p:text-lg prose-p:leading-relaxed prose-headings:text-green-900 prose-img:rounded-lg prose-a:text-orange-700 prose-a:underline hover:prose-a:text-orange-900">
-        {paragraphs.length > 0 ? (
-          paragraphs.map((p, i) => <p key={i}>{p}</p>)
-        ) : (
-          <p>{news.content}</p>
-        )}
+      {/* Content */}
+      <section className="prose prose-lg max-w-none prose-headings:text-forest prose-strong:text-forest prose-a:text-orange hover:prose-a:text-orange/80 prose-img:rounded-lg prose-li:marker:text-forest">
+        {/* Avoid nested `.prose` by clearing the child’s proseClassName */}
+        <MarkdownRenderer proseClassName="" content={news.content} />
       </section>
 
       {(news.href || (news.documents && news.documents.length > 0)) && (
-        <footer className="mt-8 border-t pt-6 flex flex-col gap-4">
+        <footer className="mt-10 border-t pt-6 flex flex-col gap-4">
           {news.href && (
             <a
               href={news.href}
@@ -112,29 +113,74 @@ export default function NewsPage() {
           )}
 
           {news.documents?.length > 0 && (
-            <ul className="space-y-2">
-              {news.documents.map((doc) => (
-                <li key={doc.path}>
-                  <a
-                    href={`/docs/${doc.path}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 border-2 border-forest p-2 rounded-md text-orange font-semibold hover:underline hover:bg-forest hover:text-white transition-colors duration-300"
-                  >
-                    <img
-                      src="/icons/pdf-icon.png"
-                      alt="pdf"
-                      className="w-6 h-6"
-                    />
-                    <span className="truncate">{doc.title}</span>
-                    <span aria-hidden>→</span>
-                  </a>
-                </li>
-              ))}
+            <ul className="grid sm:grid-cols-2 gap-3">
+              {news.documents.map((doc) => {
+                const href = doc.path?.startsWith("http")
+                  ? doc.path
+                  : `/docs/${doc.path}`;
+                return (
+                  <li key={doc.path}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 border-2 border-forest p-3 rounded-lg text-forest hover:bg-forest hover:text-white transition-colors duration-300"
+                    >
+                      <img
+                        src="/icons/pdf-icon.png"
+                        alt="pdf"
+                        className="w-6 h-6"
+                      />
+                      <span className="truncate font-semibold">
+                        {doc.title}
+                      </span>
+                      <span aria-hidden className="ml-auto">
+                        →
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </footer>
       )}
+    </article>
+  );
+}
+
+/** Skeleton that matches the exact layout */
+function NewsDetailSkeleton() {
+  return (
+    <article className="w-full max-w-5xl mx-auto px-4 py-8">
+      {/* Title + meta placeholders */}
+      <div className="h-8 w-3/4 bg-gray-200 rounded mb-2 animate-pulse" />
+      <div className="h-4 w-40 bg-gray-200 rounded mb-6 animate-pulse" />
+
+      {/* Hero media (16:9) skeleton */}
+      <div className="relative rounded-xl overflow-hidden shadow-lg mb-8">
+        <div className="w-full pb-[56.25%]" />
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-x-1 -inset-y-4 translate-x-[-100%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[shimmer_1.6s_infinite]" />
+        </div>
+      </div>
+
+      {/* Body placeholders */}
+      <div className="space-y-3">
+        <div className="h-4 w-[95%] bg-gray-200 rounded animate-pulse" />
+        <div className="h-4 w-[90%] bg-gray-200 rounded animate-pulse" />
+        <div className="h-4 w-[85%] bg-gray-200 rounded animate-pulse" />
+        <div className="h-4 w-[80%] bg-gray-200 rounded animate-pulse" />
+      </div>
+
+      <style jsx>{`
+        @keyframes shimmer {
+          100% {
+            transform: translateX(100%);
+          }
+        }
+      `}</style>
     </article>
   );
 }

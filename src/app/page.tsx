@@ -3,9 +3,8 @@ import StandingCard from "@/features/cards/StandingCard";
 
 export default function Home() {
   return (
-    <main>
-      <section className="relative flex flex-col items-center justify-center min-h-[45vh] rounded-b-xl shadow-lg overflow-hidden mb-12 bg-gradient-to-br from-orange via-forest to-forest/70">
-        <div className="absolute inset-0 bg-gradient-to-tl from-forest/40 via-transparent to-orange/20 z-0" />
+    <main className="bg-gradient-to-br from-orange via-forest to-forest/90">
+      <section className="relative flex flex-col items-center justify-center min-h-[45vh] rounded-b-xl overflow-hidden mb-12 ">
         <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-4 pb-26">
           <h1 className="text-4xl md:text-6xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
             Välkommen till Allmänningskogarna
@@ -17,8 +16,8 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <section className="mx-auto mb-4 w-full my-[-180px] z-10 relative">
-        <div className="flex flex-col gap-6 md:flex-row items-center justify-evenly min-h-[400px] w-full px-2">
+      <section className="mx-auto mb-4 w-full my-[-180px] z-10 relative ">
+        <div className="flex flex-col gap-6 md:flex-row items-center justify-evenly min-h-[500px] w-full px-2 0">
           <StandingCard
             title="Sorsele övre allmänningsskog"
             id="jakt"

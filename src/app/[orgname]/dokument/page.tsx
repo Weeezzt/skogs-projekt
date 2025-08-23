@@ -12,6 +12,7 @@ import { useUserSession } from "@/hooks/useUserSession";
 import { usePathname } from "next/navigation";
 import { DocumentDTO } from "@/types/dtos";
 import TooltipZone from "@/components/TooltipZone";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 const sortOptions = [
   { label: "Senaste", value: "latest" },
@@ -156,7 +157,12 @@ export default function Dokument() {
       </div>
       <div>
         {loading && (
-          <div className="text-center text-gray-500">Laddar dokument...</div>
+          <LoadingIndicator
+            variant="bars" // "bars" or "ring"
+            message="Laddar in dokument..."
+            size={80}
+            tintOpacity={1}
+          />
         )}
         {error && <div className="text-center text-red-500">{error}</div>}
         {isGridLayout ? (

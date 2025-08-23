@@ -29,7 +29,7 @@ export default function LayingCard({
 }: LayingCardProps) {
   const cardContent = (
     <div
-      className={`flex bg-orange/10 rounded-xl shadow-lg overflow-hidden transition-transform border-2 border-transparent hover:border-orange hover:shadow-2xl ${sizeClasses[size]}`}
+      className={`flex bg-beige rounded-xl shadow-lg overflow-hidden transition-transform border-2 border-transparent hover:border-orange hover:shadow-2xl ${sizeClasses[size]}`}
       id={id}
     >
       {imageSrc && (
@@ -46,7 +46,7 @@ export default function LayingCard({
       )}
       <div className="flex flex-col flex-1 p-5 justify-center">
         <h3 className="text-lg md:text-xl font-bold mb-1">{title}</h3>
-        <p className="text-gray-600 mb-2">{description}</p>
+        <p className="text-gray-600 mb-2 truncate">{description}</p>
         {children}
       </div>
     </div>

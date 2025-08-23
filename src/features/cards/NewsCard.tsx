@@ -1,3 +1,4 @@
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { DocumentDTO } from "@/types/dtos";
 import Image from "next/image";
 import Link from "next/link";
@@ -61,7 +62,7 @@ export default function NewsCard({
       onClick={onActivate}
       onKeyDown={onKeyDown}
       className="
-        flex flex-col lg:flex-row bg-beige rounded-xl shadow-md
+        flex flex-col lg:flex-row bg-beige rounded-xl shadow-md h-[150px]
         overflow-hidden w-full cursor-pointer
         transition transform duration-300
         hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2F5D50]/20
@@ -85,7 +86,7 @@ export default function NewsCard({
       )}
       <div className="flex flex-col flex-1 p-4 justify-center">
         <h3 className="font-bold mb-1">{title}</h3>
-        <p className="text-gray-700 mb-2">{description}</p>
+
         {(author || date) && (
           <div className="text-xs text-gray-500 mb-2">
             {author && <span>Av {author}</span>}
