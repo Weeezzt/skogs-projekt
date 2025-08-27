@@ -1,0 +1,30 @@
+name: Deploy to VAIA (mirror main)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}   # allow manual run from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VAIA_SSH_KEY }}
+
+      - name: Trust VAIA host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${VAIA_GIT_PORT:-22} ${{ secrets.VAIA_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Push current commit to VAIA repo
+        run: |
+          git remote add vaia "ssh://${{ secrets.VAIA_SSH_USER }}@${{ secrets.VAIA_SSH_HOST }}:${VAIA_GIT_PORT:-22}/teta.git"
+          git push --force vaia HEAD:refs/heads/main
