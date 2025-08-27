@@ -21,8 +21,7 @@ jobs:
 
       - name: Push to VAIA
         run: |
-          # No secrets in the URL = no masking to ***
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 22"
           git remote remove vaia 2>/dev/null || true
-          git remote add vaia "ssh://teta@git.se.vkube.cloud:22/teta.git"
+          git remote add vaia "teta@git.se.vkube.cloud:teta.git"
           git push --force vaia HEAD:refs/heads/main
