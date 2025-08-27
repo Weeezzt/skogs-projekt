@@ -19,7 +19,6 @@ const orgNavLinks = [
   { href: "/natur-miljo", label: "Natur & Miljö" },
   { href: "/skogsbruk", label: "Skogsbruk" },
   { href: "/styrelse-medlemmar", label: "Styrelse & Medlemmar" },
-  { href: "/kontakt", label: "Kontakt" },
 ];
 
 interface orgTabLink {

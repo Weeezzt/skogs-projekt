@@ -47,13 +47,6 @@ export const metadata: Metadata = {
     locale: "sv_SE",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sorsele Övre Allmänningsskog",
-    description:
-      "Nyheter, jakt och fiske i Sorsele Övre & Tärna-Stensele Allmänningsskog.",
-    images: ["/og-image.jpg"],
-  },
 };
 export default function RootLayout({
   children,

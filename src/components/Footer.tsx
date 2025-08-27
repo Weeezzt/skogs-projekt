@@ -22,15 +22,13 @@ const ORG_INFO: Record<
 > = {
   sorsele: {
     brand: "SÖA",
-    email: "info@sorsele.example.se",
-    phone: "+46 (0)xx-xxx xx xx",
-    address: "Adressrad, 924 xx Sorsele",
+    email: "johan.stenvall@allmskog-ac.nu",
+    phone: "+46 (0)70 302 94 09",
   },
   "tarna-stensele": {
     brand: "TSA",
-    email: "info@tarna-stensele.example.se",
-    phone: "+46 (0)yy-yyy yy yy",
-    address: "Adressrad, 920 xx Tärnaby",
+    email: "johan.stenvall@allmskog-ac.nu",
+    phone: "+46 (0)70 302 94 09",
   },
 };
 
@@ -121,7 +119,6 @@ export default function Footer() {
                   </a>
                 </li>
               )}
-              {orgInfo.address && <li>{orgInfo.address}</li>}
             </ul>
           </div>
 

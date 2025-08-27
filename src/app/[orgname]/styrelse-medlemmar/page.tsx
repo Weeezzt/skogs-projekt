@@ -1,66 +1,98 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "next/navigation";
 import ProfileCard from "@/features/cards/ProfileCard";
 
-const members = [
-  {
-    name: "Rickard Westerberg",
-    role: "Ordförande",
-    address: "Bankgatan 7, 924 32 Sorsele",
-    phone: "0952-55104",
-    email: "5",
-    imageUrl: "/profile-placeholder.png",
-  },
-  {
-    name: "Lilian Holloway",
-    role: "Vice ordförande",
-    address: "Box 28, 924 22 Ammarnäs",
-    phone: "0952-60166",
-    email: "4",
-    imageUrl: "/profile-placeholder.png",
-  },
-  {
-    name: "Åke Johansson",
-    role: "Ledamot",
-    address: "Nyåker 201, 924 94 Sorsele",
-    phone: "070-648 02 32",
-    email: "3",
-    imageUrl: "/profile-placeholder.png",
-  },
-  {
-    name: "Sören Långberg",
-    role: "Ledamot",
-    address: "Klippen 133, 924 94 Sorsele",
-    phone: "0952-34026",
-    email: "2",
-    imageUrl: "/profile-placeholder.png",
-  },
-  {
-    name: "Annica Grundström",
-    role: "Ledamot",
-    address: "Strandvägen 24, 924 95 Ammarnäs",
-    phone: "070-397 04 11",
-    email: "1",
-    imageUrl: "/profile-placeholder.png",
-  },
-  {
-    name: "Johan Stenvall",
-    role: "Allmänningsförvaltare",
-    address: "Tärna-Stensele & Sorsele övre allmänningsskog",
-    phone: "070-3029409",
-    email: "johan.stenvall@allmskog-ac.nu",
-    imageUrl: "/profile-placeholder.png",
-  },
-];
+type Member = {
+  id: number;
+  name: string;
+  role: string;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  imageUrl?: string | null;
+};
+
 export default function StyrelseMedlemmarPage() {
+  const params = useParams() as { orgname?: string };
+  const routeOrg = (params.orgname || "sorsele").toLowerCase();
+
+  // Map route -> DB slug (so /sorsele hits org.slug "sorsele-skog")
+  const orgSlug = useMemo(
+    () => (routeOrg === "sorsele" ? "sorsele" : routeOrg),
+    [routeOrg]
+  );
+
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/${orgSlug}/members`, { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Kunde inte hämta medlemmar");
+        return res.json();
+      })
+      .then((data: Member[]) => {
+        if (!cancelled) setMembers(data);
+      })
+      .catch((err) => !cancelled && setError(err.message))
+      .finally(() => !cancelled && setLoading(false));
+
+    return () => {
+      cancelled = true;
+    };
+  }, [orgSlug]);
+
   return (
     <main className="max-w-5xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold text-[#2F5D50] mb-8 text-center">
         Styrelse & Medlemmar
       </h1>
-      <div className="flex flex-wrap justify-center gap-8">
-        {members.map((member) => (
-          <ProfileCard key={member.email} {...member} />
-        ))}
-      </div>
+
+      {loading && (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex gap-4 rounded-xl border border-forest/20 bg-white p-4 shadow-sm animate-pulse"
+            >
+              <div className="h-20 w-20 rounded-full bg-gray-200" />
+              <div className="flex-1 space-y-2">
+                <div className="h-5 w-3/4 bg-gray-200 rounded" />
+                <div className="h-4 w-1/2 bg-gray-200 rounded" />
+                <div className="h-4 w-2/3 bg-gray-200 rounded" />
+                <div className="h-8 w-32 bg-gray-200 rounded mt-2" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <p className="text-center text-red-600 font-semibold">{error}</p>
+      )}
+
+      {!loading && !error && (
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {members.map((m) => (
+            <ProfileCard
+              key={m.id ?? `${m.name}-${m.role}`}
+              name={m.name}
+              role={m.role}
+              address={m.address || ""}
+              phone={m.phone || ""}
+              email={m.email || ""}
+              imageUrl={m.imageUrl || "/profile-placeholder.png"}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 }
