@@ -3,11 +3,15 @@ name: Deploy to VAIA (mirror main)
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: {}   # allow manual run from the Actions tab
+  workflow_dispatch: {}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VAIA_HOST: ${{ secrets.VAIA_SSH_HOST }}
+      VAIA_USER: ${{ secrets.VAIA_SSH_USER }}
+      VAIA_PORT: ${{ secrets.VAIA_GIT_PORT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,12 +23,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VAIA_SSH_KEY }}
 
-      - name: Trust VAIA host key
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p ${VAIA_GIT_PORT:-22} ${{ secrets.VAIA_SSH_HOST }} >> ~/.ssh/known_hosts
-
       - name: Push current commit to VAIA repo
         run: |
-          git remote add vaia "ssh://${{ secrets.VAIA_SSH_USER }}@${{ secrets.VAIA_SSH_HOST }}:${VAIA_GIT_PORT:-22}/teta.git"
+          : "${VAIA_PORT:=22}"
+          export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${VAIA_PORT}"
+          git remote remove vaia 2>/dev/null || true
+          git remote add vaia "ssh://${VAIA_USER}@${VAIA_HOST}:${VAIA_PORT}/teta.git"
           git push --force vaia HEAD:refs/heads/main
