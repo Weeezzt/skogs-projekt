@@ -1,0 +1,27 @@
+name: Deploy to VAIA (mirror main)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VAIA_SSH_KEY }}
+
+      - name: Push to VAIA
+        run: |
+          export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 22"
+          git remote remove vaia 2>/dev/null || true
+          git remote add vaia "teta@git.se.vkube.cloud:teta.git"
+          git push --force vaia HEAD:refs/heads/main
