@@ -54,7 +54,9 @@ export default function Home() {
       <section className="relative flex flex-col items-center justify-center min-h-[45vh] overflow-hidden mb-12">
         <div className="relative flex flex-col items-center justify-center h-full w-full px-4 pb-26">
           <h1 className="text-4xl md:text-6xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
-            Sorsele övre allmänningskog
+            {organisation === "sorsele"
+              ? "Sorsele Övre Allmänningsskog"
+              : " Tärna-Stensele Allmänningsskog"}
           </h1>
           <p className="text-lg md:text-2xl text-beige text-center max-w-2xl">
             Välkommen till vår gemensamma skog – en plats för natur, gemenskap
