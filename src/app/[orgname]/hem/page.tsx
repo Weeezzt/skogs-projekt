@@ -15,7 +15,8 @@ import {
 
 export default function Home() {
   const [latestNews, setLatestNews] = useState<NewsDTO | null>(null);
-  const [latestDocs, setLatestDocs] = useState<DocumentDTO | null>(null); // Adjust type as needed
+  const [latestDocs, setLatestDocs] = useState<DocumentDTO | null>(null);
+  const [reglemente, setReglemente] = useState<DocumentDTO | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const organisation = useParams().orgname?.toString();
@@ -44,9 +45,25 @@ export default function Home() {
     }
   };
 
+  const fetchReglemente = async () => {
+    try {
+      const response = await fetch(
+        `/api/${organisation}/document/folder/Reglemente`
+      );
+      if (!response.ok) throw new Error("Kunde inte hämta reglemente");
+      const docs = await response.json();
+      setReglemente(docs);
+      console.log(docs);
+    } catch (err) {
+      setError("Fel vid hämtning av reglemente");
+      return null;
+    }
+  };
+
   useEffect(() => {
     fetchLatestNews();
     fetchLatestDocs();
+    fetchReglemente();
   }, [organisation]);
 
   return (
@@ -81,13 +98,23 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="w-full flex flex-col items-center justify-center mt-50 py-12 ">
+      <section className="w-full flex flex-col md:flex-row sm:w-4/5  md:w-3/4 lg:w-2/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around  items-center justify-center mt-50 py-12 mx-auto ">
         <div className="max-w-4xl w-full px-4">
           <h3 className="text-center font-bold mb-4 text-xl lg:text-2xl xl:text-3xl text-beige">
             Senaste Dokumentet
           </h3>
           {latestDocs ? (
-            <DocumentCard variant="list" documentData={latestDocs} />
+            <DocumentCard variant="grid" documentData={latestDocs} />
+          ) : (
+            <p>Inga dokument tillgängliga</p>
+          )}
+        </div>
+        <div className="max-w-4xl w-full px-4">
+          <h3 className="text-center font-bold mb-4 text-xl lg:text-2xl xl:text-3xl text-beige ">
+            Reglemente
+          </h3>
+          {reglemente ? (
+            <DocumentCard variant="grid" documentData={reglemente} isSpecial />
           ) : (
             <p>Inga dokument tillgängliga</p>
           )}

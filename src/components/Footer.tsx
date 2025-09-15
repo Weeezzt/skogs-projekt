@@ -15,20 +15,13 @@ const ORG_INFO: Record<
   OrgSlug,
   {
     brand: string;
-    email?: string;
-    phone?: string;
-    address?: string;
   }
 > = {
   sorsele: {
     brand: "SÖA",
-    email: "johan.stenvall@allmskog-ac.nu",
-    phone: "+46 (0)70 302 94 09",
   },
   "tarna-stensele": {
     brand: "TSA",
-    email: "johan.stenvall@allmskog-ac.nu",
-    phone: "+46 (0)70 302 94 09",
   },
 };
 
@@ -44,10 +37,14 @@ function buildOrgUrl(org: OrgSlug | null, href: string) {
   return `/${org}${href}`;
 }
 
+const DEFAULT_BRAND = "AC";
+const DEFAULT_TEXT =
+  "Allmänningskogarna – information, dokument, jakt & fiske.";
+
 export default function Footer() {
   const pathname = usePathname();
   const activeOrg = useMemo(() => getActiveOrg(pathname), [pathname]);
-  const orgInfo = activeOrg ? ORG_INFO[activeOrg] : ORG_INFO["sorsele"]; // sensible default
+  const orgInfo = activeOrg ? ORG_INFO[activeOrg] : { brand: DEFAULT_BRAND };
 
   return (
     <footer className="mt-auto bg-forest text-beige w-full">
@@ -63,7 +60,9 @@ export default function Footer() {
               {orgInfo.brand}
             </div>
             <p className="mt-3 text-sm text-beige/80">
-              {activeOrg === "tarna-stensele"
+              {!activeOrg
+                ? DEFAULT_TEXT
+                : activeOrg === "tarna-stensele"
                 ? "Tärna-Stensele Allmänningsskog – information, dokument, jakt & fiske."
                 : "Sorsele övre allmänningsskog – information, dokument, jakt & fiske."}
             </p>
@@ -99,26 +98,23 @@ export default function Footer() {
               Kontakt
             </h3>
             <ul className="mt-3 space-y-2 text-sm text-beige/80">
-              {orgInfo.email && (
-                <li>
-                  <a
-                    className="hover:text-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-orange/70 rounded"
-                    href={`mailto:${orgInfo.email}`}
-                  >
-                    {orgInfo.email}
-                  </a>
-                </li>
-              )}
-              {orgInfo.phone && (
-                <li>
-                  <a
-                    className="hover:text-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-orange/70 rounded"
-                    href={`tel:${orgInfo.phone.replace(/\s+/g, "")}`}
-                  >
-                    {orgInfo.phone}
-                  </a>
-                </li>
-              )}
+              <li>
+                <a
+                  className="hover:text-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-orange/70 rounded"
+                  href={`mailto:johan.stenvall@allmskog-ac.nu`}
+                >
+                  johan.stenvall@allmskog-ac.nu
+                </a>
+              </li>
+
+              <li>
+                <a
+                  className="hover:text-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-orange/70 rounded"
+                  href="tel:0703029409"
+                >
+                  +46 (0)70 302 94 09
+                </a>
+              </li>
             </ul>
           </div>
 

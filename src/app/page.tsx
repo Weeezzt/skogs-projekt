@@ -1,4 +1,3 @@
-import LayingCard from "@/features/cards/LayingCard";
 import StandingCard from "@/features/cards/StandingCard";
 
 export default function Home() {
@@ -21,14 +20,14 @@ export default function Home() {
           <StandingCard
             title="Sorsele övre allmänningsskog"
             id="jakt"
-            description="Information och regler för fiske. Information om jaktsäsonger, tilldelningar och regler."
+            description="Allmän information om Sorsele övre allmänningsskog, dess verksamhet och tjänster."
             imageSrc="/jaktbild.jpg"
             href="/sorsele/hem"
           />
           <StandingCard
             title="Tärna-Stensele allmänningsskog"
             id="fiske"
-            description="Information och regler för fiske. Information om jaktsäsonger, tilldelningar och regler."
+            description="Allmän information om Tärna-Stensele allmänningsskog, dess verksamhet och tjänster."
             imageSrc="/fiskebild.jpg"
             href="/tarna-stensele/hem"
           />

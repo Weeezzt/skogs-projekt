@@ -44,6 +44,7 @@ model Document {
   year           Int?
   organizationId Int
   folderId       Int?
+  isDeleted      Boolean      @default(false) // <-- Add this line
   folder         Folder?      @relation(fields: [folderId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
   newsItems      News[]       @relation("NewsDocuments")

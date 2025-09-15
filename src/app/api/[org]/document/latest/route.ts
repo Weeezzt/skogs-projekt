@@ -27,7 +27,7 @@ export async function GET(
 
   // 2) Latest document (fallback to createdAt if needed)
   const latest = await prisma.document.findFirst({
-    where: { organizationId: organization.id },
+    where: { organizationId: organization.id, isDeleted: false },
     orderBy: [{ uploadedAt: "desc" }],
   });
 

@@ -6,6 +6,7 @@ import { NewsDTO } from "@/types/dtos";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import { useUserSession } from "@/hooks/useUserSession";
 
 const FALLBACK_IMG = "/images/news-fallback-16x9.png"; // put the file in /public/images
 
@@ -15,9 +16,19 @@ export default function NewsPage() {
   const [error, setError] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
 
+  const { isLoggedIn, user } = useUserSession();
   const param = useParams();
   const org = param.orgname as string | undefined;
   const id = param.id as string | undefined;
+
+  const handleDeleteNews = async () => {
+    if (window.confirm("Är du säker på att du vill ta bort nyheten?")) {
+      await fetch(`/api/${org}/news/${id}`, {
+        method: "DELETE",
+      });
+      window.location.reload();
+    }
+  };
 
   useEffect(() => {
     if (!org || !id) return;
@@ -142,6 +153,14 @@ export default function NewsPage() {
                 );
               })}
             </ul>
+          )}
+          {isLoggedIn && user && (
+            <button
+              onClick={handleDeleteNews}
+              className="self-start mt-4 bg-beige text-red-700 px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-red-700 hover:text-beige duration-300"
+            >
+              Radera nyheten
+            </button>
           )}
         </footer>
       )}

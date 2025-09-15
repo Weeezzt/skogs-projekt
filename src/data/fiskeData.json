@@ -43,20 +43,8 @@
           "förekomst": "Lite"
         },
         {
-          "fisk": "Kanadaröding",
-          "förekomst": "Lite"
-        },
-        {
           "fisk": "Röding",
-          "förekomst": "Sällsynt"
-        },
-        {
-          "fisk": "Lax",
-          "förekomst": "Sällsynt"
-        },
-        {
-          "fisk": "Mört",
-          "förekomst": "Sällsynt"
+          "förekomst": "Normalt"
         }
       ]
     },
@@ -77,8 +65,6 @@
       "content": [
         "Grannäs Risnäs, Nedre Giertsbäcken",
         "Hemsjön, Lilla Stenträsk m fl vatten",
-        "Gardsjöbäcken",
-        "Luspholmens Skifteslag",
         "Kraddselefiske",
         "Örnäs Forsnäs"
       ]
@@ -151,7 +137,7 @@
       "content": [
         "Granträsket, Fäbodträsket, Kalvträsket, Grubbträsket",
         "Kamsjöbäcken, Mjösjön, Ristjärnen, Storsandsjön",
-        "Anslutna fiskeområden i länet (via Stensele FVO) :contentReference[oaicite:5]{index=5}"
+        "Anslutna fiskeområden i länet (via Stensele FVO)"
       ]
     }
   ]

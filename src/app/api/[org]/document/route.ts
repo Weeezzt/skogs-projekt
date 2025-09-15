@@ -3,6 +3,8 @@ import { PrismaClient } from "@/generated/prisma";
 import { DocumentDTO } from "@/types/dtos";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION!,
@@ -34,14 +36,15 @@ export async function GET(
 
   // Fetch all news for this organization
   const docs: DocumentDTO[] = await prisma.document.findMany({
-    where: { organizationId: organization.id },
+    where: {
+      organizationId: organization.id,
+      isDeleted: false,
+    },
     orderBy: { uploadedAt: "desc" },
   });
 
   return NextResponse.json(docs);
 }
-
-// ...existing code...
 
 export async function POST(
   req: NextRequest,
@@ -49,7 +52,10 @@ export async function POST(
 ) {
   const { org } = await params;
   const formData = await req.formData();
-
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   // Accept either folderId (existing) or folderName (new)
   const folderIdRaw = formData.get("folderId");
   const folderNameRaw = formData.get("folderName") as string | null;
@@ -126,6 +132,7 @@ export async function POST(
             Key: s3Key,
             Body: buffer,
             ContentType: file.type || "application/octet-stream",
+            ContentDisposition: contentDispositionAttachment(file.name),
           })
         );
         fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
@@ -154,4 +161,10 @@ export async function POST(
   }
 
   return NextResponse.json({ success: true, documents: createdDocs });
+}
+
+function contentDispositionAttachment(filename: string) {
+  const ascii = filename.replace(/["\\]/g, "_");
+  const utf8 = encodeURIComponent(filename);
+  return `attachment; filename="${ascii}"; filename*=UTF-8''${utf8}`;
 }

@@ -23,7 +23,7 @@ const ORG_CONTENT: Record<
     certUrl: "https://se.fsc.org/se-sv",
     hero: "/skog-sjo-ovan.png",
     gallery: [
-      { src: "/skog.png", alt: "Berg och skog i Tärna" },
+      { src: "/skog.png", alt: "Berg och skog i Sorsele" },
       { src: "/skog-sjo-ovan.png", alt: "Skogsväg med dimma" },
       { src: "/skogstor.jpg", alt: "Gran- och tallskog" },
     ],

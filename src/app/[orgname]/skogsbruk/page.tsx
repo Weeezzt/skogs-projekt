@@ -21,7 +21,7 @@ const ORG_CONTENT: Record<
     certLabel: "FSC®",
     hero: "/skogsbruk-soa.jpg",
     gallery: [
-      { src: "/skog.png", alt: "Berg och skog i Tärna" },
+      { src: "/skog.png", alt: "Berg och skog i sorsele" },
       { src: "/skog-sjo-ovan.png", alt: "Skogsväg med dimma" },
       { src: "/skogstor.jpg", alt: "Gran- och tallskog" },
     ],

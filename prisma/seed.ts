@@ -1,35 +1,34 @@
 import { PrismaClient } from "../src/generated/prisma";
-import mockDocuments from "../src/data/mock_documents.json";
 import newsData from "../src/data/newsData.json";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const passwordHash = await bcrypt.hash("Kniven17#", 10);
+  const passwordHash = await bcrypt.hash("TSASOA123", 10);
 
   // 1. Create organizations
   const sorsele = await prisma.organization.upsert({
-    where: { slug: "sorsele-skog" },
+    where: { slug: "sorsele" },
     update: {},
-    create: { name: "Sorsele Skog", slug: "sorsele-skog" },
+    create: { name: "Sorsele", slug: "sorsele" },
   });
 
-  const tsta = await prisma.organization.upsert({
+  const tsa = await prisma.organization.upsert({
     where: { slug: "tarna-stensele" },
     update: {},
-    create: { name: "Tärna-Stensele Allmänningsskog", slug: "tarna-stensele" },
+    create: { name: "Tärna-Stensele", slug: "tarna-stensele" },
   });
 
   // 2. Create superadmin
   await prisma.admin.upsert({
-    where: { email: "wille1tap@outlook.com" },
+    where: { email: "johan.stenvall@allmskog-ac.nu" },
     update: {},
     create: {
-      name: "Weezzt",
-      email: "wille1tap@outlook.com",
+      name: "Admin",
+      email: "johan.stenvall@allmskog-ac.nu",
       passwordHash,
-      organizations: { connect: [{ id: sorsele.id }, { id: tsta.id }] },
+      organizations: { connect: [{ id: sorsele.id }, { id: tsa.id }] },
     },
   });
 
@@ -143,66 +142,7 @@ async function main() {
   ];
   for (const member of tstaMembers) {
     await prisma.member.create({
-      data: { ...member, organizationId: tsta.id },
-    });
-  }
-
-  // 3. Create folders (if you want to group documents)
-  // Example: group by category
-  const folderMap: Record<string, any> = {};
-  for (const doc of mockDocuments) {
-    if (doc.category && doc.orgId !== undefined) {
-      const key = `${doc.category}_${doc.orgId}`;
-      if (!folderMap[key]) {
-        folderMap[key] = await prisma.folder.create({
-          data: {
-            name: doc.category,
-            organizationId: doc.orgId,
-          },
-        });
-      }
-    }
-  }
-
-  // 4. Create documents
-  // 4. Create documents
-  for (const doc of mockDocuments) {
-    const key =
-      doc.category && doc.orgId !== undefined
-        ? `${doc.category}_${doc.orgId}`
-        : undefined;
-    const documentData: any = {
-      title: doc.title ?? doc.path,
-      fileType: doc.fileType,
-      path: doc.path,
-      tags: doc.tags,
-      preview: doc.preview,
-      uploadedAt: doc.uploadedAt ? new Date(doc.uploadedAt) : new Date(),
-      description: doc.description,
-      category: doc.category,
-      year: doc.year,
-      folderId: key ? folderMap[key]?.id : undefined,
-    };
-    if (doc.orgId !== undefined) {
-      documentData.organizationId = doc.orgId;
-    }
-    console.log("Creating document:", documentData);
-    await prisma.document.create({
-      data: documentData,
-    });
-  }
-
-  // 5. Create news
-  for (const news of newsData) {
-    await prisma.news.create({
-      data: {
-        title: news.title,
-        content: news.description ?? "",
-        publishedAt: news.date ? new Date(news.date) : new Date(),
-        image: news.imageSrc ?? null,
-        organizationId: news.orgId,
-        // Optionally, connect documents if you want
-      },
+      data: { ...member, organizationId: tsa.id },
     });
   }
 }
