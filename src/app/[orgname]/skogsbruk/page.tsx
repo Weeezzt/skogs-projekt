@@ -55,10 +55,8 @@ export default function SkogsbrukPage() {
     orgParam === "tarna-stensele" ? "tarna-stensele" : "sorsele";
   const cfg = ORG_CONTENT[org];
 
-  // 🔍 Lightbox state
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // ESC + arrows
   useEffect(() => {
     if (lightboxIndex === null) return;
     const onKey = (e: KeyboardEvent) => {

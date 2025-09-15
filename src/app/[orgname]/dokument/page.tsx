@@ -82,8 +82,8 @@ export default function Dokument() {
       (a.uploadedAt?.toString() || "").localeCompare(
         b.uploadedAt?.toString() || ""
       ),
-    title_az: (a, b) => a.title.localeCompare(b.title, "sv"), // A-Ö
-    title_za: (a, b) => b.title.localeCompare(a.title, "sv"), // Ö-A
+    title_az: (a, b) => a.title.localeCompare(b.title, "sv"),
+    title_za: (a, b) => b.title.localeCompare(a.title, "sv"),
   };
 
   useEffect(() => {
@@ -158,7 +158,7 @@ export default function Dokument() {
       <div>
         {loading && (
           <LoadingIndicator
-            variant="bars" // "bars" or "ring"
+            variant="bars"
             message="Laddar in dokument..."
             size={80}
             tintOpacity={1}
@@ -175,7 +175,7 @@ export default function Dokument() {
         existingFolders={allFolders}
         isOpen={uploadModalOpen}
         onClose={() => {
-          fetchDocuments(); // Refetch after upload
+          fetchDocuments();
           setUploadModalOpen(false);
         }}
       />
