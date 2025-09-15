@@ -47,7 +47,6 @@ export default function Home() {
       if (!response.ok) throw new Error("Kunde inte hämta reglemente");
       const docs = await response.json();
       setReglemente(docs);
-      console.log(docs);
     } catch (err) {
       setError("Fel vid hämtning av reglemente");
       return null;
@@ -101,7 +100,9 @@ export default function Home() {
           {latestDocs ? (
             <DocumentCard variant="grid" documentData={latestDocs} />
           ) : (
-            <p>Inga dokument tillgängliga</p>
+            <p className="text-center text-orange font-bold">
+              Inga dokument tillgängliga
+            </p>
           )}
         </div>
         <div className="max-w-4xl w-full px-4">
@@ -111,11 +112,13 @@ export default function Home() {
           {reglemente ? (
             <DocumentCard variant="grid" documentData={reglemente} isSpecial />
           ) : (
-            <p>Inga dokument tillgängliga</p>
+            <p className="text-center text-orange font-bold">
+              Inga dokument tillgängliga
+            </p>
           )}
         </div>
       </section>
-      <section className="w-full flex flex-col items-center gap-4 md:flex-row sm:w-4/5  md:w-3/4 lg:w-2/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around mb-20 mx-auto">
+      <section className="w-full flex flex-col items-center gap-4 lg:flex-row sm:w-4/5 lg:w-3/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around mb-20 mx-auto">
         <StandingCard
           title="Jakt och Fiske"
           id="jakt-fiske"
