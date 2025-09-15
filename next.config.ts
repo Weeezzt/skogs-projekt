@@ -6,13 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        port: "",
         hostname: "allmskog-ac.s3.eu-north-1.amazonaws.com",
         pathname: "/**",
       },
       {
         protocol: "https",
-        port: "",
         hostname: "s3.eu-north-1.amazonaws.com",
         pathname: "/allmskog-ac/**",
       },
