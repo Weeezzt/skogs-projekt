@@ -20,6 +20,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const organisation = useParams().orgname?.toString();
+  const folderName = "Reglemente";
 
   const fetchLatestNews = async () => {
     try {
@@ -48,7 +49,7 @@ export default function Home() {
   const fetchReglemente = async () => {
     try {
       const response = await fetch(
-        `/api/${organisation}/document/folder/Reglemente`
+        `/api/${organisation}/document/folder/${encodeURIComponent(folderName)}`
       );
       if (!response.ok) throw new Error("Kunde inte hämta reglemente");
       const docs = await response.json();

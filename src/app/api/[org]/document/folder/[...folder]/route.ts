@@ -5,9 +5,11 @@ const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ org: string; folder: string }> }
+  { params }: { params: Promise<{ org: string; folder: string[] }> }
 ) {
-  const { org, folder } = await params;
+  const org = decodeURIComponent((await params).org);
+  const folderParts = (await params).folder.map(decodeURIComponent);
+  const folder = folderParts.join("/");
 
   // Find organization by slug
   const organization = await prisma.organization.findUnique({
