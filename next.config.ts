@@ -4,20 +4,21 @@ const nextConfig: NextConfig = {
   output: "standalone",
   images: {
     remotePatterns: [
-      // Virtual-hosted–style S3 URL
       {
         protocol: "https",
+        port: "",
         hostname: "allmskog-ac.s3.eu-north-1.amazonaws.com",
         pathname: "/**",
       },
-      // Path-style S3 URL (covers any links like s3.amazonaws.com/<bucket>/...)
       {
         protocol: "https",
+        port: "",
         hostname: "s3.eu-north-1.amazonaws.com",
         pathname: "/allmskog-ac/**",
       },
     ],
   },
 };
+console.log("🚀 Config loaded build marker: 2025-09-15-B");
 
 export default nextConfig;

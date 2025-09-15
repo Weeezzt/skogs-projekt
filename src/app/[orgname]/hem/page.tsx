@@ -1,11 +1,7 @@
 "use client";
 import DocumentCard from "@/components/document/DocumentCard";
-import MarkdownRenderer from "@/components/MarkdownRenderer";
-import TooltipZone from "@/components/TooltipZone";
 import StandingCard from "@/features/cards/StandingCard";
 import { DocumentDTO, NewsDTO } from "@/types/dtos";
-import Image from "next/image";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -47,6 +43,7 @@ export default function Home() {
   };
 
   const fetchReglemente = async () => {
+    console.log("Fetching reglemente for folder:", folderName);
     try {
       const response = await fetch(
         `/api/${organisation}/document/folder/${encodeURIComponent(folderName)}`
