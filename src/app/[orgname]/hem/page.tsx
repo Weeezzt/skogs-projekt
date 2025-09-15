@@ -113,7 +113,7 @@ export default function Home() {
             <DocumentCard variant="grid" documentData={reglemente} isSpecial />
           ) : (
             <p className="text-center text-orange font-bold">
-              Inget dokument tillgängliga
+              Inget dokument tillgängligt
             </p>
           )}
         </div>
