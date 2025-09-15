@@ -5,12 +5,9 @@ const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ org: string; folder: string[] }> }
+  { params }: { params: Promise<{ org: string }> }
 ) {
-  const org = decodeURIComponent((await params).org);
-  const folderParts = (await params).folder.map(decodeURIComponent);
-  const folder = folderParts.join("/");
-
+  const { org } = await params;
   // Find organization by slug
   const organization = await prisma.organization.findUnique({
     where: { slug: org },
@@ -26,7 +23,7 @@ export async function GET(
   // Find folder by name and organization
   const reglementeFolder = await prisma.folder.findFirst({
     where: {
-      name: folder,
+      name: "Reglemente",
       organizationId: organization.id,
     },
   });

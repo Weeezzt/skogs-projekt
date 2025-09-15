@@ -16,7 +16,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const organisation = useParams().orgname?.toString();
-  const folderName = "Reglemente";
 
   const fetchLatestNews = async () => {
     try {
@@ -43,11 +42,8 @@ export default function Home() {
   };
 
   const fetchReglemente = async () => {
-    console.log("Fetching reglemente for folder:", folderName);
     try {
-      const response = await fetch(
-        `/api/${organisation}/document/folder/${encodeURIComponent(folderName)}`
-      );
+      const response = await fetch(`/api/${organisation}/document/reglemente`);
       if (!response.ok) throw new Error("Kunde inte hämta reglemente");
       const docs = await response.json();
       setReglemente(docs);
@@ -59,6 +55,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!organisation) return;
     fetchLatestNews();
     fetchLatestDocs();
     fetchReglemente();

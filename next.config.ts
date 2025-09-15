@@ -19,6 +19,5 @@ const nextConfig: NextConfig = {
     ],
   },
 };
-console.log("🚀 Config loaded build marker: 2025-09-15-B");
 
 export default nextConfig;
