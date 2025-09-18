@@ -13,7 +13,6 @@ export default function ProfileCard({
   address,
   phone,
   email,
-  imageUrl,
 }: ProfileCardProps) {
   return (
     <div className="bg-beige rounded-xl shadow-lg p-3 flex flex-col items-center gap-2 w-full max-w-2xs">

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { DocumentDTO } from "@/types/dtos";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
@@ -13,8 +13,6 @@ const s3 = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
-
-const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
@@ -60,7 +58,10 @@ export async function POST(
   const folderIdRaw = formData.get("folderId");
   const folderNameRaw = formData.get("folderName") as string | null;
   const files = formData.getAll("files") as File[];
-
+  const tags = formData.getAll("tags") as string[] | null;
+  if (tags?.length == 0) {
+    tags.push("Standard");
+  }
   // Find organization
   const organization = await prisma.organization.findUnique({
     where: { slug: org },
@@ -79,7 +80,10 @@ export async function POST(
   if (folderIdRaw) {
     folderId = Number(folderIdRaw);
     const folder = await prisma.folder.findUnique({
-      where: { id: folderId },
+      where: {
+        id: folderId,
+        organizationId: organization.id,
+      },
     });
     if (!folder) {
       return NextResponse.json({ error: "Folder not found" }, { status: 400 });
@@ -154,6 +158,7 @@ export async function POST(
         folderId: folderId ?? undefined,
         organizationId: organization.id,
         preview: fileType === "pdf",
+        tags: tags ? { set: tags } : undefined,
       },
     });
 

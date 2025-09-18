@@ -25,6 +25,7 @@ export default function Home() {
       setLatestNews(news);
       setLoading(false);
     } catch (err) {
+      setLoading(false);
       setError("Kunde inte hämta senaste nyheter");
     }
   };

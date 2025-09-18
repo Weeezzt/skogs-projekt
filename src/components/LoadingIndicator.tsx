@@ -12,7 +12,6 @@ type Props = {
 export default function LoadingIndicator({
   open = true,
   variant = "bars",
-  message,
   size = 72,
 }: Props) {
   if (!open) return null;
@@ -97,14 +96,6 @@ export default function LoadingIndicator({
               }}
             />
           </div>
-        )}
-        {message && (
-          <p
-            className="text-sm font-medium tracking-wide"
-            style={{ color: "var(--color-beige)" }}
-          >
-            {message}
-          </p>
         )}
       </div>
 

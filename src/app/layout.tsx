@@ -24,21 +24,21 @@ export const metadata: Metadata = {
     "fiske",
     "skog",
     "Vindelälven",
-    "Laisälven",
+    "Västerbotten",
   ],
   icons: {
-    icon: "/faviconlowe.png",
-    apple: "/favicon.png",
+    icon: "/logo/transperant.png",
+    apple: "/logo/transperant.png",
   },
   openGraph: {
     title: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
     description:
       "Utforska jakt- och fiskemöjligheter samt nyheter från Sorsele Övre & Tärna-Stensele Allmänningsskog.",
-    url: "https://allmskog-ac.nu", // change to your actual domain
+    url: "https://allmskog-ac.nu",
     siteName: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/logo/transperant.png",
         width: 1200,
         height: 630,
         alt: "Sorsele Övre Allmänningsskog",
@@ -57,7 +57,6 @@ export default function RootLayout({
     <html lang="sv" className="scroll-smooth w-full h-full">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Sorsele Övre Allmänningsskog</title>
       </head>
       <body className={`min-h-screen w-full flex flex-col ${inter.variable}`}>
         <SessionProviderWrapper>

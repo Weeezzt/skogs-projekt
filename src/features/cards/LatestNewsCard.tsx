@@ -24,7 +24,7 @@ export function LatestNewsCard({ news, organisation }: CardProps) {
       {hasImage ? (
         <>
           <Image
-            src={news.image ?? "/public/fallback/news-fallback-16x9.png"}
+            src={news.image ?? "/fallback/news-fallback-16x9.png"}
             alt={news.title}
             fill
             className="object-cover brightness-90 contrast-125"

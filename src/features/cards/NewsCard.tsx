@@ -119,7 +119,7 @@ export default function NewsCard({
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`/docs/${documents[0].path}`}
+            href={documents[0].path}
             className="mt-2 inline-block max-w-1/3 text-forest font-semibold hover:underline"
           >
             Förhandsgranska: <span>{documents[0].title}</span> &rarr;

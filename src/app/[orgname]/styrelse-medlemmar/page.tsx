@@ -88,7 +88,6 @@ export default function StyrelseMedlemmarPage() {
               address={m.address || ""}
               phone={m.phone || ""}
               email={m.email || ""}
-              imageUrl={m.imageUrl || "/profile-placeholder.png"}
             />
           ))}
         </div>

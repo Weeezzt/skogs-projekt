@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { S3Client } from "@aws-sdk/client-s3";
-
-const prisma = new PrismaClient();
 
 export async function GET(
   _req: NextRequest,

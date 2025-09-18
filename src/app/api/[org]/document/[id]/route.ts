@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
-const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
@@ -11,8 +9,12 @@ export async function GET(
 ) {
   const { id, org } = await params;
 
-  const document = await prisma.document.findUnique({
-    where: { id: Number(id) },
+  const document = await prisma.document.findFirst({
+    where: {
+      id: Number(id),
+      organization: { slug: org },
+      isDeleted: false,
+    },
   });
 
   if (!document) {
@@ -29,15 +31,18 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ org: string; id: string }> }
 ) {
-  const { id } = await params;
+  const { id, org } = await params;
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const updated = await prisma.document.update({
-    where: { id: Number(id) },
+  await prisma.document.update({
+    where: {
+      id: Number(id),
+      organization: { slug: org },
+    },
     data: { isDeleted: true },
   });
 
-  return NextResponse.json(updated);
+  return new NextResponse(null, { status: 204 });
 }

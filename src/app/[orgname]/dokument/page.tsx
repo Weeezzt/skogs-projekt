@@ -157,12 +157,7 @@ export default function Dokument() {
       </div>
       <div>
         {loading && (
-          <LoadingIndicator
-            variant="bars"
-            message="Laddar in dokument..."
-            size={80}
-            tintOpacity={1}
-          />
+          <LoadingIndicator variant="bars" size={80} tintOpacity={1} />
         )}
         {error && <div className="text-center text-red-500">{error}</div>}
         {isGridLayout ? (
