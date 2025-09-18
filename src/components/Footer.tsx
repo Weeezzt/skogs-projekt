@@ -135,7 +135,9 @@ export default function Footer() {
             © {new Date().getFullYear()}{" "}
             {activeOrg === "tarna-stensele"
               ? "Tärna-Stensele Allmänningsskog"
-              : "Sorsele övre allmänningsskog"}
+              : activeOrg === "sorsele"
+              ? "Sorsele övre allmänningsskog"
+              : "Allmänningsskogarna"}
             . Alla rättigheter förbehållna.
           </p>
         </div>

@@ -39,7 +39,7 @@ export default function PageSearch({ sections }: { sections: Section[] }) {
   };
 
   return (
-    <div className="relative w-full max-w-md ">
+    <div className="relative w-full px-2 max-w-md ">
       <input
         type="text"
         placeholder="Sök på denna sida..."

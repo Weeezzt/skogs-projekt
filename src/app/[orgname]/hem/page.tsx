@@ -63,9 +63,9 @@ export default function Home() {
 
   return (
     <main className=" bg-gradient-to-br from-orange via-forest to-forest/90">
-      <section className="relative flex flex-col items-center justify-center min-h-[45vh] overflow-hidden mb-12">
-        <div className="relative flex flex-col items-center justify-center h-full w-full px-4 pb-26">
-          <h1 className="text-4xl md:text-6xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
+      <section className="relative flex flex-col items-center sm:justify-center min-h-[45vh] overflow-hidden mb-12">
+        <div className="relative flex flex-col items-center sm:justify-center h-full w-full px-4 pb-26">
+          <h1 className=" text-3xl sm:text-4xl md:text-6xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
             {organisation === "sorsele"
               ? "Sorsele Övre Allmänningsskog"
               : " Tärna-Stensele Allmänningsskog"}
@@ -77,7 +77,7 @@ export default function Home() {
         </div>
       </section>
       <section className="mx-auto w-3/3 my-[-200px] z-20 relative">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-beige mb-8 text-center">
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-beige mb-8 text-center">
           Senaste Nytt
         </h2>
 

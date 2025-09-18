@@ -79,7 +79,7 @@ export default function StyrelseMedlemmarPage() {
       )}
 
       {!loading && !error && (
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
           {members.map((m) => (
             <ProfileCard
               key={m.id ?? `${m.name}-${m.role}`}

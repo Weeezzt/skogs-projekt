@@ -148,7 +148,7 @@ export default function Dokument() {
           </button>
         </TooltipZone>
       </div>
-      <div className="mx-auto w-full flex justify-between items-center md:w-[600px] lg:w-[800px] xl:w-[1000px]">
+      <div className="px-2 mx-auto w-full flex justify-between items-center md:w-[600px] lg:w-[800px] xl:w-[1000px]">
         <FolderFilter
           documents={docsData}
           activeCategories={activeCategories}

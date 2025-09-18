@@ -62,7 +62,7 @@ export default function NewsCard({
       onClick={onActivate}
       onKeyDown={onKeyDown}
       className="
-        flex flex-col lg:flex-row bg-beige rounded-xl shadow-md h-[150px]
+        flex flex-col md:flex-row bg-beige rounded-xl shadow-md md:h-[150px]
         overflow-hidden w-full cursor-pointer
         transition transform duration-300
         hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2F5D50]/20
@@ -70,7 +70,7 @@ export default function NewsCard({
       "
     >
       {imageSrc && (
-        <div className="w-full relative aspect-[16/9] lg:w-64 lg:aspect-auto lg:h-auto flex-shrink-0">
+        <div className="w-full relative aspect-[16/9] md:w-64 md:aspect-auto md:h-auto flex-shrink-0">
           <Image
             src={imageSrc}
             alt={imageAlt || "News Image"}
