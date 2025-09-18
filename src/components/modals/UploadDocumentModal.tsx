@@ -129,7 +129,7 @@ export default function UploadDocumentModal({
           <input
             type="file"
             multiple
-            accept="application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*"
+            accept="application/pdf,.doc,.docx,.xls,.xlsx,.htm,.html,.ppt,.pptx,image/*"
             ref={fileInputRef}
             onChange={handleFileChange}
             className="hidden"
