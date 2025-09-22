@@ -1,19 +1,16 @@
 import InfoSection from "@/features/InfoSection";
-import PageSearch from "@/features/search/PageSearch";
 import StandardHero from "@/features/StandardHero";
-import jaktData from "@/data/jaktData.json";
-import { useParams } from "next/navigation";
-import { useState } from "react";
-
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 const ctaButtonsSorsele = [
   {
     label: "Ladda ner fullständiga regelr (PDF)",
-    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/6402d892-253a-483f-9617-73b7d5411431_Beslutade-regler-och-priser-for-jakt-pa-SOA-2023-24.pdf",
+    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt%20och%20Fiske/5fc13b2f-1dc5-44dc-b0ff-1ce7921ad3c9_Beslutade%20regler%20och%20priser%20f%C3%B6r%20jakt%20p%C3%A5%20S%C3%96A%202025-26.pdf",
     bgColor: "bg-orange",
   },
   {
     label: "Köp jaktkort",
-    href: "https://allmskog-ac.nu/jaktkort/",
+    href: "https://www.ijakt.se/jaktkort-sorsele-ovre-allmanningsskog.htm",
     bgColor: "bg-forest",
   },
 ];
@@ -26,7 +23,7 @@ const ctaButtonsTSA = [
   },
   {
     label: "Köp jaktkort",
-    href: "https://allmskog-ac.nu/jaktkort/",
+    href: "https://www.ijakt.se/jakt-tarna-stensele-allmanningskog.htm",
     bgColor: "bg-forest",
   },
 ];
@@ -48,17 +45,42 @@ const textContentPerOrg = {
     jaktKartaImageSrc: "/Enkel-oversiktskarta-TSA-jakt.jpg",
   },
 };
-const sections = jaktData.map((data) => ({
-  title: data.title,
-  id: data.id,
-  content: Array.isArray(data.content) ? data.content.join("\n") : data.content,
-}));
+const documentsForOrg = {
+  sorsele: [
+    {
+      title: "Jakt- och fiskeregler 2024/25",
+      href: "/docs/sorsele/jakt-files/Jakt-o-fiske-priser-och-regler-2025.pdf",
+    },
+    {
+      title: "Jaktkarta Sorsele Övre Allmänningsskog",
+      href: "/docs/sorsele/jakt-files/Jaktkarta-SOA.pdf",
+    },
+  ],
+  tarnaStensele: [
+    {
+      title: "Omradesansvariga",
+      href: "/docs/tarna-stensele/jakt-files/Omradesansvariga_TSA_ASO_2024.pdf",
+    },
+    {
+      title: "Fördjupad inskannad karta över älgjaktsområden",
+      href: "/docs/tarna-stensele/jakt-files/karta-tsa-algjaktsomraden.pdf",
+    },
+    {
+      title: "jAKTKARTA Tärna-Stensele Allmänningsskog",
+      href: "/docs/tarna-stensele/jakt-files/TSA-jakt-o-fiskekarta-hela-allm-16-01-14-v4-52x52-1.pdf",
+    },
+  ],
+};
 
 export default function JaktContent() {
   const params = useParams();
   const isSorsele = params.orgname === "sorsele";
+  const router = useRouter();
+  const handleOpenMapImage = (src: string) => {
+    router.push(src);
+  };
   return (
-    <div className="flex flex-col gap-4 items-center justify-center mt-5">
+    <div className="px-2 flex flex-col gap-4 items-center justify-center mt-5">
       <StandardHero
         title={
           isSorsele
@@ -74,18 +96,8 @@ export default function JaktContent() {
         imageSrc="/heromoose.jpg"
         ctaButtons={isSorsele ? ctaButtonsSorsele : ctaButtonsTSA}
       />
-      <PageSearch sections={sections} />
-      <div className="w-full flex flex-col items-center mt-10 px-2">
-        <InfoSection
-          title="Allmänna regler"
-          id="allmanna-regler"
-          ctaLink={{
-            label: "Se lantmäteriets fastighetskarta",
-            imageSrc: isSorsele
-              ? textContentPerOrg.sorsele.jaktKartaImageSrc
-              : textContentPerOrg.tarnaStensele.jaktKartaImageSrc,
-          }}
-        >
+      <div className=" w-full flex flex-col items-center mt-10 px-2">
+        <InfoSection title="Allmänna regler" id="allmanna-regler">
           <ul className="list-disc ml-5">
             <li>
               Kontrollera alltid att du har jakträtt inom aktuellt område.
@@ -97,56 +109,63 @@ export default function JaktContent() {
             <li>Se detaljerad information på Lantmäteriets fastighetskarta.</li>
           </ul>
         </InfoSection>
+        <div className="w-full flex flex-col items-center my-10 px-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl text-forest font-bold">
+            Jakt- och fiskekarta
+          </h2>
+          <Image
+            src={
+              isSorsele
+                ? textContentPerOrg.sorsele.jaktKartaImageSrc
+                : textContentPerOrg.tarnaStensele.jaktKartaImageSrc
+            }
+            alt="Jakttilldelning"
+            width={960}
+            height={600}
+            className="mt-6 w-full max-w-3xl rounded-xl shadow-lg cursor-zoom-in"
+            onClick={() =>
+              handleOpenMapImage(
+                isSorsele
+                  ? textContentPerOrg.sorsele.jaktKartaImageSrc
+                  : textContentPerOrg.tarnaStensele.jaktKartaImageSrc
+              )
+            }
+            priority
+          />
+          {!isSorsele && (
+            <>
+              <a
+                href={documentsForOrg.tarnaStensele[1].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center mt-8 p-2 rounded-lg text-lg md:text-xl inline-block md:max-w-3xl text-forest font-semibold hover:border-orange border-forest border-2"
+                onClick={(event) => event.stopPropagation()}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.stopPropagation();
+                  }
+                }}
+              >
+                {documentsForOrg.tarnaStensele[1].title}
+              </a>
 
-        <InfoSection title="Älgjakt" id="algjakt">
-          <ul className="list-disc ml-5">
-            <li>Älgjakten är utarrenderad till jaktlag med avtal med SÖA.</li>
-            <li>Sex jaktområden, arrendeavgift 4:00 kr/ha och år.</li>
-            <li>Jakten bedrivs inom älgskötselområdet.</li>
-            <li>
-              Delägare kan ansöka om plats i jaktlag. Icke-delägare kan anmäla
-              intresse till styrelsen.
-            </li>
-          </ul>
-        </InfoSection>
-
-        <InfoSection title="Björnjakt" id="bjornjakt">
-          <ul className="list-disc ml-5">
-            <li>Björnjakt ingår i älgjaktarrendet.</li>
-            <li>
-              Delägare som inte ingår i jaktlag kan ansöka om tillstånd för
-              björnjakt inom dessa områden.
-            </li>
-          </ul>
-        </InfoSection>
-
-        <InfoSection title="Småviltsjakt" id="smaviltsjakt">
-          <ul className="list-disc ml-5">
-            <li>Småviltsjakten i område 5 är reserverad för arrendatorn.</li>
-            <li>
-              <b>Priser för småviltsjaktkort:</b>
-              <ul className="list-disc ml-8">
-                <li>Delägare: Årskort 100 kr</li>
-                <li>Familjemedlem: Årskort 300 kr</li>
-                <li>
-                  Övriga: 1 dag 250 kr, 3 dagar 500 kr, 7 dagar 800 kr, Säsong
-                  1500 kr
-                </li>
-              </ul>
-            </li>
-            <li>Köp jaktkort via iJakt och Swish.</li>
-          </ul>
-        </InfoSection>
-
-        <InfoSection title="Fångstpremier" id="fangstpremier">
-          <ul className="list-disc ml-5">
-            <li>Fångstpremier för vissa rovdjur:</li>
-            <li>Mink: 500 kr, Mård: 500 kr, Räv: 400 kr</li>
-            <li>
-              Endast delägare kan delta. Djur ska uppvisas på skogskontoret.
-            </li>
-          </ul>
-        </InfoSection>
+              <a
+                href={documentsForOrg.tarnaStensele[0].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center mt-4 p-2 rounded-lg text-lg md:text-xl inline-block md:max-w-3xl text-forest font-semibold hover:border-orange border-forest border-2"
+                onClick={(event) => event.stopPropagation()}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.stopPropagation();
+                  }
+                }}
+              >
+                {documentsForOrg.tarnaStensele[0].title}
+              </a>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

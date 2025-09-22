@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { useUserSession } from "@/hooks/useUserSession";
 
-const FALLBACK_IMG = "/images/news-fallback-16x9.png"; // put the file in /public/images
-
 export default function NewsPage() {
   const [news, setNews] = useState<NewsDTO>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -62,7 +60,7 @@ export default function NewsPage() {
       </div>
     );
 
-  const imageSrc = !imgError && news.image ? news.image : FALLBACK_IMG;
+  const imageSrc = !imgError && news.image && news.image;
 
   return (
     <article className="w-full max-w-5xl mx-auto px-4 py-8 text-black">
@@ -90,23 +88,25 @@ export default function NewsPage() {
       <div className="relative rounded-xl overflow-hidden shadow-lg mb-8">
         {/* Aspect box (16:9). If you use the Tailwind aspect-ratio plugin, you can replace with `aspect-video`. */}
         <div className="w-full pb-[56.25%]" />
-        <Image
-          src={imageSrc}
-          alt={news.title}
-          fill
-          priority
-          onError={() => setImgError(true)}
-          className="object-cover brightness-95 contrast-110"
-          sizes="(max-width: 768px) 100vw, 900px"
-        />
-        {/* Readability scrims */}
-        <div className="pointer-events-none absolute inset-0 bg-black/20 mix-blend-multiply" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+        {imageSrc ? (
+          <>
+            <Image
+              src={imageSrc}
+              alt={news.title}
+              fill
+              priority
+              onError={() => setImgError(true)}
+              className="object-cover brightness-95 contrast-110"
+              sizes="(max-width: 768px) 100vw, 900px"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-black/20 mix-blend-multiply" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+          </>
+        ) : (
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br to-orange via-forest from-black mix-blend-multiply" />
+        )}
       </div>
-
-      {/* Content */}
       <section className="prose prose-lg max-w-none prose-headings:text-forest prose-strong:text-forest prose-a:text-orange hover:prose-a:text-orange/80 prose-img:rounded-lg prose-li:marker:text-forest">
-        {/* Avoid nested `.prose` by clearing the child’s proseClassName */}
         <MarkdownRenderer proseClassName="" content={news.content} />
       </section>
 

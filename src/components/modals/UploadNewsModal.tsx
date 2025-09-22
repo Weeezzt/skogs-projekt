@@ -180,7 +180,7 @@ export default function UploadNewsModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <form
-        className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg relative"
+        className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg relative overflow-auto max-h-[90vh]"
         onSubmit={handleSubmit}
       >
         <h2 className="text-xl font-bold text-[#2F5D50] mb-4">
@@ -246,7 +246,6 @@ export default function UploadNewsModal({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={8}
-              required
             />
           ) : (
             <div className="w-full max-h-[200px] border rounded px-3 py-3 max-w-none overflow-scroll">
