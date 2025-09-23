@@ -34,14 +34,14 @@ const textContentPerOrg = {
   sorsele: {
     title: "Fiske i Sorsele Övre Allmänningsskog",
     subtitle:
-      "Upplev naturen med förstklassigt fiske i västerbotten – regler och priser för fiskeåret 2024/25",
+      "Upplev naturen med förstklassigt fiske i västerbotten – regler och priser för fiskeåret 2025/2026",
     imageSrc: "/herotrout.jpg",
     imageAlt: "scenic image",
   },
   tarnaStensele: {
     title: "Fiske i Tärna-Stensele Allmänningsskog",
     subtitle:
-      "Upplev naturen med förstklassigt fiske i västerbotten – regler och priser för fiskeåret 2024/25",
+      "Upplev naturen med förstklassigt fiske i västerbotten – regler och priser för fiskeåret 2025/2026",
     imageSrc: "/herotrout.jpg",
     imageAlt: "scenic image",
   },

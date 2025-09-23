@@ -31,7 +31,7 @@ const textContentPerOrg = {
   sorsele: {
     title: "Jakt i Sorsele Övre Allmänningsskog",
     subtitle:
-      "Upplev naturen med ansvar – regler och priser för jaktåret 2024/25",
+      "Upplev naturen med ansvar – regler och priser för jaktåret 2025/2026",
     imageSrc: "/heromoose.jpg",
     imageAlt: "scenic image",
     jaktKartaImageSrc: "/JAKTKARTA.png",
@@ -39,7 +39,7 @@ const textContentPerOrg = {
   tarnaStensele: {
     title: "Jakt i Tärna-Stensele Allmänningsskog",
     subtitle:
-      "Upplev naturen med ansvar – regler och priser för jaktåret 2024/25",
+      "Upplev naturen med ansvar – regler och priser för jaktåret 2025/26",
     imageSrc: "/heromoose.jpg",
     imageAlt: "scenic image",
     jaktKartaImageSrc: "/Enkel-oversiktskarta-TSA-jakt.jpg",
@@ -96,6 +96,19 @@ export default function JaktContent() {
         imageSrc="/heromoose.jpg"
         ctaButtons={isSorsele ? ctaButtonsSorsele : ctaButtonsTSA}
       />
+      <div className="md:hidden mt-4 w-full flex flex-wrap items-center justify-center gap-3 px-2">
+        {(isSorsele ? ctaButtonsSorsele : ctaButtonsTSA).map((b, i) => (
+          <a
+            key={i}
+            href={b.href}
+            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg text-white ${b.bgColor} shadow-md text-sm`}
+            rel={b.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            target={b.href.startsWith("http") ? "_blank" : undefined}
+          >
+            {b.label}
+          </a>
+        ))}
+      </div>
       <div className=" w-full flex flex-col items-center mt-10 px-2">
         <InfoSection title="Allmänna regler" id="allmanna-regler">
           <ul className="list-disc ml-5">

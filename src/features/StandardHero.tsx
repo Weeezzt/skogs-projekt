@@ -1,6 +1,3 @@
-import Image from "next/image";
-
-//StandardHeroComponent that displays a hero section with a title, subtitle, and an image and three call to action buttons
 interface StandardHeroProps {
   title?: string;
   subtitle?: string;
@@ -18,7 +15,7 @@ export default function StandardHero(props: StandardHeroProps) {
 
   return (
     <div
-      className="bg-beige rounded-xl shadow-lg overflow-hidden p-6 w-full md:w-[600px] lg:w-[800px] xl:w-[1000px] text-center h-[300px] xl:h-[400px] relative"
+      className="bg-beige rounded-xl shadow-lg overflow-hidden p-6 w-full lg:w-[800px] xl:w-[1000px] text-center h-[300px] md:h-[400px] relative"
       style={{
         backgroundImage: imageSrc ? `url(${imageSrc})` : undefined,
         backgroundSize: "cover",
@@ -28,7 +25,7 @@ export default function StandardHero(props: StandardHeroProps) {
     >
       {title && <h1 className="text-4xl font-bold mb-2 text-beige">{title}</h1>}
       {subtitle && <p className="text-xl text-beige mb-4">{subtitle}</p>}
-      <div className="flex gap-4 justify-center mx-auto mt-60">
+      <div className="hidden md:flex gap-4 justify-center mx-auto mt-60">
         {ctaButtons?.map((button, index) => (
           <a
             key={index}
