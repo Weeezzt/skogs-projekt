@@ -12,6 +12,7 @@ export const viewport = {
   initialScale: 1,
 };
 export const metadata: Metadata = {
+  metadataBase: new URL("https://allmskog-ac.nu"),
   title: "Sorsele Övre Allmänningsskog & Tärna-Stensele Allmänningsskog",
   description:
     "Information om jakt, fiske och verksamhet i Sorsele Övre Allmänningsskog och Tärna-Stensele Allmänningsskog.",

@@ -4,7 +4,7 @@ import JaktContent from "@/components/features/JaktContent";
 import { useState } from "react";
 
 export default function JaktFiskePage() {
-  const [activeTab, setActiveTab] = useState<"fiske" | "jakt">("fiske");
+  const [activeTab, setActiveTab] = useState<"fiske" | "jakt">("jakt");
 
   return (
     <div className="mt-4">

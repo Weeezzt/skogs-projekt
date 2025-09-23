@@ -58,7 +58,7 @@ const documentsForOrg = {
   ],
   tarnaStensele: [
     {
-      title: "Omradesansvariga",
+      title: "Områdesansvariga",
       href: "/docs/tarna-stensele/jakt-files/Omradesansvariga_TSA_ASO_2024.pdf",
     },
     {
@@ -66,7 +66,7 @@ const documentsForOrg = {
       href: "/docs/tarna-stensele/jakt-files/karta-tsa-algjaktsomraden.pdf",
     },
     {
-      title: "jAKTKARTA Tärna-Stensele Allmänningsskog",
+      title: "JAKTKARTA Tärna-Stensele Allmänningsskog",
       href: "/docs/tarna-stensele/jakt-files/TSA-jakt-o-fiskekarta-hela-allm-16-01-14-v4-52x52-1.pdf",
     },
   ],
