@@ -63,9 +63,9 @@ export default function Home() {
 
   return (
     <main className=" bg-gradient-to-br from-orange via-forest to-forest/90">
-      <section className="relative flex flex-col items-center sm:justify-center min-h-[45vh] overflow-hidden mb-12">
-        <div className="relative flex flex-col items-center sm:justify-center h-full w-full px-4 pb-26">
-          <h1 className=" text-3xl sm:text-4xl md:text-6xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
+      <section className="relative flex flex-col items-center sm:justify-center min-h-[30vh] md:min-h-[45vh] mt-2 overflow-hidden mb-12">
+        <div className="relative flex flex-col items-center sm:justify-center h-full w-full px-4 md:pb-26">
+          <h1 className=" text-3xl sm:text-4xl md:text-5xl font-extrabold text-beige drop-shadow-lg text-center mb-4">
             {organisation === "sorsele"
               ? "Sorsele Övre Allmänningsskog"
               : " Tärna-Stensele Allmänningsskog"}
@@ -76,12 +76,12 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <section className="mx-auto w-3/3 my-[-200px] z-20 relative">
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-beige mb-8 text-center">
+      <section className="mx-auto w-full my-[-50px] md:my-[-100px] xl:my-[-200px] z-20 relative">
+        <h2 className="text-2xl md:text-4xl 2xl:text-5xl font-extrabold text-beige mb-8 text-center">
           Senaste Nytt
         </h2>
 
-        <div className="flex justify md:h-[300px] justify-evenly w-full">
+        <div className="flex md:h-[300px] justify-evenly w-full">
           {loading && <LatestNewsSkeleton />}
 
           {!loading && latestNews && (
@@ -93,7 +93,7 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="w-full flex flex-col md:flex-row sm:w-4/5  md:w-3/4 lg:w-2/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around  items-center justify-center mt-50 py-12 mx-auto ">
+      <section className="w-full flex flex-col md:flex-row sm:w-4/5  md:w-3/4 lg:w-2/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around  items-center justify-center mt-12 md:mt-50 py-12 mx-auto ">
         <div className="max-w-4xl w-full px-4">
           <h3 className="text-center font-bold mb-4 text-xl lg:text-2xl xl:text-3xl text-beige">
             Senaste Dokumentet
@@ -119,7 +119,7 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="w-full flex flex-col items-center gap-4 lg:flex-row sm:w-4/5 lg:w-3/3  xl:w-3/5 2xl:w-1/2 p-2 md:justify-around mb-20 mx-auto">
+      <section className="w-full flex flex-col items-center gap-4 lg:flex-row sm:w-4/5 lg:w-3/3  xl:w-4/5 2xl:w-3/5 p-2 md:justify-around mb-20 mx-auto">
         <StandingCard
           title="Jakt och Fiske"
           id="jakt-fiske"
