@@ -4,14 +4,14 @@ import { FaRegFolder } from "react-icons/fa6";
 
 interface FolderFilterProps {
   documents: DocumentDTO[];
-  activeCategories: string[] | null;
-  onCategoriesChange: (category: string[] | null) => void;
+  activeCategory: string | null;
+  onCategoryChange: (category: string | null) => void;
 }
 
 export default function FolderFilter({
   documents,
-  activeCategories,
-  onCategoriesChange,
+  activeCategory,
+  onCategoryChange,
 }: FolderFilterProps) {
   // Extract unique categories and counts
   const categories = useMemo(() => {
@@ -27,17 +27,7 @@ export default function FolderFilter({
   }, [documents]);
 
   const handleClick = (category: string) => {
-    if (activeCategories?.includes(category)) {
-      // Remove category from activeCategories
-      const newCategories = activeCategories.filter((cat) => cat !== category);
-      onCategoriesChange(newCategories.length > 0 ? newCategories : null);
-    } else {
-      // Add category to activeCategories
-      const newCategories = activeCategories
-        ? [...activeCategories, category]
-        : [category];
-      onCategoriesChange(newCategories);
-    }
+    onCategoryChange(activeCategory === category ? null : category);
   };
 
   return (
@@ -48,7 +38,7 @@ export default function FolderFilter({
           onClick={() => handleClick(cat.name)}
           className={`px-4 pt-2 pb-1 rounded-md border-2 text-sm transition duration-200 cursor-pointer
             ${
-              activeCategories?.includes(cat.name)
+              activeCategory === cat.name
                 ? "bg-beige text-orange font-semibold border-orange"
                 : "bg-beige text-forest border-forest font-semibold hover:border-orange "
             }`}

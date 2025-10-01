@@ -124,14 +124,14 @@ export default function Home() {
           title="Jakt och Fiske"
           id="jakt-fiske"
           description="Information om fiskeregler, jaktsäsonger, tilldelningar och regler. Ta del av aktuella jakttillfällen och ansök om jakt inom våra marker."
-          imageSrc="/jaktbild.jpg"
+          imageSrc="/barn-gubbe-hund.jpg"
           href={`/${organisation}/jakt-fiske`}
         />
         <StandingCard
           title="Nyheter"
           id="nyheter"
           description="Bläddra bland de senaste nyheterna, evenemangen och uppdateringarna. Håll dig informerad om vad som händer i vår skog."
-          imageSrc="/buyforest.jpeg"
+          imageSrc="/skidor.jpg"
           href={`/${organisation}/nyheter`}
         />
         <StandingCard

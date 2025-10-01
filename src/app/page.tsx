@@ -21,14 +21,14 @@ export default function Home() {
             title="Sorsele övre allmänningsskog"
             id="jakt"
             description="Allmän information om Sorsele övre allmänningsskog, dess verksamhet och tjänster."
-            imageSrc="/jaktbild.jpg"
+            imageSrc="/alg-med-hund-krona.jpg"
             href="/sorsele/hem"
           />
           <StandingCard
             title="Tärna-Stensele allmänningsskog"
             id="fiske"
             description="Allmän information om Tärna-Stensele allmänningsskog, dess verksamhet och tjänster."
-            imageSrc="/fiskebild.jpg"
+            imageSrc="/stavar.jpg"
             href="/tarna-stensele/hem"
           />
         </div>

@@ -23,9 +23,7 @@ const sortOptions = [
 export default function Dokument() {
   const [isGridLayout, setIsGridLayout] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
-  const [activeCategories, setActiveCategories] = useState<string[] | null>(
-    null
-  );
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [docsData, setDocsData] = useState<DocumentDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -88,11 +86,12 @@ export default function Dokument() {
 
   useEffect(() => {
     let filtered = docsData;
-
-    if (activeCategories && activeCategories.length > 0) {
-      filtered = filtered.filter((doc) =>
-        activeCategories.includes(doc.category)
-      );
+    if (!activeCategory) {
+      setFilteredDocuments([]);
+      return;
+    }
+    if (activeCategory && activeCategory.length > 0) {
+      filtered = filtered.filter((doc) => activeCategory === doc.category);
     }
     if (query.length > 0) {
       const lowerQuery = query.toLowerCase();
@@ -105,7 +104,7 @@ export default function Dokument() {
     }
 
     setFilteredDocuments(filtered);
-  }, [docsData, query, activeCategories, selectedSort]);
+  }, [docsData, query, activeCategory, selectedSort]);
 
   const allFolders = useMemo(() => {
     const folderSet = new Set<string>();
@@ -120,7 +119,7 @@ export default function Dokument() {
   return (
     <main className="w-full mx-auto mt-8 grid">
       <div className="w-full flex justify-between px-4 items-center md:w-[600px] lg:w-[800px] xl:w-[1000px] shadow-md bg-beige min-h-20 mx-auto mb-6">
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-4 mr-1">
           <DocumentSearchBar query={query} onQueryChange={handleQueryChange} />
           <MultiSelectDropdown
             options={sortOptions}
@@ -151,8 +150,8 @@ export default function Dokument() {
       <div className="px-2 mx-auto w-full flex justify-between items-center md:w-[600px] lg:w-[800px] xl:w-[1000px]">
         <FolderFilter
           documents={docsData}
-          activeCategories={activeCategories}
-          onCategoriesChange={(cat) => setActiveCategories(cat)}
+          activeCategory={activeCategory}
+          onCategoryChange={(cat) => setActiveCategory(cat)}
         />
       </div>
       <div>
@@ -160,10 +159,15 @@ export default function Dokument() {
           <LoadingIndicator variant="bars" size={80} tintOpacity={1} />
         )}
         {error && <div className="text-center text-red-500">{error}</div>}
-        {isGridLayout ? (
+        {isGridLayout && activeCategory ? (
           <DocumentGrid documents={filteredDocuments} />
         ) : (
           <DocumentList documents={filteredDocuments} />
+        )}
+        {!activeCategory && !loading && (
+          <div className="mb-12 sm:mb-6 md:mb-0 text-center text-gray-500 mt-20">
+            Vänligen välj en mapp för att visa dokument.
+          </div>
         )}
       </div>
       <UploadDocumentModal
