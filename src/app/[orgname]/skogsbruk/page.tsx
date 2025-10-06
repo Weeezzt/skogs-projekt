@@ -19,11 +19,11 @@ const ORG_CONTENT: Record<
   sorsele: {
     heading: "Sorsele Övre Allmänningsskog",
     certLabel: "FSC®",
-    hero: "/skogsbruk-soa.jpg",
+    hero: "/SÖAvy.JPG",
     gallery: [
-      { src: "/skog.png", alt: "Berg och skog i sorsele" },
-      { src: "/skog-sjo-ovan.png", alt: "Skogsväg med dimma" },
-      { src: "/skogstor.jpg", alt: "Gran- och tallskog" },
+      { src: "/SÖA.JPG", alt: "Berg och skog i sorsele" },
+      { src: "/SÖA2.JPG", alt: "Skogsväg med dimma" },
+      { src: "/skogsbruk-soa.jpg", alt: "Gran- och tallskog" },
     ],
     paragraphs: [
       "Sorsele Övre Allmänningsskog bedriver ett aktivt och hållbart skogsbruk som syftar till långsiktig produktion av virkesråvara, samtidigt som naturvärden och andra intressen beaktas.",
@@ -34,11 +34,11 @@ const ORG_CONTENT: Record<
   "tarna-stensele": {
     heading: "Tärna-Stensele Allmänningsskog",
     certLabel: "PEFC™",
-    hero: "/skog.png",
+    hero: "/TSA2.JPG",
     gallery: [
-      { src: "/tsa-diagram.jpg", alt: "Berg och skog i Tärna" },
-      { src: "/skog-sjo-ovan.png", alt: "Skogsväg med dimma" },
-      { src: "/skogstor.jpg", alt: "Gran- och tallskog" },
+      { src: "/tsa-diagram.jpg", alt: "diagram" },
+      { src: "/TSA3.JPG", alt: "Skogsväg med dimma" },
+      { src: "/Tärnastenselegardsjöbäcken.JPG", alt: "Gran- och tallskog" },
     ],
     paragraphs: [
       "Diagrammet visar hur avverkningen har varierat över tid. Underlaget bygger främst på TSA:s förvaltningsberättelser; för de tidigaste åren är uppgifterna ofullständiga och vissa värden är uppskattningar.",

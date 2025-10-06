@@ -23,9 +23,9 @@ const ORG_CONTENT: Record<
     certUrl: "https://se.fsc.org/se-sv",
     hero: "/skog-sjo-ovan.png",
     gallery: [
-      { src: "/skog.png", alt: "Berg och skog i Sorsele" },
-      { src: "/skog-sjo-ovan.png", alt: "Skogsväg med dimma" },
-      { src: "/skogstor.jpg", alt: "Gran- och tallskog" },
+      { src: "/SÖA.JPG", alt: "Berg och skog i sorsele" },
+      { src: "/SÖA2.JPG", alt: "Skogsväg med dimma" },
+      { src: "/SÖAvy.JPG", alt: "Gran- och tallskog" },
     ],
     paragraphs: [
       "Skogen i Sorsele rymmer höga naturvärden med varierade biotoper från tallhedar till myrmarker och bäckmiljöer. Vårt naturvårdsarbete fokuserar på att bevara och utveckla dessa värden i takt med ett ansvarsfullt skogsbruk.",
@@ -38,11 +38,11 @@ const ORG_CONTENT: Record<
     heading: "Tärna-Stensele Allmänningsskog",
     certLabel: "PEFC™",
     certUrl: "https://www.pefc.se/",
-    hero: "/stensele-hero-bild1.jpg",
+    hero: "/Tärnastensele.JPG",
     gallery: [
-      { src: "/skog.png", alt: "Berg och skog i Tärna" },
-      { src: "/skog-sjo-ovan.png", alt: "Skogsväg med dimma" },
-      { src: "/skogstor.jpg", alt: "Gran- och tallskog" },
+      { src: "/TSA2.JPG", alt: "diagram" },
+      { src: "/TSA3.JPG", alt: "Skogsväg med dimma" },
+      { src: "/Tärnastenselegardsjöbäcken.JPG", alt: "Gran- och tallskog" },
     ],
     paragraphs: [
       "Tärna-Stensele omfattar fjällnära skogar med stor ekologisk variation. Förvaltningen prioriterar långsiktig naturvård i kombination med ett hållbart brukande som tar hänsyn till lokala värden.",

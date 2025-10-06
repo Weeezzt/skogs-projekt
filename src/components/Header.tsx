@@ -83,7 +83,7 @@ export default function Header() {
         aria-label="Huvudmeny"
         className="w-full bg-forest h-16 flex items-center px-4 md:px-8 shadow relative z-50"
       >
-        <div className="text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
+        <div className="absolute left-4 md:left-8 text-3xl text-orange font-bold flex-shrink-0 cursor-pointer">
           <a href="/">Allmänningen</a>
         </div>
         <nav className="hidden lg:flex flex-1 justify-center gap-8 xl:gap-20">
@@ -91,7 +91,7 @@ export default function Header() {
             <button
               key={org.slug}
               onClick={() => onOrganisationClick(org.slug)}
-              className={`text-xl xl:text-3xl  font-semibold px-2 py-1 transition-colors duration-200 hover:text-orange cursor-pointer ${
+              className={`text-2xl md:text-3xl  font-semibold px-2 py-1 transition-colors duration-200 hover:text-orange cursor-pointer ${
                 activeOrg === org.slug
                   ? "text-orange border-b-2 border-orange"
                   : "text-beige"
@@ -103,7 +103,7 @@ export default function Header() {
         </nav>
 
         {/* Auth Button */}
-        <div className="hidden lg:flex items-center">
+        <div className="absolute right-4 md:right-8 hidden lg:flex items-center">
           {isLoggedIn && user ? (
             <button
               onClick={handleLogOut}
