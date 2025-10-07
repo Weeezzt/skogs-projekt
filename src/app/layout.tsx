@@ -28,8 +28,8 @@ export const metadata: Metadata = {
     "Västerbotten",
   ],
   icons: {
-    icon: "/logo/transperant.png",
-    apple: "/logo/transperant.png",
+    icon: "/faviconGPT.png",
+    apple: "/faviconGPT.png",
   },
   openGraph: {
     title: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
     images: [
       {
-        url: "/logo/transperant.png",
+        url: "/faviconGPT.png",
         width: 1200,
         height: 630,
         alt: "Sorsele Övre Allmänningsskog",

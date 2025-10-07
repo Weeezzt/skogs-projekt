@@ -1,5 +1,4 @@
 "use client";
-import HorizontalSlider from "@/features/sliders/HorizontalSlider";
 import { HiPlusSm } from "react-icons/hi";
 
 import { NewsDTO } from "@/types/dtos";
