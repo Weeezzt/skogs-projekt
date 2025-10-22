@@ -55,7 +55,7 @@ export default function NewsPage() {
 
   if (!news)
     return (
-      <div className="text-center text-gray-600 mt-10">
+      <div className="text-center text-beige/70 mt-10">
         Ingen nyhet hittades.
       </div>
     );
@@ -63,13 +63,12 @@ export default function NewsPage() {
   const imageSrc = !imgError && news.image && news.image;
 
   return (
-    <article className="w-full max-w-5xl mx-auto px-4 py-8 text-black">
-      {/* Title + meta */}
+    <article className="w-full max-w-5xl mx-auto px-4 py-8 text-beige/95">
       <header className="mb-6">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-forest leading-tight">
+        <h1 className="text-3xl md:text-3xl font-bold text-beige leading-tight">
           {news.title}
         </h1>
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-sm text-beige/70 mt-2">
           {news.author && (
             <>
               <span className="font-medium">{news.author}</span> &bull;{" "}
@@ -88,23 +87,19 @@ export default function NewsPage() {
       <div className="relative rounded-xl overflow-hidden shadow-lg mb-8">
         {/* Aspect box (16:9). If you use the Tailwind aspect-ratio plugin, you can replace with `aspect-video`. */}
         <div className="w-full pb-[56.25%]" />
-        {imageSrc ? (
-          <>
-            <Image
-              src={imageSrc}
-              alt={news.title}
-              fill
-              priority
-              onError={() => setImgError(true)}
-              className="object-cover brightness-95 contrast-110"
-              sizes="(max-width: 768px) 100vw, 900px"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-black/20 mix-blend-multiply" />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-          </>
-        ) : (
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br to-orange via-forest from-black mix-blend-multiply" />
-        )}
+        <>
+          <Image
+            src={imageSrc ? imageSrc : "/ritadhero.png"}
+            alt={news.title}
+            fill
+            priority
+            onError={() => setImgError(true)}
+            className="object-cover brightness-95 contrast-110"
+            sizes="(max-width: 768px) 100vw, 900px"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-black/20 mix-blend-multiply" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+        </>
       </div>
       <section className="prose prose-lg max-w-none prose-headings:text-forest prose-strong:text-forest prose-a:text-orange hover:prose-a:text-orange/80 prose-img:rounded-lg prose-li:marker:text-forest">
         <MarkdownRenderer proseClassName="" content={news.content} />
@@ -135,7 +130,7 @@ export default function NewsPage() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 border-2 border-forest p-3 rounded-lg text-forest hover:bg-forest hover:text-white transition-colors duration-300"
+                      className="flex items-center gap-3 border-2 border-forest-dark p-3 rounded-lg text-beige/80 hover:bg-white/5 hover:text-beige transition-colors duration-300"
                     >
                       <img
                         src="/icons/pdf-icon.png"

@@ -59,7 +59,9 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className={`min-h-screen w-full flex flex-col ${inter.variable}`}>
+      <body
+        className={`min-h-screen w-full flex flex-col bg-forest ${inter.variable}`}
+      >
         <SessionProviderWrapper>
           {/* SessionProvider wraps the entire app to provide session context */}
           <Header />

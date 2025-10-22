@@ -51,7 +51,7 @@ export default function StyrelseMedlemmarPage() {
 
   return (
     <main className="max-w-5xl mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold text-[#2F5D50] mb-8 text-center">
+      <h1 className="text-3xl font-bold text-beige mb-8 text-center">
         Styrelse & Medlemmar
       </h1>
 
@@ -60,7 +60,7 @@ export default function StyrelseMedlemmarPage() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="flex gap-4 rounded-xl border border-forest/20 bg-white p-4 shadow-sm animate-pulse"
+              className="flex gap-4 rounded-xl border border-forest/20 bg-beige p-4 shadow-sm animate-pulse"
             >
               <div className="h-20 w-20 rounded-full bg-gray-200" />
               <div className="flex-1 space-y-2">

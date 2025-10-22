@@ -39,8 +39,8 @@ export default function FolderFilter({
           className={`px-4 pt-2 pb-1 rounded-md border-2 text-sm transition duration-200 cursor-pointer
             ${
               activeCategory === cat.name
-                ? "bg-beige text-orange font-semibold border-orange"
-                : "bg-beige text-forest border-forest font-semibold hover:border-orange "
+                ? "bg-forest-dark text-orange/90 font-semibold border-orange/70"
+                : "bg-forest-dark text-beige/80 border-beige/50 font-semibold hover:border-orange "
             }`}
         >
           <FaRegFolder className="inline-block mr-2 text-xl mb-1" />

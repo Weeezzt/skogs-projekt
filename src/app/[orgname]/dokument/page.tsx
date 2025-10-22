@@ -28,6 +28,23 @@ export default function Dokument() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [screenWidth, setScreenWidth] = useState<number>(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
+
+  // update screenWidth on resize (simple)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    // set initial
+    onResize();
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // choose doc card variant based on width
+  const smallScreen = screenWidth < 600;
+
   const { isLoggedIn, user } = useUserSession();
 
   const pathname = usePathname();
@@ -118,7 +135,7 @@ export default function Dokument() {
 
   return (
     <main className="w-full mx-auto mt-8 grid">
-      <div className="w-full flex justify-between px-4 items-center md:w-[600px] lg:w-[800px] xl:w-[1000px] shadow-md bg-beige min-h-20 mx-auto mb-6">
+      <div className="w-full flex justify-between px-4 items-center md:w-[600px] lg:w-[800px] xl:w-[1000px] shadow-md bg-forest-dark min-h-20 mx-auto mb-6">
         <div className="flex w-full gap-4 mr-1">
           <DocumentSearchBar query={query} onQueryChange={handleQueryChange} />
           <MultiSelectDropdown
@@ -138,12 +155,16 @@ export default function Dokument() {
           )}
         </div>
 
-        <TooltipZone variant="light" tooltip="Byt layout mellan grid och lista">
+        <TooltipZone
+          variant="light"
+          delay={500}
+          tooltip="Byt layout mellan grid och lista"
+        >
           <button
-            className=" w-[44px] h-[44px] flex text-4xl cursor-pointer justify-center items-center rounded-lg border-2 border-forest text-forest hover:border-orange hover:text-orange transition-colors duration-300"
+            className=" w-[44px] h-[44px] flex text-4xl cursor-pointer justify-center items-center rounded-lg border-2 border-orange/70 text-orange/70 hover:border-orange hover:text-orange transition-colors duration-300"
             onClick={toggleLayout}
           >
-            {!isGridLayout ? <CiGrid41 /> : <CiGrid2H />}
+            {!isGridLayout || smallScreen ? <CiGrid41 /> : <CiGrid2H />}
           </button>
         </TooltipZone>
       </div>
@@ -159,13 +180,13 @@ export default function Dokument() {
           <LoadingIndicator variant="bars" size={80} tintOpacity={1} />
         )}
         {error && <div className="text-center text-red-500">{error}</div>}
-        {isGridLayout && activeCategory ? (
+        {(isGridLayout && activeCategory) || smallScreen ? (
           <DocumentGrid documents={filteredDocuments} />
         ) : (
           <DocumentList documents={filteredDocuments} />
         )}
         {!activeCategory && !loading && (
-          <div className="mb-12 sm:mb-6 md:mb-0 text-center text-gray-500 mt-20">
+          <div className="mb-12 sm:mb-6 md:mb-0 text-center text-beige/70 mt-20">
             Vänligen välj en mapp för att visa dokument.
           </div>
         )}

@@ -104,14 +104,12 @@ export default function SkogsbrukPage() {
       </section>
 
       {/* Header */}
-      <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <h2 className="text-2xl md:text-3xl font-bold text-forest">
-          {cfg.heading}
-        </h2>
+      <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between text-beige/90">
+        <h2 className="text-2xl md:text-3xl font-bold ">{cfg.heading}</h2>
       </header>
 
       {/* Body */}
-      <section className="space-y-4 leading-relaxed text-lg">
+      <section className="space-y-4 leading-relaxed text-lg text-beige/90">
         {cfg.paragraphs.map((p, i) => (
           <p key={i}>{p}</p>
         ))}
@@ -119,7 +117,7 @@ export default function SkogsbrukPage() {
 
       {/* Image gallery */}
       <section className="mt-10">
-        <h3 className="text-xl font-semibold text-forest mb-4">
+        <h3 className="text-xl font-semibold text-beige/90 mb-4">
           Bilder från området
         </h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

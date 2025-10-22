@@ -44,26 +44,11 @@ export default function DocumentCard({
 
   return (
     <div
-      className={`group transition rounded-xl border bg-beige ${
+      className={`group transition rounded-md border border-beige/30 bg-forest-dark text-beige/90 ${
         variant === "grid"
           ? "flex flex-col items-center p-4 gap-2 h-64 w-full"
           : "flex flex-row items-center p-4 gap-4 w-full"
-      } ${isSpecial ? "border-4 border-orange shadow-lg" : ""}`}
-      style={
-        isSpecial
-          ? {
-              background: `
-              repeating-linear-gradient(
-                135deg,
-                #F2994A 0px,
-                #F2994A 40px,
-                #F5F5DC 40px,
-                #F5F5DC 80px
-              )
-            `,
-            }
-          : {}
-      }
+      }`}
     >
       <div
         className={`flex-shrink-0 ${
@@ -88,39 +73,21 @@ export default function DocumentCard({
             className="block"
           >
             <div
-              className={`font-semibold text-lg ${
-                isSpecial ? "hover:text-forest" : "hover:text-orange"
-              } truncate w-full max-w-[220px] mx-auto whitespace-nowrap overflow-hidden`}
+              className={`font-semibold text-lg hover:text-orange truncate w-full max-w-[220px] mx-auto whitespace-nowrap overflow-hidden`}
             >
               {title}
             </div>
           </a>
         </TooltipZone>
 
-        <div
-          className={`text-xs ${
-            isSpecial ? "text-forest font-bold" : "text-gray-500"
-          } mb-1`}
-        >
+        <div className={`text-xs text-beige/70 mb-1`}>
           {category}
           {year && ` • ${year}`}
         </div>
-        {tags && tags.length > 0 ? (
-          <div className="flex flex-wrap gap-1 justify-center mt-1">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-orange/10 text-orange px-2 py-0.5 rounded text-xs"
-              >
-                {tag ? tag : "dokument"}
-              </span>
-            ))}
-          </div>
-        ) : null}
       </div>
 
       {isLoggedIn && user ? (
-        <div className="mt-2 text-xs flex gap-2 text-gray-400">
+        <div className="mt-2 text-xs flex gap-2 text-beige/70">
           <button
             onClick={handleDownload}
             className="flex items-center justify-center text-center bg-beige text-md font-semibold text-orange w-30 h-10 p-2 rounded-md border-2 border-orange cursor-pointer hover:border-beige hover:bg-orange hover:text-beige transition-colors"
@@ -135,12 +102,12 @@ export default function DocumentCard({
           </button>
         </div>
       ) : (
-        <div className="mt-2 text-xs text-gray-400">
+        <div className="mt-2 text-xs text-beige/70">
           <button
             onClick={handleDownload}
-            className="flex items-center justify-center text-center bg-beige text-md font-semibold text-orange w-30 h-10 p-2 rounded-md border-2 border-orange cursor-pointer hover:border-beige hover:bg-orange hover:text-beige transition-colors"
+            className="flex items-center justify-center text-center text-md font-semibold text-orange/80 w-30 h-10 p-2 rounded-md cursor-pointer hover:border-beige hover:bg-forest  transition-colors"
           >
-            Ladda ned <IoMdDownload className="text-xl" />
+            Ladda ned <IoMdDownload className="ml-2 text-xl" />
           </button>
         </div>
       )}

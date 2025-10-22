@@ -11,7 +11,7 @@ const ctaButtonsSorsele = [
   {
     label: "Köp jaktkort",
     href: "https://www.ijakt.se/jaktkort-sorsele-ovre-allmanningsskog.htm",
-    bgColor: "bg-forest",
+    bgColor: "bg-forest-dark",
   },
 ];
 
@@ -24,7 +24,7 @@ const ctaButtonsTSA = [
   {
     label: "Köp jaktkort",
     href: "https://www.ijakt.se/jakt-tarna-stensele-allmanningskog.htm",
-    bgColor: "bg-forest",
+    bgColor: "bg-forest-dark",
   },
 ];
 const textContentPerOrg = {

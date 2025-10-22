@@ -84,7 +84,7 @@ export default function NaturMiljoPage() {
   }, [lightboxIndex, cfg.gallery.length]);
 
   return (
-    <main className="mx-auto my-10 max-w-5xl px-4 pb-12 text-gray-900">
+    <main className="mx-auto my-10 max-w-5xl px-4 pb-12 text-beige/85">
       {/* Hero */}
       <section className="relative rounded-xl overflow-hidden shadow-lg mb-8">
         <div className="relative h-48 sm:h-56 md:h-64 lg:h-72">

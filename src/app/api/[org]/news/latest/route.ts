@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { S3Client } from "@aws-sdk/client-s3";
 
 export async function GET(
   _req: NextRequest,
@@ -21,11 +20,12 @@ export async function GET(
     );
   }
 
-  const latest = await prisma.news.findFirst({
+  const latest = await prisma.news.findMany({
     where: {
       organizationId: organization.id,
     },
     orderBy: [{ publishedAt: "desc" }],
+    take: 3,
     include: { documents: true },
   });
 

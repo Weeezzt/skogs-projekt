@@ -19,7 +19,7 @@ export default function DocumentSearchBar(
       placeholder="Sök dokument.."
       value={query ?? ""}
       onChange={handleOnQueryChange}
-      className="text-forest border-2 rounded-md w-1/3 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
+      className="text-beige/80 border-2 rounded-md w-1/3 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
     />
   );
 }

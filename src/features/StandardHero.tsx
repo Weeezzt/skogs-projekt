@@ -15,7 +15,7 @@ export default function StandardHero(props: StandardHeroProps) {
 
   return (
     <div
-      className="bg-beige rounded-xl shadow-lg overflow-hidden p-6 w-full lg:w-[800px] xl:w-[1000px] text-center h-[300px] md:h-[400px] relative"
+      className="bg-forest-dark rounded-xl shadow-lg overflow-hidden p-6 w-full lg:w-[800px] xl:w-[1000px] text-center h-[300px] md:h-[400px] relative"
       style={{
         backgroundImage: imageSrc ? `url(${imageSrc})` : undefined,
         backgroundSize: "cover",

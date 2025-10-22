@@ -107,7 +107,7 @@ export default function Nyheter() {
           <select
             value={yearFilter}
             onChange={(e) => setYearFilter(e.target.value)}
-            className="border-2 border-forest rounded px-3 py-2 w-40 hover:border-orange transition-colors duration-300 cursor-pointer"
+            className="border-2 bg-forest border-beige/80 text-beige/90 rounded px-3 py-2 w-40 hover:border-orange transition-colors duration-300 cursor-pointer"
             aria-label="Filtrera på år"
           >
             <option value="">Alla år</option>

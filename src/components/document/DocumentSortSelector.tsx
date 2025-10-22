@@ -45,7 +45,7 @@ export default function SingleSelectDropdown({
     <div className={`relative ${className}`} ref={ref}>
       <button
         type="button"
-        className={` text-forest w-40 border-2 rounded-md px-4 py-2 bg-beige text-left cursor-pointer hover:border-orange ${
+        className={` text-beige/80 w-40 border-2 rounded-md px-4 py-2 bg-forest-dark text-left cursor-pointer hover:border-orange ${
           open && "border-orange"
         }`}
         onClick={() => setOpen((o) => !o)}
@@ -53,11 +53,11 @@ export default function SingleSelectDropdown({
         {selectedOption ? (
           selectedOption.label
         ) : (
-          <span className="text-forest font-bold">{placeholder}</span>
+          <span className="text-beige/80 font-semibold">{placeholder}</span>
         )}
       </button>
       {open && (
-        <ul className="absolute z-10 mt-1 w-full bg-beige border rounded shadow max-h-60 overflow-auto">
+        <ul className="absolute z-10 mt-1 w-full bg-forest border rounded shadow max-h-60 overflow-auto text-beige/80">
           {options.map((option) => (
             <li
               key={option.value}
