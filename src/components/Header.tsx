@@ -102,10 +102,10 @@ export default function Header() {
 
   // desktop org indicator
   const desktopOrgWrapRef = useRef<HTMLDivElement | null>(null);
-  const orgButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const orgButtonRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   const mobileOrgWrapRef = useRef<HTMLDivElement | null>(null);
-  const mobileOrgButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const mobileOrgButtonRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [mobileIndicator, setMobileIndicator] = useState({ left: 0, width: 0 });
 
   // derive org from path
@@ -174,17 +174,12 @@ export default function Header() {
 
   useEffect(() => {
     if (navOpen) {
-      // run on next paint to ensure DOM is present
       requestAnimationFrame(() => {
         updateMobileIndicator();
       });
     }
   }, [navOpen]);
 
-  // choose which links to show based on breakpoint via CSS:
-  // md: 3 links + More
-  // lg: 5 links + More
-  // xl: all links
   const mdPrimary = NAV_LINKS.slice(0, 3);
   const mdOverflow = NAV_LINKS.slice(3);
   const lgPrimary = NAV_LINKS.slice(0, 5);
@@ -217,25 +212,36 @@ export default function Header() {
                 }}
               />
               <div className="relative flex items-center gap-2 rounded-md border border-black/10 bg-white/10 p-2">
-                {ORGS.map((o, i) => (
-                  <button
-                    key={o.slug}
-                    type="button"
-                    ref={(el) => {
-                      orgButtonRefs.current[i] = el;
-                    }}
-                    onClick={() => setOrg(o.slug)}
-                    aria-pressed={org === o.slug}
-                    className={
-                      "relative z-10 cursor-pointer rounded px-3 py-1 text-sm font-medium whitespace-nowrap transition-colors " +
-                      (org === o.slug
-                        ? "text-forest"
-                        : "hover:bg-black/10 text-beige")
-                    }
-                  >
-                    {o.label}
-                  </button>
-                ))}
+                {ORGS.map((o, i) => {
+                  const currentOrgSlug = activeOrg.slug;
+                  const href = pathname.startsWith(`/${currentOrgSlug}`)
+                    ? pathname.replace(
+                        new RegExp(`^/${currentOrgSlug}(?=$|/)`),
+                        `/${o.slug}`
+                      )
+                    : `/${o.slug}/hem`;
+
+                  const isActive = org === o.slug;
+
+                  return (
+                    <Link
+                      key={o.slug}
+                      href={href}
+                      ref={(el) => {
+                        orgButtonRefs.current[i] = el ?? null;
+                      }}
+                      aria-pressed={isActive}
+                      className={
+                        "relative z-10 rounded px-3 py-1 text-sm font-medium whitespace-nowrap transition-colors cursor-pointer " +
+                        (isActive
+                          ? "text-forest "
+                          : "hover:bg-black/10 text-beige")
+                      }
+                    >
+                      {o.label}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -254,8 +260,8 @@ export default function Header() {
                   className={
                     "text-sm font-medium whitespace-nowrap transition-colors " +
                     (isActiveLink(link.href)
-                      ? "text-beige"
-                      : "text-beige/90 hover:text-beige")
+                      ? "text-orange"
+                      : "text-beige hover:text-beige")
                   }
                 >
                   {link.label}
@@ -273,8 +279,8 @@ export default function Header() {
                   className={
                     "text-sm font-medium whitespace-nowrap transition-colors " +
                     (isActiveLink(link.href)
-                      ? "text-beige"
-                      : "text-beige/90 hover:text-beige")
+                      ? "text-orange"
+                      : "text-beige hover:text-beige")
                   }
                 >
                   {link.label}
@@ -324,7 +330,7 @@ export default function Header() {
 
             {/* Hamburger (mobile) */}
             <button
-              className="rounded-lg p-2 transition-colors hover:bg-black/10 dark:hover:bg-white/10 md:hidden"
+              className="rounded-lg p-2 transition-colors text-orange/90 hover:text-orange md:hidden"
               aria-label="Öppna meny"
               aria-expanded={navOpen}
               onClick={() => setNavOpen((v) => !v)}
@@ -357,7 +363,7 @@ export default function Header() {
 
         {/* Mobile menu (simple, no height animation, no mobile org-indicator) */}
         {navOpen && (
-          <div className="md:hidden border-t border-white/10">
+          <div className="md:hidden border-t border-white/10 bg-forest shadow-sm shadow-orange/10">
             <div className="p-4">
               {/* Org switch (mobile) */}
               <div
@@ -373,23 +379,36 @@ export default function Header() {
                     width: `${mobileIndicator.width}px`,
                   }}
                 />
-                {ORGS.map((o, i) => (
-                  <button
-                    key={o.slug}
-                    type="button"
-                    ref={(el) => {
-                      mobileOrgButtonRefs.current[i] = el;
-                    }}
-                    onClick={() => setOrg(o.slug)}
-                    aria-pressed={org === o.slug}
-                    className={
-                      "relative z-10 w-1/2 rounded px-3 py-1 text-sm font-medium transition-colors " +
-                      (org === o.slug ? "text-white" : "text-white/90")
-                    }
-                  >
-                    {o.label}
-                  </button>
-                ))}
+                {ORGS.map((o, i) => {
+                  const currentOrgSlug = activeOrg.slug;
+                  const href = pathname.startsWith(`/${currentOrgSlug}`)
+                    ? pathname.replace(
+                        new RegExp(`^/${currentOrgSlug}(?=$|/)`),
+                        `/${o.slug}`
+                      )
+                    : `/${o.slug}/hem`;
+
+                  const isActive = org === o.slug;
+
+                  return (
+                    <Link
+                      key={o.slug}
+                      href={href}
+                      ref={(el) => {
+                        mobileOrgButtonRefs.current[i] = el ?? null;
+                      }}
+                      aria-pressed={isActive}
+                      className={
+                        "relative z-10 w-1/2 rounded px-3 py-1 text-sm font-medium transition-colors " +
+                        (isActive
+                          ? "text-forest "
+                          : "hover:bg-black/10 text-beige")
+                      }
+                    >
+                      {o.label}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
             <nav
