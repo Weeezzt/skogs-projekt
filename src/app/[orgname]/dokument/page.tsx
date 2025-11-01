@@ -147,7 +147,7 @@ export default function Dokument() {
 
           {isLoggedIn && user && (
             <button
-              className=" font-bold w-40 h-[44px] ml- cursor-pointer justify-center items-center rounded-lg border-2 border-forest text-forest hover:border-orange hover:text-orange transition-colors duration-300"
+              className=" font-bold w-40 h-[44px] ml- cursor-pointer justify-center items-center rounded-lg border-2 border-beige/80 text-beige/80 hover:border-orange hover:text-orange transition-colors duration-300"
               onClick={() => setUploadModalOpen(true)}
             >
               Ladda upp

@@ -129,14 +129,14 @@ export default function Nyheter() {
             >
               <button
                 onClick={() => setIsOpen(true)}
-                className="ml-auto lg:hidden text-3xl text-forest border-2 border-forest rounded-lg w-11 h-11 flex items-center justify-center hover:border-orange hover:text-orange transition-colors duration-300 cursor-pointer"
+                className="ml-auto lg:hidden text-3xl text-beige/80 border-2 border-beige/80 rounded-lg w-11 h-11 flex items-center justify-center hover:border-orange hover:text-orange transition-colors duration-300 cursor-pointer"
               >
                 <HiPlusSm />
               </button>
             </TooltipZone>
             <button
               onClick={() => setIsOpen(true)}
-              className="ml-auto hidden lg:flex items-center gap-2 text-base font-semibold text-forest  border-2 border-forest rounded-lg px-4 py-2  hover:border-orange hover:text-forest transition-colors duration-300 cursor-pointer"
+              className="ml-auto hidden lg:flex items-center gap-2 text-base font-semibold text-beige/80  border-2 border-beige/80 rounded-lg px-4 py-2  hover:border-orange hover:text-orange transition-colors duration-300 cursor-pointer"
             >
               <HiPlusSm className="text-xl" />
               Lägg till nyhet
