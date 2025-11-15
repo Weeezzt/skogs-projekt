@@ -7,12 +7,14 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { useUserSession } from "@/hooks/useUserSession";
+import UploadNewsModal from "@/components/modals/UploadNewsModal";
 
 export default function NewsPage() {
   const [news, setNews] = useState<NewsDTO>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { isLoggedIn, user } = useUserSession();
   const param = useParams();
@@ -61,6 +63,14 @@ export default function NewsPage() {
     );
 
   const imageSrc = !imgError && news.image && news.image;
+
+  const handleOpenEditNewsModal = () => {
+    setEditModalOpen(true);
+  };
+  const onEditSaved = () => {
+    //refresh page to show updated news
+    window.location.reload();
+  };
 
   return (
     <article className="w-full max-w-5xl mx-auto px-4 py-8 text-beige/95">
@@ -150,15 +160,43 @@ export default function NewsPage() {
             </ul>
           )}
           {isLoggedIn && user && (
-            <button
-              onClick={handleDeleteNews}
-              className="self-start mt-4 bg-beige text-red-700 px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-red-700 hover:text-beige duration-300"
-            >
-              Radera nyheten
-            </button>
+            <>
+              <div className="hidden md:flex gap-4">
+                <button
+                  onClick={handleOpenEditNewsModal}
+                  className=" inline self-start bg-beige text-orange px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-orange hover:text-beige duration-300"
+                >
+                  Redigera nyheten
+                </button>
+                <button
+                  onClick={handleDeleteNews}
+                  className=" self-start bg-beige text-red-700 px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-red-700 hover:text-beige duration-300"
+                >
+                  Radera nyheten
+                </button>
+              </div>
+            </>
           )}
         </footer>
       )}
+
+      <UploadNewsModal
+        mode="edit"
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        user={user?.name || null}
+        existingNews={{
+          id: news.id.toString(),
+          title: news.title,
+          content: news.content,
+          href: news.href,
+          documentId:
+            news.documents && news.documents.length > 0
+              ? news.documents[0].id.toString()
+              : null,
+        }}
+        onSaved={onEditSaved}
+      />
     </article>
   );
 }

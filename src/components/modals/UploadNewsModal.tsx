@@ -1,26 +1,32 @@
 import { useParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
+
+interface ExistingNews {
+  id: string;
+  title: string;
+  content: string;
+  href?: string | null;
+  documentId?: string | null;
+}
 
 interface UploadDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload: (news: {
-    title: string;
-    description: string;
-    content: string;
-    tags: string[];
-    image: File | null;
-    link: string;
-  }) => void;
-  user?: string | null; // <-- Add user prop if needed
-  existingTags?: string[]; // <-- Add this prop
+  user?: string | null;
+  existingNews?: ExistingNews | null;
+  mode: "create" | "edit";
+  onSaved?: () => void;
+  existingTags?: string[];
 }
 
 export default function UploadNewsModal({
   isOpen,
   onClose,
-  user = null, // <-- Default to null if no user is provided
+  user = null,
+  mode,
+  existingNews = null,
+  onSaved,
 }: UploadDocumentModalProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -36,8 +42,28 @@ export default function UploadNewsModal({
   const path = useParams();
   const org = path.orgname;
   const taRef = useRef<HTMLTextAreaElement | null>(null);
-  if (!isOpen) return null;
 
+  useEffect(() => {
+    if (isOpen && mode === "edit" && existingNews) {
+      setTitle(existingNews.title || "");
+      setContent(existingNews.content || "");
+      setLink(existingNews.href || "");
+      setImage(null); // user can choose a new image if they want
+      setError(null);
+      setLinkError("");
+    }
+    if (isOpen && mode === "create") {
+      // Ensure clean form for create
+      setTitle("");
+      setContent("");
+      setLink("");
+      setSelectedDoc(null);
+      setImage(null);
+      setError(null);
+      setLinkError("");
+    }
+  }, [isOpen, mode, existingNews]);
+  if (!isOpen) return null;
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setImage(e.target.files[0]);
@@ -133,21 +159,31 @@ export default function UploadNewsModal({
     if (image) formData.append("image", image);
     if (selectedDoc) formData.append("documentId", selectedDoc);
 
-    const res = await fetch(`/api/${org}/news`, {
-      method: "POST",
-      body: formData,
-    });
+    const isEdit = mode === "edit" && existingNews?.id;
+    const endpoint = isEdit
+      ? `/api/${org}/news/${existingNews!.id}`
+      : `/api/${org}/news`;
+    const method = isEdit ? "PUT" : "POST";
 
-    if (res.ok) {
+    try {
+      const res = await fetch(endpoint, {
+        method,
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error(
+          isEdit ? "Kunde inte uppdatera nyhet" : "Kunde inte spara nyhet"
+        );
+      }
+
       // Optionally handle success, e.g. refresh news list
-      setTitle("");
-      setContent("");
-      setImage(null);
-      setLink("");
-      onClose();
-    } else {
-      // Optionally handle error
-      setError("Kunde inte spara nyhet");
+      if (onSaved) onSaved();
+
+      // Clear form when closing (for create mode especially)
+      handleOnClose();
+    } catch (err: any) {
+      setError(err?.message ?? "Ett fel uppstod vid sparande av nyhet");
     }
   };
 
@@ -180,7 +216,7 @@ export default function UploadNewsModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <form
-        className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg relative overflow-auto max-h-[90vh]"
+        className="bg-white w-full text-black max-w-lg rounded-xl p-6 shadow-lg relative overflow-auto max-h-[90vh]"
         onSubmit={handleSubmit}
       >
         <h2 className="text-xl font-bold text-[#2F5D50] mb-4">

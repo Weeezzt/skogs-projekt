@@ -177,10 +177,10 @@ export default function Nyheter() {
         </section>
       )}
       <UploadNewsModal
+        mode="create"
         isOpen={isOpen}
         onClose={onCloseModal}
-        onUpload={onUploadNews}
-        user={user?.name} // Assuming user object has name or email
+        user={user?.name}
       />
     </main>
   );
