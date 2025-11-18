@@ -116,7 +116,7 @@ export default function NewsPage() {
       </section>
 
       {(news.href || (news.documents && news.documents.length > 0)) && (
-        <footer className="mt-10 border-t pt-6 flex flex-col gap-4">
+        <div className="mt-10 border-t pt-6 flex flex-col gap-4">
           {news.href && (
             <a
               href={news.href}
@@ -159,25 +159,25 @@ export default function NewsPage() {
               })}
             </ul>
           )}
-          {isLoggedIn && user && (
-            <>
-              <div className="hidden md:flex gap-4">
-                <button
-                  onClick={handleOpenEditNewsModal}
-                  className=" inline self-start bg-beige text-orange px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-orange hover:text-beige duration-300"
-                >
-                  Redigera nyheten
-                </button>
-                <button
-                  onClick={handleDeleteNews}
-                  className=" self-start bg-beige text-red-700 px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-red-700 hover:text-beige duration-300"
-                >
-                  Radera nyheten
-                </button>
-              </div>
-            </>
-          )}
-        </footer>
+        </div>
+      )}
+      {isLoggedIn && user && (
+        <>
+          <div className="hidden md:flex gap-4 mt-4">
+            <button
+              onClick={handleOpenEditNewsModal}
+              className=" inline self-start bg-beige text-orange px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-orange hover:text-beige duration-300"
+            >
+              Redigera nyheten
+            </button>
+            <button
+              onClick={handleDeleteNews}
+              className=" self-start bg-beige text-red-700 px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-red-700 hover:text-beige duration-300"
+            >
+              Radera nyheten
+            </button>
+          </div>
+        </>
       )}
 
       <UploadNewsModal
