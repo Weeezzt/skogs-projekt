@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { NewsDTO } from "@/types/dtos";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ export default function NewsPage() {
   const [error, setError] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [isPortrait, setIsPortrait] = useState(false);
 
   const { isLoggedIn, user } = useUserSession();
   const param = useParams();
@@ -62,7 +62,7 @@ export default function NewsPage() {
       </div>
     );
 
-  const imageSrc = !imgError && news.image && news.image;
+  const imageSrc = !imgError && news.image ? news.image : "/ritadhero.png";
 
   const handleOpenEditNewsModal = () => {
     setEditModalOpen(true);
@@ -94,22 +94,35 @@ export default function NewsPage() {
       </header>
 
       {/* Hero media (fixed 16:9) */}
-      <div className="relative rounded-xl overflow-hidden shadow-lg mb-8">
-        {/* Aspect box (16:9). If you use the Tailwind aspect-ratio plugin, you can replace with `aspect-video`. */}
+      <div className="relative rounded-xl overflow-hidden shadow-lg mb-8 max-h-[70vh]">
         <div className="w-full pb-[56.25%]" />
-        <>
-          <Image
-            src={imageSrc ? imageSrc : "/ritadhero.png"}
-            alt={news.title}
-            fill
-            priority
-            onError={() => setImgError(true)}
-            className="object-cover brightness-95 contrast-110"
-            sizes="(max-width: 768px) 100vw, 900px"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-black/20 mix-blend-multiply" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-        </>
+        {/* blurred backdrop */}
+        <Image
+          src={imageSrc}
+          alt={news.title}
+          fill
+          className="object-cover blur-sm scale-105"
+          aria-hidden
+          priority
+        />
+        {/* main image */}
+        <Image
+          src={imageSrc}
+          alt={news.title}
+          fill
+          priority
+          onError={() => setImgError(true)}
+          onLoadingComplete={({ naturalWidth, naturalHeight }) =>
+            setIsPortrait(naturalHeight > naturalWidth)
+          }
+          className={
+            isPortrait
+              ? "object-contain z-10"
+              : "object-cover z-10 brightness-95 contrast-110"
+          }
+          sizes="(max-width: 768px) 100vw, 900px"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35" />
       </div>
       <section className="prose prose-lg max-w-none prose-headings:text-forest prose-strong:text-forest prose-a:text-orange hover:prose-a:text-orange/80 prose-img:rounded-lg prose-li:marker:text-forest">
         <MarkdownRenderer proseClassName="" content={news.content} />
