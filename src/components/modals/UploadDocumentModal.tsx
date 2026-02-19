@@ -170,7 +170,7 @@ export default function UploadDocumentModal({
             type="text"
             value={newFolder}
             onChange={(e) => setNewFolder(e.target.value)}
-            placeholder="t.ex. Årsredovisningar 2025"
+            placeholder="t.ex. Årsredovisningar 2026"
             className="w-full border border-gray-300 p-2 rounded"
           />
         </div>

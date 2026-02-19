@@ -20,7 +20,7 @@ const ctaButtonsSorsele = [
 const ctaButtonsTSA = [
   {
     label: "Ladda ner fullständiga regler (PDF)",
-    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/d58d7c2c-6de5-4688-af66-56758f04e2da_Jakt-o-fiske-priser-och-regler-2025.pdf",
+    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Jakt+o+fiske+priser+och+regler+2026.pdf",
     bgColor: "bg-orange",
   },
   {
@@ -101,7 +101,7 @@ export default function FiskeContent() {
                       <span className="font-semibold">{item.fisk}: </span>
                       förekomst: {item.förekomst}
                     </li>
-                  )
+                  ),
                 )}
               </ul>
             )}

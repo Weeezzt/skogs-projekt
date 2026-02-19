@@ -12,7 +12,7 @@ export default function JaktFiskePage() {
         <button
           onClick={() => setActiveTab("fiske")}
           className={`px-4 py-2 rounded-t-md cursor-pointer ${
-            activeTab === "fiske" ? "bg-forest text-white" : "bg-gray-200"
+            activeTab === "fiske" ? "bg-orange text-white" : "bg-gray-200"
           }`}
         >
           Fiske
