@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 const ctaButtonsSorsele = [
   {
     label: "Ladda ner fullständiga regler (PDF)",
-    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/d58d7c2c-6de5-4688-af66-56758f04e2da_Jakt-o-fiske-priser-och-regler-2025.pdfhttps://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/6402d892-253a-483f-9617-73b7d5411431_Beslutade-regler-och-priser-for-jakt-pa-SOA-2023-24.pdf",
+    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+fiske+inom+S%C3%96A+2022.pdf",
     bgColor: "bg-orange",
   },
   {

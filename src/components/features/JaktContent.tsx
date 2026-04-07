@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 const ctaButtonsSorsele = [
   {
     label: "Ladda ner fullständiga regelr (PDF)",
-    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt%20och%20Fiske/5fc13b2f-1dc5-44dc-b0ff-1ce7921ad3c9_Beslutade%20regler%20och%20priser%20f%C3%B6r%20jakt%20p%C3%A5%20S%C3%96A%202025-26.pdf",
+    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+jakt+p%C3%A5+S%C3%96A+2026-27.pdf",
     bgColor: "bg-orange",
   },
   {
