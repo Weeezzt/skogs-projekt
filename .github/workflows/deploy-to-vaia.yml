@@ -24,9 +24,9 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -p 22 git.se.vkube.cloud >> ~/.ssh/known_hosts
 
-      - name: Test SSH auth
+      - name: Test Git access
         run: |
-          ssh -v -p 22 teta@git.se.vkube.cloud exit
+          GIT_SSH_COMMAND="ssh -v -p 22" git ls-remote "teta@git.se.vkube.cloud:teta.git"
 
       - name: Push to VAIA
         run: |
