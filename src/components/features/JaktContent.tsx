@@ -1,32 +1,17 @@
+"use client";
 import InfoSection from "@/features/InfoSection";
 import StandardHero from "@/features/StandardHero";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-const ctaButtonsSorsele = [
-  {
-    label: "Ladda ner fullständiga regelr (PDF)",
-    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+jakt+p%C3%A5+S%C3%96A+2026-27.pdf",
-    bgColor: "bg-orange",
-  },
-  {
-    label: "Köp jaktkort",
-    href: "https://www.ijakt.se/jaktkort-sorsele-ovre-allmanningsskog.htm",
-    bgColor: "bg-forest-dark",
-  },
-];
+import { useEffect, useState } from "react";
+import { useUserSession } from "@/hooks/useUserSession";
+import UploadRulesDocumentModal from "@/components/modals/UploadRulesDocumentModal";
 
-const ctaButtonsTSA = [
-  {
-    label: "Ladda ner fullständiga regelr (PDF)",
-    href: "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Jakt+o+fiske+priser+och+regler+2026.pdf",
-    bgColor: "bg-orange",
-  },
-  {
-    label: "Köp jaktkort",
-    href: "https://www.ijakt.se/jakt-tarna-stensele-allmanningskog.htm",
-    bgColor: "bg-forest-dark",
-  },
-];
+const FALLBACK_SORSELE =
+  "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+jakt+p%C3%A5+S%C3%96A+2026-27.pdf";
+const FALLBACK_TSA =
+  "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Jakt+o+fiske+priser+och+regler+2026.pdf";
+
 const textContentPerOrg = {
   sorsele: {
     title: "Jakt i Sorsele Övre Allmänningsskog",
@@ -45,6 +30,7 @@ const textContentPerOrg = {
     jaktKartaImageSrc: "/Enkel-oversiktskarta-TSA-jakt.jpg",
   },
 };
+
 const documentsForOrg = {
   sorsele: [
     {
@@ -75,10 +61,51 @@ const documentsForOrg = {
 export default function JaktContent() {
   const params = useParams();
   const isSorsele = params.orgname === "sorsele";
+  const organisation = params.orgname;
   const router = useRouter();
+  const { isLoggedIn, user } = useUserSession();
+
+  const [pdfUrl, setPdfUrl] = useState<string>(
+    isSorsele ? FALLBACK_SORSELE : FALLBACK_TSA,
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const fetchPdfUrl = async () => {
+    try {
+      const res = await fetch(`/api/${organisation}/document/jakt-regler`);
+      if (res.ok) {
+        const doc = await res.json();
+        if (doc?.path) setPdfUrl(doc.path);
+      }
+    } catch {
+      // keep fallback
+    }
+  };
+
+  useEffect(() => {
+    if (!organisation) return;
+    fetchPdfUrl();
+  }, [organisation]);
+
+  const ctaButtons = [
+    {
+      label: "Ladda ner fullständiga regelr (PDF)",
+      href: pdfUrl,
+      bgColor: "bg-orange",
+    },
+    {
+      label: "Köp jaktkort",
+      href: isSorsele
+        ? "https://www.ijakt.se/jaktkort-sorsele-ovre-allmanningsskog.htm"
+        : "https://www.ijakt.se/jakt-tarna-stensele-allmanningskog.htm",
+      bgColor: "bg-forest-dark",
+    },
+  ];
+
   const handleOpenMapImage = (src: string) => {
     router.push(src);
   };
+
   return (
     <div className="px-2 flex flex-col gap-4 items-center justify-center mt-5">
       <StandardHero
@@ -94,10 +121,11 @@ export default function JaktContent() {
         }
         imageAlt="scenic image"
         imageSrc="/heromoose.jpg"
-        ctaButtons={isSorsele ? ctaButtonsSorsele : ctaButtonsTSA}
+        ctaButtons={ctaButtons}
       />
+
       <div className="md:hidden mt-4 w-full flex flex-wrap items-center justify-center gap-3 px-2">
-        {(isSorsele ? ctaButtonsSorsele : ctaButtonsTSA).map((b, i) => (
+        {ctaButtons.map((b, i) => (
           <a
             key={i}
             href={b.href}
@@ -109,6 +137,25 @@ export default function JaktContent() {
           </a>
         ))}
       </div>
+
+      {isLoggedIn && user && (
+        <div className="w-full flex justify-center px-4 md:px-8">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="text-sm text-beige border border-beige rounded px-3 py-2 hover:border-orange cursor-pointer transition-colors"
+          >
+            Uppdatera regeldokument
+          </button>
+        </div>
+      )}
+
+      <UploadRulesDocumentModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        type="jakt"
+        onUploaded={fetchPdfUrl}
+      />
+
       <div className=" w-full flex flex-col items-center mt-10 px-2">
         <InfoSection title="Allmänna regler" id="allmanna-regler">
           <ul className="list-disc ml-5">

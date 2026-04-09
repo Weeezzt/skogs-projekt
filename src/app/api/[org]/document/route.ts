@@ -139,7 +139,11 @@ export async function POST(
             ContentDisposition: contentDispositionAttachment(file.name),
           })
         );
-        fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+        const encodedKey = s3Key
+          .split("/")
+          .map((segment) => encodeURIComponent(segment))
+          .join("/");
+        fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${encodedKey}`;
       } catch (err) {
         console.error("S3 upload error:", err);
         return NextResponse.json(
