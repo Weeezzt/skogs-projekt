@@ -19,9 +19,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VAIA_SSH_KEY }}
 
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 22 git.se.vkube.cloud >> ~/.ssh/known_hosts
+
+      - name: Test Git access
+        run: |
+          GIT_SSH_COMMAND="ssh -v -p 22" git ls-remote "teta@git.se.vkube.cloud:teta.git"
+
       - name: Push to VAIA
         run: |
-          export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 22"
           git remote remove vaia 2>/dev/null || true
           git remote add vaia "teta@git.se.vkube.cloud:teta.git"
           git push --force vaia HEAD:refs/heads/main
