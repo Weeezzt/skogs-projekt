@@ -16,6 +16,7 @@ export default function Home() {
   const [latestDocs, setLatestDocs] = useState<DocumentDTO | null>(null);
   const [reglemente, setReglemente] = useState<DocumentDTO | null>(null);
   const [loading, setLoading] = useState(false);
+  const [docsLoading, setDocsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const organisation = useParams().orgname?.toString();
 
@@ -57,7 +58,6 @@ export default function Home() {
       setLatestDocs(docs);
     } catch (err) {
       setError("Fel vid hämtning av senaste dokument");
-      return null;
     }
   };
 
@@ -69,15 +69,15 @@ export default function Home() {
       setReglemente(docs);
     } catch (err) {
       setError("Fel vid hämtning av reglemente");
-      return null;
     }
   };
 
   useEffect(() => {
     if (!organisation) return;
     fetchLatestNews();
-    fetchLatestDocs();
-    fetchReglemente();
+    Promise.all([fetchLatestDocs(), fetchReglemente()]).finally(() =>
+      setDocsLoading(false)
+    );
   }, [organisation]);
 
   const formatDate = (iso?: string) => {
@@ -146,7 +146,9 @@ export default function Home() {
           <h3 className="text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige">
             Senaste Dokumentet
           </h3>
-          {latestDocs ? (
+          {docsLoading ? (
+            <DocumentCardSkeleton />
+          ) : latestDocs ? (
             <DocumentCard variant={docVariant} documentData={latestDocs} />
           ) : (
             <p className="text-center text-orange font-bold">
@@ -158,7 +160,9 @@ export default function Home() {
           <h3 className="text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige ">
             Reglemente
           </h3>
-          {reglemente ? (
+          {docsLoading ? (
+            <DocumentCardSkeleton />
+          ) : reglemente ? (
             <DocumentCard variant={docVariant} documentData={reglemente} />
           ) : (
             <p className="text-center text-orange font-bold">
@@ -221,5 +225,18 @@ export default function Home() {
         />
       </section>
     </main>
+  );
+}
+
+function DocumentCardSkeleton() {
+  return (
+    <div className="animate-pulse rounded-md border border-beige/30 bg-forest-dark flex flex-row items-center p-4 gap-4 w-full">
+      <div className="flex-shrink-0 w-20 h-24 rounded bg-beige/10" />
+      <div className="flex-1 flex flex-col gap-2">
+        <div className="h-5 w-3/4 rounded bg-beige/15" />
+        <div className="h-3 w-1/3 rounded bg-beige/10" />
+      </div>
+      <div className="h-10 w-28 rounded bg-beige/10" />
+    </div>
   );
 }

@@ -89,7 +89,7 @@ export default function JaktContent() {
 
   const ctaButtons = [
     {
-      label: "Ladda ner fullständiga regelr (PDF)",
+      label: "Ladda ner fullständiga regler (PDF)",
       href: pdfUrl,
       bgColor: "bg-orange",
     },

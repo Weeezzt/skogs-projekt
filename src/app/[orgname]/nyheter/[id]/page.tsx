@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { NewsDTO } from "@/types/dtos";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -74,6 +75,12 @@ export default function NewsPage() {
 
   return (
     <article className="w-full max-w-5xl mx-auto px-4 py-8 text-beige/95">
+      <Link
+        href={`/${org}/nyheter`}
+        className="inline-flex items-center gap-1 text-sm text-beige/70 hover:text-orange transition-colors mb-6"
+      >
+        ← Tillbaka till nyheter
+      </Link>
       <header className="mb-6">
         <h1 className="text-3xl md:text-3xl font-bold text-beige leading-tight">
           {news.title}

@@ -100,6 +100,20 @@ export default function FiskeContent() {
         ctaButtons={ctaButtons}
       />
 
+      <div className="md:hidden mt-4 w-full flex flex-wrap items-center justify-center gap-3 px-2">
+        {ctaButtons.map((b, i) => (
+          <a
+            key={i}
+            href={b.href}
+            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg text-white ${b.bgColor} shadow-md text-sm`}
+            rel={b.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            target={b.href.startsWith("http") ? "_blank" : undefined}
+          >
+            {b.label}
+          </a>
+        ))}
+      </div>
+
       {isLoggedIn && user && (
         <div className="w-full flex justify-center px-4 md:px-8">
           <button
