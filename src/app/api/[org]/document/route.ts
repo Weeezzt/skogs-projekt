@@ -49,11 +49,11 @@ export async function POST(
   { params }: { params: Promise<{ org: string }> }
 ) {
   const { org } = await params;
-  const formData = await req.formData();
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const formData = await req.formData();
   // Accept either folderId (existing) or folderName (new)
   const folderIdRaw = formData.get("folderId");
   const folderNameRaw = formData.get("folderName") as string | null;
