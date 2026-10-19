@@ -166,7 +166,7 @@ export async function PUT(
   }
 
   // ---- Build document update (optional) ----
-  let documentsUpdate: any | undefined = undefined;
+  let documentsUpdate: { set: { id: number }[] } | undefined;
 
   if (documentId) {
     // Replace any existing relation with the new one

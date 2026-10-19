@@ -13,7 +13,6 @@ interface InfoSectionProps {
     imageSrc?: string;
     imageAlt?: string;
   };
-  size?: "small" | "medium" | "large";
 }
 
 export default function InfoSection({
@@ -21,7 +20,6 @@ export default function InfoSection({
   id,
   children,
   ctaLink,
-  size = "medium",
 }: InfoSectionProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (

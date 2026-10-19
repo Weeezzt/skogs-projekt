@@ -27,6 +27,7 @@ export default function ImageModal({
           >
             &times;
           </button>
+          {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary image with unknown dimensions */}
           <img
             src={imageSrc}
             alt={imageAlt}

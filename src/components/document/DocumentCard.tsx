@@ -1,6 +1,5 @@
 import { DocumentDTO } from "@/types/dtos";
 import FileTypeIcon from "./FileTypeIcon";
-import { useState } from "react";
 import { IoMdDownload, IoMdTrash } from "react-icons/io";
 import TooltipZone from "../TooltipZone";
 import { useUserSession } from "@/hooks/useUserSession";
@@ -9,15 +8,13 @@ import { useParams } from "next/navigation";
 interface DocumentCardProps {
   documentData: DocumentDTO;
   variant?: "grid" | "list";
-  isSpecial?: boolean;
 }
 
 export default function DocumentCard({
   documentData,
   variant = "grid",
-  isSpecial = false,
 }: DocumentCardProps) {
-  const { id, title, fileType, path, category, year, tags, description } =
+  const { id, title, fileType, path, category, year, description } =
     documentData;
   const { isLoggedIn, user } = useUserSession();
   const fileUrl = path;

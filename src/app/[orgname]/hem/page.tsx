@@ -4,18 +4,21 @@ import StandingCard from "@/features/cards/StandingCard";
 import { DocumentDTO, NewsDTO } from "@/types/dtos";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import {
-  LatestNewsCard,
-  LatestNewsSkeleton,
-} from "@/features/cards/LatestNewsCard";
+import { LatestNewsSkeleton } from "@/features/cards/LatestNewsCard";
 import Link from "next/link";
 import NewsCard from "@/features/cards/NewsCard";
+
+const getJson = (url: string) =>
+  fetch(url).then((res) => {
+    if (!res.ok) throw new Error(res.statusText);
+    return res.json();
+  });
 
 export default function Home() {
   const [latestNews, setLatestNews] = useState<NewsDTO[] | null>(null);
   const [latestDocs, setLatestDocs] = useState<DocumentDTO | null>(null);
   const [reglemente, setReglemente] = useState<DocumentDTO | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [docsLoading, setDocsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const organisation = useParams().orgname?.toString();
@@ -37,60 +40,22 @@ export default function Home() {
   // choose doc card variant based on width
   const docVariant = screenWidth < 600 ? "grid" : "list";
 
-  const fetchLatestNews = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/${organisation}/news/latest`);
-      if (!response.ok) throw new Error();
-      const news = await response.json();
-      setLatestNews(news);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError("Kunde inte hämta senaste nyheter");
-    }
-  };
-
-  const fetchLatestDocs = async () => {
-    try {
-      const response = await fetch(`/api/${organisation}/document/latest`);
-      if (!response.ok) throw new Error("Kunde inte hämta senaste dokument");
-      const docs = await response.json();
-      setLatestDocs(docs);
-    } catch (err) {
-    }
-  };
-
-  const fetchReglemente = async () => {
-    try {
-      const response = await fetch(`/api/${organisation}/document/reglemente`);
-      if (!response.ok) throw new Error("Kunde inte hämta reglemente");
-      const docs = await response.json();
-      setReglemente(docs);
-    } catch (err) {
-    }
-  };
-
   useEffect(() => {
     if (!organisation) return;
-    fetchLatestNews();
-    Promise.all([fetchLatestDocs(), fetchReglemente()]).finally(() =>
-      setDocsLoading(false)
-    );
+    getJson(`/api/${organisation}/news/latest`)
+      .then(setLatestNews)
+      .catch(() => setError("Kunde inte hämta senaste nyheter"))
+      .finally(() => setLoading(false));
+    // doc sections show their own empty state, so errors are ignored here
+    Promise.all([
+      getJson(`/api/${organisation}/document/latest`)
+        .then(setLatestDocs)
+        .catch(() => {}),
+      getJson(`/api/${organisation}/document/reglemente`)
+        .then(setReglemente)
+        .catch(() => {}),
+    ]).finally(() => setDocsLoading(false));
   }, [organisation]);
-
-  const formatDate = (iso?: string) => {
-    if (!iso) return "";
-    try {
-      const d = new Date(iso);
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, "0");
-      const dd = String(d.getDate()).padStart(2, "0");
-      return `${yyyy}-${mm}-${dd}`;
-    } catch {
-      return iso;
-    }
-  };
 
   const orgTitle = useMemo(() => {
     if (organisation === "sorsele") return "Sorsele Övre Allmänningsskog";
@@ -191,7 +156,6 @@ export default function Home() {
                 documents={news.documents}
                 title={news.title}
                 author={news.author}
-                description={news.content}
                 imageAlt={news.title}
               />
             ))}

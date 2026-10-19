@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface Section {
   title: string;
@@ -10,25 +10,15 @@ interface Section {
 
 export default function PageSearch({ sections }: { sections: Section[] }) {
   const [query, setQuery] = useState("");
-  const [filtered, setFiltered] = useState<Section[]>([]);
-
-  useEffect(() => {
-    if (query.length > 0) {
-      const matches = sections.filter(
+  const q = query.toLowerCase();
+  const filtered = q
+    ? sections.filter(
         (section) =>
-          section.title.toLowerCase().includes(query.toLowerCase()) ||
-          (section.content &&
-            section.content.toLowerCase().includes(query.toLowerCase())) ||
-          (section.tags &&
-            section.tags.some((tag) =>
-              tag.toLowerCase().includes(query.toLowerCase())
-            ))
-      );
-      setFiltered(matches);
-    } else {
-      setFiltered([]);
-    }
-  }, [query, sections]);
+          section.title.toLowerCase().includes(q) ||
+          section.content?.toLowerCase().includes(q) ||
+          section.tags?.some((tag) => tag.toLowerCase().includes(q))
+      )
+    : [];
 
   const handleClick = (id: string) => {
     const el = document.getElementById(id);

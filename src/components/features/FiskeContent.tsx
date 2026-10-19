@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserSession } from "@/hooks/useUserSession";
 import UploadRulesDocumentModal from "@/components/modals/UploadRulesDocumentModal";
+import { fetchRulesPath } from "@/lib/fetchRulesPath";
 
 const FALLBACK_SORSELE =
   "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+fiske+inom+S%C3%96A+2022.pdf";
@@ -42,21 +43,18 @@ export default function FiskeContent() {
   );
   const [modalOpen, setModalOpen] = useState(false);
 
-  const fetchPdfUrl = async () => {
-    try {
-      const res = await fetch(`/api/${organisation}/document/fiske-regler`);
-      if (res.ok) {
-        const doc = await res.json();
-        if (doc?.path) setPdfUrl(doc.path);
-      }
-    } catch {
-      // keep fallback
-    }
+  const loadPdfUrl = () => {
+    if (!organisation) return;
+    fetchRulesPath(String(organisation), "fiske-regler").then((path) => {
+      if (path) setPdfUrl(path);
+    });
   };
 
   useEffect(() => {
     if (!organisation) return;
-    fetchPdfUrl();
+    fetchRulesPath(String(organisation), "fiske-regler").then((path) => {
+      if (path) setPdfUrl(path);
+    });
   }, [organisation]);
 
   const ctaButtons = [
@@ -116,7 +114,7 @@ export default function FiskeContent() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         type="fiske"
-        onUploaded={fetchPdfUrl}
+        onUploaded={loadPdfUrl}
       />
 
       <PageSearch sections={searchableSections} />

@@ -1,13 +1,10 @@
-import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { DocumentDTO } from "@/types/dtos";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface NewsCardProps {
   title: string;
   id: number | string;
-  description: string;
   imageSrc: string | null;
   imageAlt: string | null;
   author: string | null;
@@ -22,7 +19,6 @@ interface NewsCardProps {
 export default function NewsCard({
   title,
   id,
-  description,
   imageSrc,
   imageAlt,
   author,

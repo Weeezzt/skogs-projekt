@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const fileTypeIcons: Record<string, string> = {
   pdf: "/icons/pdf-icon.png",
   docx: "/icons/word-icon.svg",
@@ -8,5 +10,15 @@ const fileTypeIcons: Record<string, string> = {
 
 export default function FileTypeIcon({ fileType }: { fileType: string }) {
   const iconSrc = fileTypeIcons[fileType] || fileTypeIcons.default;
-  return <img src={iconSrc} alt={`${fileType} icon`} />;
+  // decorative: the document title sits next to it; tiny static icons need no optimizing
+  return (
+    <Image
+      src={iconSrc}
+      alt=""
+      width={80}
+      height={96}
+      unoptimized
+      className="h-full w-full object-contain"
+    />
+  );
 }

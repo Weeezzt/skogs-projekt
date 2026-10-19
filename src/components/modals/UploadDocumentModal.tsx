@@ -82,8 +82,7 @@ export default function UploadDocumentModal({
       setSelectedFolder("");
       setNewFolder("");
       onClose();
-    } catch (err) {
-      // Optionally handle error here
+    } catch {
       alert("Kunde inte ladda upp dokument.");
     }
   };

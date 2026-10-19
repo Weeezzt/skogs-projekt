@@ -32,7 +32,7 @@ export default function MarkdownRenderer({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          h2: ({ node, ...props }) => (
+          h2: (props) => (
             <h2 {...props} className="mt-6 text-xl scroll-m-20" />
           ),
           code: ({ className, children, ...props }) => {

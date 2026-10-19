@@ -33,7 +33,6 @@ export default function NewsPage() {
 
   useEffect(() => {
     if (!org || !id) return;
-    setLoading(true);
     fetch(`/api/${org}/news/${id}`, { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Kunde inte hämta nyheter");
@@ -162,9 +161,11 @@ export default function NewsPage() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 border-2 border-forest-dark p-3 rounded-lg text-beige/80 hover:bg-white/5 hover:text-beige transition-colors duration-300"
                     >
-                      <img
+                      <Image
                         src="/icons/pdf-icon.png"
-                        alt="pdf"
+                        alt=""
+                        width={24}
+                        height={24}
                         className="w-6 h-6"
                       />
                       <span className="truncate font-semibold">

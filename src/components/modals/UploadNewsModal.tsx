@@ -1,6 +1,7 @@
 import { useParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
+import { DocumentDTO } from "@/types/dtos";
 
 interface ExistingNews {
   id: string;
@@ -20,21 +21,28 @@ interface UploadDocumentModalProps {
   existingTags?: string[];
 }
 
-export default function UploadNewsModal({
-  isOpen,
+export default function UploadNewsModal(props: UploadDocumentModalProps) {
+  // Mount the form only while open, so every open starts from fresh state
+  if (!props.isOpen) return null;
+  return <NewsForm {...props} />;
+}
+
+function NewsForm({
   onClose,
   user = null,
   mode,
   existingNews = null,
   onSaved,
 }: UploadDocumentModalProps) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const editing = mode === "edit" && existingNews;
+  const [title, setTitle] = useState(editing ? existingNews.title || "" : "");
+  const [content, setContent] = useState(
+    editing ? existingNews.content || "" : ""
+  );
   const [image, setImage] = useState<File | null>(null);
-  const [link, setLink] = useState("");
+  const [link, setLink] = useState(editing ? existingNews.href || "" : "");
   const [linkError, setLinkError] = useState("");
-  const [docsData, setDocsData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [docsData, setDocsData] = useState<DocumentDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [selectedDoc, setSelectedDoc] = useState<string | null>(null);
   const [isPreview, setIsPreview] = useState(false);
@@ -43,27 +51,6 @@ export default function UploadNewsModal({
   const org = path.orgname;
   const taRef = useRef<HTMLTextAreaElement | null>(null);
 
-  useEffect(() => {
-    if (isOpen && mode === "edit" && existingNews) {
-      setTitle(existingNews.title || "");
-      setContent(existingNews.content || "");
-      setLink(existingNews.href || "");
-      setImage(null); // user can choose a new image if they want
-      setError(null);
-      setLinkError("");
-    }
-    if (isOpen && mode === "create") {
-      // Ensure clean form for create
-      setTitle("");
-      setContent("");
-      setLink("");
-      setSelectedDoc(null);
-      setImage(null);
-      setError(null);
-      setLinkError("");
-    }
-  }, [isOpen, mode, existingNews]);
-  if (!isOpen) return null;
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setImage(e.target.files[0]);
@@ -73,16 +60,13 @@ export default function UploadNewsModal({
   const handleOpenDocPicker = async () => {
     if (!org) return;
     try {
-      setLoading(true);
       setError(null);
       const res = await fetch(`/api/${org}/document`);
       if (!res.ok) throw new Error("Kunde inte hämta dokument");
       const data = await res.json();
       setDocsData(data || []);
-    } catch (err: any) {
-      setError(err?.message ?? "Något gick fel när dokument hämtades");
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Något gick fel när dokument hämtades");
     }
   };
 
@@ -127,26 +111,6 @@ export default function UploadNewsModal({
     });
   };
 
-  const prefixLines = (prefix: string) => {
-    const ta = taRef.current;
-    if (!ta) return;
-    const start = ta.selectionStart ?? 0;
-    const end = ta.selectionEnd ?? 0;
-    const before = content.slice(0, start);
-    const selection = content.slice(start, end);
-    const after = content.slice(end);
-    const block = (selection || "punkt")
-      .split("\n")
-      .map((l) => (l.trim().length ? `${prefix}${l}` : l))
-      .join("\n");
-    const next = before + block + after;
-    setContent(next);
-    requestAnimationFrame(() => {
-      ta.focus();
-      ta.selectionStart = start;
-      ta.selectionEnd = start + block.length;
-    });
-  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -182,8 +146,8 @@ export default function UploadNewsModal({
 
       // Clear form when closing (for create mode especially)
       handleOnClose();
-    } catch (err: any) {
-      setError(err?.message ?? "Ett fel uppstod vid sparande av nyhet");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Ett fel uppstod vid sparande av nyhet");
     }
   };
 

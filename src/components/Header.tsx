@@ -96,7 +96,6 @@ export default function Header() {
   const pathname = usePathname() || "/";
   const { isLoggedIn } = useUserSession();
 
-  const [org, setOrg] = useState<string>(ORGS[0].slug);
   const [navOpen, setNavOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -108,11 +107,9 @@ export default function Header() {
   const mobileOrgButtonRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [mobileIndicator, setMobileIndicator] = useState({ left: 0, width: 0 });
 
-  // derive org from path
-  useEffect(() => {
-    const seg = pathname.split("/")[1];
-    if (seg && ORGS.some((o) => o.slug === seg)) setOrg(seg);
-  }, [pathname]);
+  // org comes from the first path segment; default to the first org
+  const seg = pathname.split("/")[1];
+  const org = ORGS.some((o) => o.slug === seg) ? seg : ORGS[0].slug;
 
   const activeOrg = useMemo(
     () => ORGS.find((o) => o.slug === org) ?? ORGS[0],
@@ -169,16 +166,9 @@ export default function Header() {
       window.removeEventListener("resize", updateDesktopIndicator);
       window.removeEventListener("resize", updateMobileIndicator);
     };
+    // re-run when the mobile menu mounts so its indicator gets measured
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [org]);
-
-  useEffect(() => {
-    if (navOpen) {
-      requestAnimationFrame(() => {
-        updateMobileIndicator();
-      });
-    }
-  }, [navOpen]);
+  }, [org, navOpen]);
 
   const mdPrimary = NAV_LINKS.slice(0, 3);
   const mdOverflow = NAV_LINKS.slice(3);
@@ -194,11 +184,11 @@ export default function Header() {
       >
         <div className="container mx-auto flex items-center justify-between gap-3 px-4 py-3">
           {/* Left: Brand */}
-          <a href="/" className="md:hidden lg:block">
+          <Link href="/" className="md:hidden lg:block">
             <h3 className=" text-2xl font-bold text-orange text-left select-none cursor-pointer">
               Allmänningen
             </h3>
-          </a>
+          </Link>
 
           {/* Center-left: Org switch (desktop only) */}
           <div className="hidden md:flex items-center">

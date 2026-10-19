@@ -1,4 +1,4 @@
-import StandingCard from "@/features/cards/StandingCard";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -25,11 +25,15 @@ export default function Home() {
             {/* gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
             {/* image */}
-            <img
-              src="/alg-med-hund-krona.jpg"
-              alt="En höstskog med älg i norra Sverige."
-              className="w-full h-full object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-300"
-            />
+            <div className="relative aspect-[4/3]">
+                <Image
+                  src="/alg-med-hund-krona.jpg"
+                  alt="En höstskog med älg i norra Sverige."
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
             {/* text overlay */}
             <div className="absolute bottom-0 left-0 p-6 sm:p-8 z-20">
               <h3 className="text-white text-2xl sm:text-3xl font-serif font-bold">
@@ -48,11 +52,15 @@ export default function Home() {
             className="group block rounded-xl overflow-hidden relative border-2 border-transparent hover:border-orange focus-visible:border-orange focus-visible:outline-none transition-all duration-300"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-            <img
-              src="/stavar.jpg"
-              alt="Ett lugnt vinterlandskap med snötäckta tallar och frusna sjöar."
-              className="w-full h-full object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-300"
-            />
+            <div className="relative aspect-[4/3]">
+                <Image
+                  src="/stavar.jpg"
+                  alt="Ett lugnt vinterlandskap med snötäckta tallar och frusna sjöar."
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
             <div className="absolute bottom-0 left-0 p-6 sm:p-8 z-20">
               <h3 className="text-white text-2xl sm:text-3xl font-serif font-bold">
                 Tärna-Stensele Allmänningsskog

@@ -31,8 +31,6 @@ export default function StyrelseMedlemmarPage() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError(null);
 
     fetch(`/api/${orgSlug}/members`, { cache: "no-store" })
       .then((res) => {

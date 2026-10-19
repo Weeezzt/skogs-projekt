@@ -15,6 +15,22 @@ import TooltipZone from "@/components/TooltipZone";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import StandardHero from "@/features/StandardHero";
 
+const sortFunctions: Record<
+  string,
+  (a: DocumentDTO, b: DocumentDTO) => number
+> = {
+  latest: (a, b) =>
+    (b.uploadedAt?.toString() || "").localeCompare(
+      a.uploadedAt?.toString() || ""
+    ),
+  oldest: (a, b) =>
+    (a.uploadedAt?.toString() || "").localeCompare(
+      b.uploadedAt?.toString() || ""
+    ),
+  title_az: (a, b) => a.title.localeCompare(b.title, "sv"),
+  title_za: (a, b) => b.title.localeCompare(a.title, "sv"),
+};
+
 const sortOptions = [
   { label: "Senaste", value: "latest" },
   { label: "Äldsta", value: "oldest" },
@@ -51,9 +67,10 @@ export default function Dokument() {
   const pathname = usePathname();
   const org = pathname.split("/")[1];
 
-  const fetchDocuments = () => {
-    setLoading(true);
-    setError(null);
+  // bump to refetch after an upload
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useEffect(() => {
     fetch(`/api/${org}/document`)
       .then((res) => {
         if (!res.ok) throw new Error("Kunde inte hämta dokument");
@@ -62,14 +79,8 @@ export default function Dokument() {
       .then((data) => setDocsData(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  };
+  }, [org, reloadKey]);
 
-  useEffect(() => {
-    fetchDocuments();
-  }, [org]);
-
-  const [filteredDocuments, setFilteredDocuments] =
-    useState<DocumentDTO[]>(docsData);
   const [selectedSort, setSelectedSort] = useState<string | number>("");
   const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 
@@ -85,23 +96,7 @@ export default function Dokument() {
     setIsGridLayout((prev) => !prev);
   };
 
-  const sortFunctions: Record<
-    string,
-    (a: DocumentDTO, b: DocumentDTO) => number
-  > = {
-    latest: (a, b) =>
-      (b.uploadedAt?.toString() || "").localeCompare(
-        a.uploadedAt?.toString() || ""
-      ),
-    oldest: (a, b) =>
-      (a.uploadedAt?.toString() || "").localeCompare(
-        b.uploadedAt?.toString() || ""
-      ),
-    title_az: (a, b) => a.title.localeCompare(b.title, "sv"),
-    title_za: (a, b) => b.title.localeCompare(a.title, "sv"),
-  };
-
-  useEffect(() => {
+  const filteredDocuments = useMemo(() => {
     let filtered = docsData;
     if (activeCategory) {
       filtered = filtered.filter((doc) => activeCategory === doc.category);
@@ -113,9 +108,7 @@ export default function Dokument() {
       );
     }
     const sortFn = sortFunctions[selectedSort] ?? sortFunctions.latest;
-    filtered = [...filtered].sort(sortFn); // sort a copy!
-
-    setFilteredDocuments(filtered);
+    return [...filtered].sort(sortFn); // sort a copy!
   }, [docsData, query, activeCategory, selectedSort]);
 
   const allFolders = useMemo(() => {
@@ -195,7 +188,9 @@ export default function Dokument() {
         existingFolders={allFolders}
         isOpen={uploadModalOpen}
         onClose={() => {
-          fetchDocuments();
+          setLoading(true);
+          setError(null);
+          setReloadKey((k) => k + 1);
           setUploadModalOpen(false);
         }}
       />

@@ -32,10 +32,6 @@ function getActiveOrg(pathname: string): OrgSlug | null {
     : null;
 }
 
-function buildOrgUrl(org: OrgSlug | null, href: string) {
-  if (!org) return href; // fallback (e.g., landing pages without org prefix)
-  return `/${org}${href}`;
-}
 
 const DEFAULT_BRAND = "AC";
 const DEFAULT_TEXT =

@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserSession } from "@/hooks/useUserSession";
 import UploadRulesDocumentModal from "@/components/modals/UploadRulesDocumentModal";
+import { fetchRulesPath } from "@/lib/fetchRulesPath";
 import { ExternalLink, FileText, Map } from "lucide-react";
 
 const FALLBACK_SORSELE =
@@ -77,21 +78,18 @@ export default function JaktContent() {
   );
   const [modalOpen, setModalOpen] = useState(false);
 
-  const fetchPdfUrl = async () => {
-    try {
-      const res = await fetch(`/api/${organisation}/document/jakt-regler`);
-      if (res.ok) {
-        const doc = await res.json();
-        if (doc?.path) setPdfUrl(doc.path);
-      }
-    } catch {
-      // keep fallback
-    }
+  const loadPdfUrl = () => {
+    if (!organisation) return;
+    fetchRulesPath(String(organisation), "jakt-regler").then((path) => {
+      if (path) setPdfUrl(path);
+    });
   };
 
   useEffect(() => {
     if (!organisation) return;
-    fetchPdfUrl();
+    fetchRulesPath(String(organisation), "jakt-regler").then((path) => {
+      if (path) setPdfUrl(path);
+    });
   }, [organisation]);
 
   const ctaButtons = [
@@ -147,7 +145,7 @@ export default function JaktContent() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         type="jakt"
-        onUploaded={fetchPdfUrl}
+        onUploaded={loadPdfUrl}
       />
 
       <div className="w-full flex flex-col items-center">

@@ -24,9 +24,10 @@ export default function Nyheter() {
   const pathname = usePathname();
   const org = pathname.split("/")[1];
 
-  const fetchNews = () => {
-    setLoading(true);
-    setError(null);
+  // bump to refetch after an upload
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useEffect(() => {
     fetch(`/api/${org}/news`)
       .then((res) => {
         if (!res.ok) throw new Error("Kunde inte hämta nyheter");
@@ -35,14 +36,12 @@ export default function Nyheter() {
       .then((data) => setNewsData(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchNews();
-  }, [org]);
+  }, [org, reloadKey]);
 
   const onCloseModal = () => {
-    fetchNews();
+    setLoading(true);
+    setError(null);
+    setReloadKey((k) => k + 1);
     setIsOpen(false);
   };
 
@@ -86,9 +85,6 @@ export default function Nyheter() {
     return arr;
   }, [newsData, yearFilter]);
 
-  const onUploadNews = () => {
-    fetchNews();
-  };
   const { isLoggedIn, user } = useUserSession();
   return (
     <main className="w-full max-w-5xl mx-auto px-4 py-8">
@@ -167,7 +163,6 @@ export default function Nyheter() {
               key={news.id || idx}
               title={news.title}
               id={news.id}
-              description={news.content}
               imageSrc={news.image}
               imageAlt={news.image ? news.title : null}
               author={news.author}
