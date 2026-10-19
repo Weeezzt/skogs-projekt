@@ -83,7 +83,7 @@ export default function FiskeContent() {
   }));
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center mt-5">
+    <div className="flex flex-col gap-4 items-center justify-center">
       <StandardHero
         title={
           isSorsele
@@ -95,24 +95,11 @@ export default function FiskeContent() {
             ? textContentPerOrg.sorsele.subtitle
             : textContentPerOrg.tarnaStensele.subtitle
         }
-        imageAlt="scenic image"
+        imageAlt=""
         imageSrc="/herotrout.jpg"
         ctaButtons={ctaButtons}
       />
 
-      <div className="md:hidden mt-4 w-full flex flex-wrap items-center justify-center gap-3 px-2">
-        {ctaButtons.map((b, i) => (
-          <a
-            key={i}
-            href={b.href}
-            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg ${b.bgColor} shadow-md text-sm`}
-            rel={b.href.startsWith("http") ? "noopener noreferrer" : undefined}
-            target={b.href.startsWith("http") ? "_blank" : undefined}
-          >
-            {b.label}
-          </a>
-        ))}
-      </div>
 
       {isLoggedIn && user && (
         <div className="w-full flex justify-center px-4 md:px-8">
@@ -134,7 +121,7 @@ export default function FiskeContent() {
 
       <PageSearch sections={searchableSections} />
 
-      <div className="w-full flex flex-col items-center mt-10 px-2">
+      <div className="w-full flex flex-col items-center">
         {fiskeData[orgKey].map((section) => (
           <InfoSection
             key={section.id}

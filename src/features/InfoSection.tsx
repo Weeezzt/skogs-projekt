@@ -26,7 +26,7 @@ export default function InfoSection({
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (
     <section
-      className="bg-forest-dark border border-beige/10 rounded-xl p-6 mb-6 w-full lg:w-[1000px]"
+      className="bg-forest-dark border border-beige/10 rounded-xl p-6 mb-6 w-full"
       id={id}
     >
       <h2 className="text-xl font-bold mb-2 text-beige">{title}</h2>

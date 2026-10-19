@@ -1,5 +1,6 @@
 "use client";
 import { HiPlusSm } from "react-icons/hi";
+import StandardHero from "@/features/StandardHero";
 
 import { NewsDTO } from "@/types/dtos";
 
@@ -90,12 +91,14 @@ export default function Nyheter() {
   };
   const { isLoggedIn, user } = useUserSession();
   return (
-    <main className="w-full max-w-screen-2xl mx-auto px-4 py-8">
-      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl text-beige font-bold mb-8">
-        Bläddra bland de senaste nyheterna
-      </h1>
+    <main className="w-full max-w-5xl mx-auto px-4 py-8">
+      <StandardHero
+        title="Nyheter"
+        subtitle="Bläddra bland de senaste nyheterna, evenemangen och uppdateringarna."
+        imageSrc="/skog.png"
+      />
       {/* Filter & Search */}
-      <div className="flex flex-col md:flex-row gap-4 my-8 px-4 items-center">
+      <div className="flex flex-col md:flex-row gap-4 mb-8 items-center">
         <PageSearch
           sections={newsData.map((news) => ({
             ...news,
@@ -158,7 +161,7 @@ export default function Nyheter() {
         </p>
       )}
       {!loading && !error && filtered.length > 0 && (
-        <section className="flex flex-col gap-10 px-4">
+        <section className="flex flex-col gap-10">
           {filtered.map((news, idx) => (
             <NewsCard
               key={news.id || idx}

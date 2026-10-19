@@ -7,7 +7,7 @@ interface DocumentListProps {
 
 export default function DocumentList({ documents }: DocumentListProps) {
   return (
-    <div className="w-full max-w-[1000px] mx-auto space-y-4">
+    <div className="w-full space-y-4">
       {documents.map((doc) => (
         <DocumentCard key={doc.id} documentData={doc} variant="list" />
       ))}

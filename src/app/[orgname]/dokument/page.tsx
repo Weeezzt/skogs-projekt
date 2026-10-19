@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import { DocumentDTO } from "@/types/dtos";
 import TooltipZone from "@/components/TooltipZone";
 import LoadingIndicator from "@/components/LoadingIndicator";
+import StandardHero from "@/features/StandardHero";
 
 const sortOptions = [
   { label: "Senaste", value: "latest" },
@@ -102,11 +103,7 @@ export default function Dokument() {
 
   useEffect(() => {
     let filtered = docsData;
-    if (!activeCategory) {
-      setFilteredDocuments([]);
-      return;
-    }
-    if (activeCategory && activeCategory.length > 0) {
+    if (activeCategory) {
       filtered = filtered.filter((doc) => activeCategory === doc.category);
     }
     if (query.length > 0) {
@@ -115,9 +112,8 @@ export default function Dokument() {
         doc.title.toLowerCase().includes(lowerQuery)
       );
     }
-    if (selectedSort && sortFunctions[selectedSort]) {
-      filtered = [...filtered].sort(sortFunctions[selectedSort]); // sort a copy!
-    }
+    const sortFn = sortFunctions[selectedSort] ?? sortFunctions.latest;
+    filtered = [...filtered].sort(sortFn); // sort a copy!
 
     setFilteredDocuments(filtered);
   }, [docsData, query, activeCategory, selectedSort]);
@@ -133,8 +129,13 @@ export default function Dokument() {
   }, [docsData]);
 
   return (
-    <main className="w-full mx-auto mt-8 grid">
-      <div className="w-full flex justify-between px-4 items-center md:w-[600px] lg:w-[800px] xl:w-[1000px] shadow-md bg-forest-dark min-h-20 mx-auto mb-6">
+    <main className="w-full max-w-5xl mx-auto px-4 py-8">
+      <StandardHero
+        title="Dokument"
+        subtitle="Protokoll, stadgar, kartor och andra handlingar."
+        imageSrc="/skogstor.jpg"
+      />
+      <div className="w-full flex justify-between px-4 items-center rounded-xl border border-beige/10 bg-forest-dark min-h-20 mb-6">
         <div className="flex w-full gap-4 mr-1">
           <DocumentSearchBar query={query} onQueryChange={handleQueryChange} />
           <MultiSelectDropdown
@@ -167,7 +168,7 @@ export default function Dokument() {
           </button>
         </TooltipZone>
       </div>
-      <div className="px-2 mx-auto w-full flex justify-between items-center md:w-[600px] lg:w-[800px] xl:w-[1000px]">
+      <div className="w-full flex justify-between items-center">
         <FolderFilter
           documents={docsData}
           activeCategory={activeCategory}
@@ -179,14 +180,14 @@ export default function Dokument() {
           <LoadingIndicator variant="bars" size={80} tintOpacity={1} />
         )}
         {error && <div className="text-center text-red-500">{error}</div>}
-        {(isGridLayout && activeCategory) || smallScreen ? (
+        {isGridLayout || smallScreen ? (
           <DocumentGrid documents={filteredDocuments} />
         ) : (
           <DocumentList documents={filteredDocuments} />
         )}
-        {!activeCategory && !loading && (
-          <div className="mb-12 sm:mb-6 md:mb-0 text-center text-beige/70 mt-20">
-            Vänligen välj en mapp för att visa dokument.
+        {!loading && !error && filteredDocuments.length === 0 && (
+          <div className="mb-12 text-center text-beige/70 mt-20">
+            Inga dokument matchar din sökning.
           </div>
         )}
       </div>

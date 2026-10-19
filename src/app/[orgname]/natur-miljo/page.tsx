@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import StandardHero from "@/features/StandardHero";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -84,27 +85,8 @@ export default function NaturMiljoPage() {
   }, [lightboxIndex, cfg.gallery.length]);
 
   return (
-    <main className="mx-auto my-10 max-w-5xl px-4 pb-12 text-beige/85">
-      {/* Hero */}
-      <section className="relative rounded-xl overflow-hidden shadow-lg mb-8">
-        <div className="relative h-48 sm:h-56 md:h-64 lg:h-72">
-          <Image
-            src={cfg.hero}
-            alt={cfg.heading}
-            fill
-            priority
-            className="object-cover brightness-95 contrast-110"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1000px"
-          />
-          <div className="absolute inset-0 bg-black/20 mix-blend-multiply pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-beige drop-shadow">
-              Natur & Miljö
-            </h1>
-          </div>
-        </div>
-      </section>
+    <main className="w-full mx-auto my-10 max-w-5xl px-4 pb-12 text-beige/85">
+      <StandardHero title="Natur & Miljö" imageSrc={cfg.hero} imageAlt={cfg.heading} />
 
       {/* Heading + cert */}
       <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

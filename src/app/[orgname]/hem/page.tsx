@@ -58,7 +58,6 @@ export default function Home() {
       const docs = await response.json();
       setLatestDocs(docs);
     } catch (err) {
-      setError("Fel vid hämtning av senaste dokument");
     }
   };
 
@@ -69,7 +68,6 @@ export default function Home() {
       const docs = await response.json();
       setReglemente(docs);
     } catch (err) {
-      setError("Fel vid hämtning av reglemente");
     }
   };
 
@@ -111,10 +109,10 @@ export default function Home() {
   }, [organisation]);
 
   return (
-    <main className=" bg-forest">
+    <main className="mx-auto w-full max-w-5xl px-4">
       <section
         className={
-          "flex min-h-[420px] sm:min-h-[480px] flex-col w-full xl:w-2/3 mx-auto justify-end rounded-xl bg-cover bg-center p-8 mt-12 md:p-12"
+          "flex min-h-[420px] sm:min-h-[480px] flex-col w-full justify-end rounded-xl bg-cover bg-center p-8 mt-12 md:p-12"
         }
         style={{ backgroundImage: `url(${heroUrl})` }}
       >
@@ -142,7 +140,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="flex flex-col lg:flex-row w-5/6 gap-2 lg:gap-0 sm:w-4/5  md:w-3/4 lg:w-2/3 items-center justify-center mt-12 py-12 mx-auto ">
+      <section className="flex flex-col lg:flex-row w-full gap-2 lg:gap-0 items-center justify-center mt-12 py-12">
         <div className="w-full lg:mr-2">
           <h3 className="font-serif text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige">
             Senaste Dokumentet
@@ -172,7 +170,7 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="mx-auto w-4/5 lg:w-2/3 my-16">
+      <section className="w-full my-16">
         <h2 className="text-center lg:text-left text-xl md:text-2xl 2xl:text-3xl font-extrabold text-beige mb-8">
           Senaste Nytt
         </h2>
@@ -203,7 +201,7 @@ export default function Home() {
           {error && <p className="text-center text-orange">{error}</p>}
         </div>
       </section>
-      <section className="w-full flex flex-col items-center gap-4 lg:flex-row sm:w-4/5 lg:w-2/3 md:justify-between py-10 mx-auto">
+      <section className="w-full flex flex-col items-center gap-4 lg:flex-row lg:justify-between py-10">
         <StandingCard
           title="Jakt och Fiske"
           id="jakt-fiske"
