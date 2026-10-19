@@ -2,6 +2,7 @@ import { DocumentDTO } from "@/types/dtos";
 import FileTypeIcon from "./FileTypeIcon";
 import { IoMdDownload, IoMdTrash } from "react-icons/io";
 import TooltipZone from "../TooltipZone";
+import { buttonRow, dangerGhostButton, ghostButton } from "@/lib/buttonStyles";
 import { useUserSession } from "@/hooks/useUserSession";
 import { useParams } from "next/navigation";
 
@@ -83,31 +84,18 @@ export default function DocumentCard({
         </div>
       </div>
 
-      {isLoggedIn && user ? (
-        <div className="mt-2 text-xs flex gap-2 text-beige/70">
-          <button
-            onClick={handleDownload}
-            className="flex items-center justify-center text-center bg-beige text-md font-semibold text-forest w-30 h-10 p-2 rounded-md border-2 border-orange cursor-pointer hover:border-beige hover:bg-orange hover:text-beige transition-colors"
-          >
-            Ladda ned <IoMdDownload className="text-xl" />
+      <div className={`mt-2 grid ${buttonRow}`}>
+        <button onClick={handleDownload} className={ghostButton}>
+          <IoMdDownload className="text-base" aria-hidden />
+          Ladda ned
+        </button>
+        {isLoggedIn && user && (
+          <button onClick={handleDelete} className={dangerGhostButton}>
+            <IoMdTrash className="text-base" aria-hidden />
+            Ta bort
           </button>
-          <button
-            onClick={handleDelete}
-            className="flex items-center justify-center text-center bg-beige text-md font-semibold text-red-600 w-30 h-10 p-2 rounded-md border-2 border-red-600 cursor-pointer hover:border-beige hover:bg-red-600 hover:text-beige transition-colors"
-          >
-            Ta bort <IoMdTrash className="text-xl" />
-          </button>
-        </div>
-      ) : (
-        <div className="mt-2 text-xs text-beige/70">
-          <button
-            onClick={handleDownload}
-            className="flex items-center justify-center text-center text-md font-semibold text-orange/80 w-30 h-10 p-2 rounded-md cursor-pointer hover:border-beige hover:bg-forest  transition-colors"
-          >
-            Ladda ned <IoMdDownload className="ml-2 text-xl" />
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

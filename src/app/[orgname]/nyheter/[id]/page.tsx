@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { Pencil, Trash2 } from "lucide-react";
+import { buttonRow, dangerGhostButton, ghostButton } from "@/lib/buttonStyles";
 import Link from "next/link";
 import { NewsDTO } from "@/types/dtos";
 import { useParams } from "next/navigation";
@@ -184,17 +186,19 @@ export default function NewsPage() {
       )}
       {isLoggedIn && user && (
         <>
-          <div className="hidden md:flex gap-4 mt-4">
+          <div className={`hidden md:grid w-fit mt-6 ${buttonRow}`}>
             <button
               onClick={handleOpenEditNewsModal}
-              className=" inline self-start bg-beige text-orange px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-orange hover:text-beige duration-300"
+              className={ghostButton}
             >
+              <Pencil className="h-4 w-4" aria-hidden />
               Redigera nyheten
             </button>
             <button
               onClick={handleDeleteNews}
-              className=" self-start bg-beige text-red-700 px-4 py-2 rounded-md font-semibold hover:border-red-700/90 transition cursor-pointer hover:bg-red-700 hover:text-beige duration-300"
+              className={dangerGhostButton}
             >
+              <Trash2 className="h-4 w-4" aria-hidden />
               Radera nyheten
             </button>
           </div>
