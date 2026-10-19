@@ -144,7 +144,7 @@ export default function Home() {
       </section>
       <section className="flex flex-col lg:flex-row w-5/6 gap-2 lg:gap-0 sm:w-4/5  md:w-3/4 lg:w-2/3 items-center justify-center mt-12 py-12 mx-auto ">
         <div className="w-full lg:mr-2">
-          <h3 className="text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige">
+          <h3 className="font-serif text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige">
             Senaste Dokumentet
           </h3>
           {docsLoading ? (
@@ -158,7 +158,7 @@ export default function Home() {
           )}
         </div>
         <div className="w-full lg:ml-2">
-          <h3 className="text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige ">
+          <h3 className="font-serif text-center lg:text-left font-semibold mb-4 text-xl lg:text-2xl text-beige ">
             Reglemente
           </h3>
           {docsLoading ? (
@@ -232,7 +232,7 @@ export default function Home() {
 
 function DocumentCardSkeleton() {
   return (
-    <div className="animate-pulse rounded-md border border-beige/30 bg-forest-dark flex flex-row items-center p-4 gap-4 w-full">
+    <div className="animate-pulse rounded-md border border-beige/10 bg-forest-dark flex flex-row items-center p-4 gap-4 w-full">
       <div className="flex-shrink-0 w-20 h-24 rounded bg-beige/10" />
       <div className="flex-1 flex flex-col gap-2">
         <div className="h-5 w-3/4 rounded bg-beige/15" />

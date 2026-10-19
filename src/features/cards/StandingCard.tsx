@@ -22,7 +22,7 @@ export default function StandingCard({
 }: StandingCardProps) {
   const cardContent = (
     <div
-      className="flex flex-col items-center bg-forest-dark rounded-lg text-beige/90 border-forest-dark border hover:-translate-y-1 hover:shadow-md overflow-hidden transition-transform w-72 min-h-[380px]"
+      className="flex flex-col items-center bg-forest-dark rounded-lg text-beige/90 border-beige/10 border hover:-translate-y-1 hover:shadow-md overflow-hidden transition-transform w-72 min-h-[380px]"
       id={id}
     >
       {imageSrc && (

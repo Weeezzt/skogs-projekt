@@ -44,7 +44,7 @@ export default function DocumentCard({
 
   return (
     <div
-      className={`group transition rounded-md border border-beige/30 bg-forest-dark text-beige/90 ${
+      className={`group transition rounded-md border border-beige/10 bg-forest-dark text-beige/90 ${
         variant === "grid"
           ? "flex flex-col items-center p-4 gap-2 h-64 w-full"
           : "flex flex-row items-center p-4 gap-4 w-full"

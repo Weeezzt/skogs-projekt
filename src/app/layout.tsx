@@ -1,11 +1,12 @@
 import Header from "@/components/Header";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import Footer from "@/components/Footer";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 
 export const viewport = {
   width: "device-width",
@@ -55,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sv" className={`scroll-smooth w-full h-full ${inter.variable}`}>
+    <html lang="sv" className={`scroll-smooth w-full h-full ${inter.variable} ${lora.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>

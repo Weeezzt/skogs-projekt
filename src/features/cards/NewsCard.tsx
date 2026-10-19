@@ -62,7 +62,7 @@ export default function NewsCard({
       onClick={onActivate}
       onKeyDown={onKeyDown}
       className="
-        flex flex-col md:flex-row bg-beige/10 rounded-md shadow-md md:h-[150px]
+        flex flex-col md:flex-row bg-forest-dark border border-beige/10 rounded-md md:h-[150px]
         overflow-hidden w-full cursor-pointer
         transition transform duration-300
         hover:-translate-y-1 

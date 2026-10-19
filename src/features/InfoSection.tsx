@@ -26,16 +26,16 @@ export default function InfoSection({
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (
     <section
-      className="bg-beige rounded-xl shadow p-6 mb-6 w-full lg:w-[1000px]"
+      className="bg-forest-dark border border-beige/10 rounded-xl p-6 mb-6 w-full lg:w-[1000px]"
       id={id}
     >
-      <h2 className="text-xl font-bold mb-2 text-forest">{title}</h2>
-      <div className="text-gray-800 mb-2">{children}</div>
+      <h2 className="text-xl font-bold mb-2 text-beige">{title}</h2>
+      <div className="text-beige/85 mb-2">{children}</div>
       {ctaLink && ctaLink.imageSrc && !ctaLink.href && (
         <>
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-block mt-2 text-forest font-semibold cursor-pointer underline decoration-orange decoration-2 underline-offset-4 hover:decoration-forest"
+            className="inline-block mt-2 text-orange font-semibold cursor-pointer hover:underline"
             aria-label={ctaLink.label}
           >
             {ctaLink.label}
@@ -53,7 +53,7 @@ export default function InfoSection({
           href={ctaLink.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-2 text-forest font-semibold underline decoration-orange decoration-2 underline-offset-4 hover:decoration-forest"
+          className="inline-block mt-2 text-orange font-semibold hover:underline"
         >
           {ctaLink.label}
         </a>

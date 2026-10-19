@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-forest: #112116;
@@ -7,4 +8,12 @@
   --color-offblack: #1c1c1c;
   --color-beige: #f9f4ef;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-lora), Georgia, serif;
+}
+
+@layer base {
+  h1,
+  h2 {
+    font-family: var(--font-serif);
+  }
 }

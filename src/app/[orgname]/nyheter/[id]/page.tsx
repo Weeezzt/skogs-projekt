@@ -131,7 +131,7 @@ export default function NewsPage() {
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35" />
       </div>
-      <section className="prose prose-lg max-w-none prose-headings:text-forest prose-strong:text-forest prose-a:text-orange hover:prose-a:text-orange/80 prose-img:rounded-lg prose-li:marker:text-forest">
+      <section className="prose prose-lg prose-invert max-w-none prose-p:text-beige/90 prose-li:text-beige/90 prose-headings:text-beige prose-strong:text-beige prose-a:text-orange hover:prose-a:text-orange/80 prose-img:rounded-lg prose-li:marker:text-orange">
         <MarkdownRenderer proseClassName="" content={news.content} />
       </section>
 
