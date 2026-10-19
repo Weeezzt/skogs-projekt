@@ -148,7 +148,7 @@ export default function Nyheter() {
         )}
       </div>
       {loading && (
-        <LoadingIndicator variant="bars" size={80} tintOpacity={0.0} />
+        <LoadingIndicator message="Laddar nyheter…" />
       )}
       {error && (
         <p className="px-4 py-8 text-center text-red-600 font-semibold">
