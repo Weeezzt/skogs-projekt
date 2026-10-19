@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserSession } from "@/hooks/useUserSession";
 import UploadRulesDocumentModal from "@/components/modals/UploadRulesDocumentModal";
+import { ExternalLink, FileText, Map } from "lucide-react";
 
 const FALLBACK_SORSELE =
   "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+jakt+p%C3%A5+S%C3%96A+2026-27.pdf";
@@ -44,16 +45,22 @@ const documentsForOrg = {
   ],
   tarnaStensele: [
     {
-      title: "Områdesansvariga",
+      title: "Områdesansvariga per älgjaktsområde",
       href: "/docs/tarna-stensele/jakt-files/Omradesansvariga_TSA_ASO_2024.pdf",
+      meta: "PDF · 131 kB",
+      Icon: FileText,
     },
     {
       title: "Fördjupad inskannad karta över älgjaktsområden",
       href: "/docs/tarna-stensele/jakt-files/karta-tsa-algjaktsomraden.pdf",
+      meta: "PDF · 7,1 MB",
+      Icon: Map,
     },
     {
       title: "JAKTKARTA Tärna-Stensele Allmänningsskog",
       href: "/docs/tarna-stensele/jakt-files/TSA-jakt-o-fiskekarta-hela-allm-16-01-14-v4-52x52-1.pdf",
+      meta: "PDF · 12 MB",
+      Icon: Map,
     },
   ],
 };
@@ -170,7 +177,7 @@ export default function JaktContent() {
           </ul>
         </InfoSection>
         <div className="w-full flex flex-col items-center my-10 px-2">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl text-forest font-bold">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl text-beige font-bold">
             Jakt- och fiskekarta
           </h2>
           <Image
@@ -193,37 +200,39 @@ export default function JaktContent() {
             priority
           />
           {!isSorsele && (
-            <>
-              <a
-                href={documentsForOrg.tarnaStensele[1].href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center mt-8 p-2 rounded-lg text-lg md:text-xl inline-block md:max-w-3xl text-forest font-semibold hover:border-orange border-forest border-2"
-                onClick={(event) => event.stopPropagation()}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.stopPropagation();
-                  }
-                }}
-              >
-                {documentsForOrg.tarnaStensele[1].title}
-              </a>
-
-              <a
-                href={documentsForOrg.tarnaStensele[0].href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center mt-4 p-2 rounded-lg text-lg md:text-xl inline-block md:max-w-3xl text-forest font-semibold hover:border-orange border-forest border-2"
-                onClick={(event) => event.stopPropagation()}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.stopPropagation();
-                  }
-                }}
-              >
-                {documentsForOrg.tarnaStensele[0].title}
-              </a>
-            </>
+            <section className="mt-10 w-full md:max-w-3xl">
+              <h3 className="mb-3 text-xl font-semibold text-beige">
+                Dokument för älgjakt
+              </h3>
+              <ul className="flex flex-col gap-3">
+                {documentsForOrg.tarnaStensele.slice(0, 2).map(
+                  ({ href, title, meta, Icon }) => (
+                    <li key={href}>
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-4 rounded-lg border border-beige/20 bg-forest-dark p-4 text-beige transition-colors hover:border-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
+                      >
+                        <Icon className="h-7 w-7 shrink-0 text-orange" aria-hidden />
+                        <span className="flex-1">
+                          <span className="block font-semibold md:text-lg">
+                            {title}
+                          </span>
+                          <span className="block text-sm text-beige/60">
+                            {meta} · öppnas i ny flik
+                          </span>
+                        </span>
+                        <ExternalLink
+                          className="h-5 w-5 shrink-0 text-beige/50 transition-colors group-hover:text-orange"
+                          aria-hidden
+                        />
+                      </a>
+                    </li>
+                  )
+                )}
+              </ul>
+            </section>
           )}
         </div>
       </div>
