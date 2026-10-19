@@ -41,6 +41,7 @@ export default function Home() {
     try {
       setLoading(true);
       const response = await fetch(`/api/${organisation}/news/latest`);
+      if (!response.ok) throw new Error();
       const news = await response.json();
       setLatestNews(news);
       setLoading(false);
@@ -128,7 +129,7 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href={`/${organisation}/nyheter`}
-              className="rounded-lg bg-orange px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 sm:text-base"
+              className="rounded-lg bg-orange px-5 py-3 text-sm font-bold text-forest transition-opacity hover:opacity-90 sm:text-base"
             >
               Nyheter
             </Link>
@@ -196,9 +197,10 @@ export default function Home() {
                 imageAlt={news.title}
               />
             ))}
-          {!loading && !latestNews && (
-            <div className="text-center text-forest/80">Inga nyheter ännu.</div>
+          {!loading && !latestNews?.length && (
+            <div className="text-center text-beige/70">Inga nyheter ännu.</div>
           )}
+          {error && <p className="text-center text-orange">{error}</p>}
         </div>
       </section>
       <section className="w-full flex flex-col items-center gap-4 lg:flex-row sm:w-4/5 lg:w-2/3 md:justify-between py-10 mx-auto">

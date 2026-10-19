@@ -80,7 +80,7 @@ export default function Footer() {
                     href={href}
                     className={`px-3 py-1 rounded text-sm transition-colors ${
                       isActive
-                        ? "bg-orange text-[#2F5D50] font-semibold"
+                        ? "bg-orange text-forest font-semibold"
                         : "hover:text-orange"
                     }`}
                     aria-current={isActive ? "page" : undefined}

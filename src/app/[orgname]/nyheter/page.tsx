@@ -91,7 +91,7 @@ export default function Nyheter() {
   const { isLoggedIn, user } = useUserSession();
   return (
     <main className="w-full max-w-screen-2xl mx-auto px-4 py-8">
-      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl text-forest font-bold mb-8">
+      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl text-beige font-bold mb-8">
         Bläddra bland de senaste nyheterna
       </h1>
       {/* Filter & Search */}
@@ -153,7 +153,7 @@ export default function Nyheter() {
         </p>
       )}
       {!loading && !error && filtered.length === 0 && (
-        <p className="px-4 py-8 text-center text-gray-600">
+        <p className="px-4 py-8 text-center text-beige/60">
           Inga fler nyheter att visa.
         </p>
       )}

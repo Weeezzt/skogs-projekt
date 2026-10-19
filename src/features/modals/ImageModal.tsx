@@ -1,4 +1,5 @@
 import React from "react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 
 interface ImageModalProps {
   open: boolean;
@@ -13,26 +14,29 @@ export default function ImageModal({
   imageSrc,
   imageAlt,
 }: ImageModalProps) {
-  if (!open) return null;
+  // Dialog handles Escape, outside click and focus trapping
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="relative bg-white rounded-lg shadow-lg p-4 max-w-2xl w-full flex flex-col items-center">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-700 hover:text-orange text-2xl font-bold cursor-pointer"
-          aria-label="Stäng"
-        >
-          &times;
-        </button>
-        <img
-          src={imageSrc}
-          alt={imageAlt}
-          className="max-h-[70vh] w-auto rounded"
-        />
-        {imageAlt && (
-          <div className="mt-2 text-gray-700 text-sm">{imageAlt}</div>
-        )}
+    <Dialog open={open} onClose={onClose} className="relative z-50">
+      <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <DialogPanel className="relative bg-white rounded-lg shadow-lg p-4 max-w-2xl w-full flex flex-col items-center">
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 text-gray-700 hover:text-orange text-2xl font-bold cursor-pointer"
+            aria-label="Stäng"
+          >
+            &times;
+          </button>
+          <img
+            src={imageSrc}
+            alt={imageAlt}
+            className="max-h-[70vh] w-auto rounded"
+          />
+          {imageAlt && (
+            <div className="mt-2 text-gray-700 text-sm">{imageAlt}</div>
+          )}
+        </DialogPanel>
       </div>
-    </div>
+    </Dialog>
   );
 }

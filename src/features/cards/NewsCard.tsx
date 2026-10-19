@@ -79,14 +79,13 @@ export default function NewsCard({
             borderTopLeftRadius: "0.75rem",
             borderBottomLeftRadius: "0.75rem",
           }}
-          priority
         />
       </div>
       <div className="flex flex-col flex-1 p-4 justify-center">
         <h3 className="font-bold mb-1 text-beige/90">{title}</h3>
 
         {(author || date) && (
-          <div className="text-xs text-gray-500 mb-2">
+          <div className="text-xs text-beige/60 mb-2">
             {author && <span>Av {author}</span>}
             {author && date && <span> &middot; </span>}
             {date && <span>{shortenDateAndConvertToLocale(date)}</span>}
@@ -108,6 +107,8 @@ export default function NewsCard({
         {href && (
           <a
             href={href}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
             className="mt-2 inline-block max-w-2/5 text-orange font-semibold hover:underline"
           >
             {href} &rarr;
@@ -118,7 +119,9 @@ export default function NewsCard({
             target="_blank"
             rel="noopener noreferrer"
             href={documents[0].path}
-            className="mt-2 inline-block max-w-2/3 text-forest-dark font-semibold hover:underline"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            className="mt-2 inline-block max-w-2/3 text-orange font-semibold hover:underline"
           >
             Förhandsgranska: <span>{documents[0].title}</span> &rarr;
           </a>

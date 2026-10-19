@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 interface LayingCardProps {
@@ -40,7 +41,6 @@ export default function LayingCard({
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 200px"
-            priority
           />
         </div>
       )}
@@ -54,9 +54,12 @@ export default function LayingCard({
 
   if (href) {
     return (
-      <a href={href} className="block cursor-pointer">
+      <Link
+        href={href}
+        className="block cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
+      >
         {cardContent}
-      </a>
+      </Link>
     );
   }
 

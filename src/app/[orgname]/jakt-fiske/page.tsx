@@ -11,16 +11,22 @@ export default function JaktFiskePage() {
       <div className="flex justify-center gap-2">
         <button
           onClick={() => setActiveTab("fiske")}
-          className={`px-4 py-2 rounded-t-md cursor-pointer ${
-            activeTab === "fiske" ? "bg-orange text-white" : "bg-gray-200"
+          aria-pressed={activeTab === "fiske"}
+          className={`px-4 py-2 rounded-t-md cursor-pointer font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange ${
+            activeTab === "fiske"
+              ? "bg-orange text-forest"
+              : "bg-forest-dark text-beige hover:text-orange"
           }`}
         >
           Fiske
         </button>
         <button
           onClick={() => setActiveTab("jakt")}
-          className={`px-4 py-2 rounded-t-md cursor-pointer ${
-            activeTab === "jakt" ? "bg-orange text-white" : "bg-gray-200"
+          aria-pressed={activeTab === "jakt"}
+          className={`px-4 py-2 rounded-t-md cursor-pointer font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange ${
+            activeTab === "jakt"
+              ? "bg-orange text-forest"
+              : "bg-forest-dark text-beige hover:text-orange"
           }`}
         >
           Jakt

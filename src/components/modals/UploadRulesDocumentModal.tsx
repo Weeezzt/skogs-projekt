@@ -81,7 +81,7 @@ export default function UploadRulesDocumentModal({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-orange text-white px-4 py-2 rounded-lg hover:opacity-90 font-semibold text-sm"
+            className="bg-orange text-forest font-semibold px-4 py-2 rounded-lg hover:opacity-90 font-semibold text-sm"
           >
             Välj PDF
           </button>
@@ -110,7 +110,7 @@ export default function UploadRulesDocumentModal({
           <button
             onClick={handleUpload}
             disabled={!file || loading}
-            className="px-4 py-2 bg-orange text-white rounded hover:opacity-90 text-sm font-semibold cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 bg-orange text-forest font-semibold rounded hover:opacity-90 text-sm font-semibold cursor-pointer disabled:opacity-50"
           >
             {loading ? "Laddar upp..." : "Ladda upp"}
           </button>

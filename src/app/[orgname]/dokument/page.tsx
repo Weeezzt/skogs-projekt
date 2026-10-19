@@ -78,7 +78,6 @@ export default function Dokument() {
 
   const handleSortChange = (sortValue: string | number) => {
     setSelectedSort(sortValue);
-    console.log("Selected sort option:", sortValue);
   };
 
   const toggleLayout = () => {

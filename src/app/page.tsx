@@ -20,7 +20,7 @@ export default function Home() {
           {/* SORSELE */}
           <Link
             href="/sorsele/hem"
-            className="group block rounded-xl overflow-hidden relative border-2 border-transparent hover:border-orange transition-all duration-300"
+            className="group block rounded-xl overflow-hidden relative border-2 border-transparent hover:border-orange focus-visible:border-orange focus-visible:outline-none transition-all duration-300"
           >
             {/* gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
@@ -45,7 +45,7 @@ export default function Home() {
           {/* TARNA-STENSELE */}
           <Link
             href="/tarna-stensele/hem"
-            className="group block rounded-xl overflow-hidden relative border-2 border-transparent hover:border-orange transition-all duration-300"
+            className="group block rounded-xl overflow-hidden relative border-2 border-transparent hover:border-orange focus-visible:border-orange focus-visible:outline-none transition-all duration-300"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
             <img

@@ -108,7 +108,7 @@ export default function NaturMiljoPage() {
 
       {/* Heading + cert */}
       <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <h2 className="text-2xl md:text-3xl font-bold text-forest">
+        <h2 className="text-2xl md:text-3xl font-bold text-beige">
           {cfg.heading}
         </h2>
       </header>
@@ -122,7 +122,7 @@ export default function NaturMiljoPage() {
 
       {/* Gallery */}
       <section className="mt-10">
-        <h3 className="text-xl font-semibold text-forest mb-4">
+        <h3 className="text-xl font-semibold text-beige mb-4">
           Bilder från naturen
         </h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -63,14 +63,14 @@ export default function FiskeContent() {
     {
       label: "Ladda ner fullständiga regler (PDF)",
       href: pdfUrl,
-      bgColor: "bg-orange",
+      bgColor: "bg-orange text-forest font-semibold",
     },
     {
       label: "Köp fiskekort",
       href: isSorsele
         ? "https://www.ifiske.se/fiske-sorsele-ovre-allmanningsskog.htm.se"
         : "https://www.ifiske.se/fiske-storumansjon-umnassjon-girjesan-m-fl-vatten.htm",
-      bgColor: "bg-forest",
+      bgColor: "bg-forest text-beige",
     },
   ];
 
@@ -105,7 +105,7 @@ export default function FiskeContent() {
           <a
             key={i}
             href={b.href}
-            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg text-white ${b.bgColor} shadow-md text-sm`}
+            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg ${b.bgColor} shadow-md text-sm`}
             rel={b.href.startsWith("http") ? "noopener noreferrer" : undefined}
             target={b.href.startsWith("http") ? "_blank" : undefined}
           >

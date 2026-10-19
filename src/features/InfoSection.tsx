@@ -35,7 +35,7 @@ export default function InfoSection({
         <>
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-block mt-2 text-orange font-semibold cursor-pointer hover:underline"
+            className="inline-block mt-2 text-forest font-semibold cursor-pointer underline decoration-orange decoration-2 underline-offset-4 hover:decoration-forest"
             aria-label={ctaLink.label}
           >
             {ctaLink.label}
@@ -53,7 +53,7 @@ export default function InfoSection({
           href={ctaLink.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-2 text-orange font-semibold hover:underline"
+          className="inline-block mt-2 text-forest font-semibold underline decoration-orange decoration-2 underline-offset-4 hover:decoration-forest"
         >
           {ctaLink.label}
         </a>

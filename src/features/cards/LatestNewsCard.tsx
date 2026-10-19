@@ -29,7 +29,6 @@ export function LatestNewsCard({ news, organisation }: CardProps) {
             fill
             className="object-cover brightness-90 contrast-125"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 50vw"
-            priority
           />
           {/* Darken + gradient scrim for readability */}
           <div className="absolute inset-0 bg-black/25 mix-blend-multiply" />

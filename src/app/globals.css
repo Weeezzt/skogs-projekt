@@ -6,4 +6,5 @@
   --color-orange: #e68a2e;
   --color-offblack: #1c1c1c;
   --color-beige: #f9f4ef;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }

@@ -39,10 +39,10 @@ export const metadata: Metadata = {
     siteName: "Sorsele Övre & Tärna-Stensele Allmänningsskog",
     images: [
       {
-        url: "/faviconGPT.png",
-        width: 1200,
-        height: 630,
-        alt: "Sorsele Övre Allmänningsskog",
+        url: "/heromoose.jpg",
+        width: 3000,
+        height: 2000,
+        alt: "Älg i fjällnära skog",
       },
     ],
     locale: "sv_SE",
@@ -55,12 +55,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sv" className="scroll-smooth w-full h-full">
+    <html lang="sv" className={`scroll-smooth w-full h-full ${inter.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body
-        className={`min-h-screen w-full flex flex-col bg-forest ${inter.variable}`}
+        className={`min-h-screen w-full flex flex-col bg-forest font-sans`}
       >
         <SessionProviderWrapper>
           {/* SessionProvider wraps the entire app to provide session context */}

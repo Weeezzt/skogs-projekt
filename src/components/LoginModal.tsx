@@ -16,9 +16,11 @@ export default function LoginModal({
 LoginModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     // Use NextAuth's signIn function
     const result = await signIn("credentials", {
       redirect: false,
@@ -29,8 +31,7 @@ LoginModalProps) {
       onClose();
       // Optionally show a success message or reload data
     } else {
-      // Optionally show an error message
-      alert("Felaktig e-post eller lösenord");
+      setError("Felaktig e-post eller lösenord");
     }
   };
 
@@ -45,8 +46,11 @@ LoginModalProps) {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
+              <label
+                htmlFor="login-email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                E-post
               </label>
               <div className="relative">
                 <Mail
@@ -54,7 +58,9 @@ LoginModalProps) {
                   size={18}
                 />
                 <input
+                  id="login-email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -64,8 +70,11 @@ LoginModalProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+              <label
+                htmlFor="login-password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Lösenord
               </label>
               <div className="relative">
                 <Lock
@@ -73,7 +82,9 @@ LoginModalProps) {
                   size={18}
                 />
                 <input
+                  id="login-password"
                   type="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -82,9 +93,14 @@ LoginModalProps) {
               </div>
             </div>
 
+            {error && (
+              <p role="alert" className="text-sm font-medium text-red-700">
+                {error}
+              </p>
+            )}
             <button
               type="submit"
-              className="w-full py-2 rounded-xl bg-orange text-white font-semibold hover:bg-orange/90 transition cursor-pointer"
+              className="w-full py-2 rounded-xl bg-orange text-forest font-semibold hover:bg-orange/90 transition cursor-pointer"
             >
               Logga in
             </button>

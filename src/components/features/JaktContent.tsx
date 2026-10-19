@@ -98,14 +98,14 @@ export default function JaktContent() {
     {
       label: "Ladda ner fullständiga regler (PDF)",
       href: pdfUrl,
-      bgColor: "bg-orange",
+      bgColor: "bg-orange text-forest font-semibold",
     },
     {
       label: "Köp jaktkort",
       href: isSorsele
         ? "https://www.ijakt.se/jaktkort-sorsele-ovre-allmanningsskog.htm"
         : "https://www.ijakt.se/jakt-tarna-stensele-allmanningskog.htm",
-      bgColor: "bg-forest-dark",
+      bgColor: "bg-forest-dark text-beige",
     },
   ];
 
@@ -136,7 +136,7 @@ export default function JaktContent() {
           <a
             key={i}
             href={b.href}
-            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg text-white ${b.bgColor} shadow-md text-sm`}
+            className={`mx-8 w-full sm:w-2/3 text-center py-2 rounded-lg ${b.bgColor} shadow-md text-sm`}
             rel={b.href.startsWith("http") ? "noopener noreferrer" : undefined}
             target={b.href.startsWith("http") ? "_blank" : undefined}
           >
@@ -197,7 +197,6 @@ export default function JaktContent() {
                   : textContentPerOrg.tarnaStensele.jaktKartaImageSrc,
               )
             }
-            priority
           />
           {!isSorsele && (
             <section className="mt-10 w-full md:max-w-3xl">

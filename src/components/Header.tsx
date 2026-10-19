@@ -230,7 +230,7 @@ export default function Header() {
                       ref={(el) => {
                         orgButtonRefs.current[i] = el ?? null;
                       }}
-                      aria-pressed={isActive}
+                      aria-current={isActive ? "true" : undefined}
                       className={
                         "relative z-10 rounded px-3 py-1 text-sm font-medium whitespace-nowrap transition-colors cursor-pointer " +
                         (isActive
@@ -257,6 +257,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={buildOrgUrl(activeOrg.slug, link.href)}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
                   className={
                     "text-sm font-medium whitespace-nowrap transition-colors " +
                     (isActiveLink(link.href)
@@ -276,6 +277,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={buildOrgUrl(activeOrg.slug, link.href)}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
                   className={
                     "text-sm font-medium whitespace-nowrap transition-colors " +
                     (isActiveLink(link.href)
@@ -295,6 +297,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={buildOrgUrl(activeOrg.slug, link.href)}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
                   className={
                     "text-sm font-medium whitespace-nowrap transition-colors " +
                     (isActiveLink(link.href)
@@ -397,7 +400,7 @@ export default function Header() {
                       ref={(el) => {
                         mobileOrgButtonRefs.current[i] = el ?? null;
                       }}
-                      aria-pressed={isActive}
+                      aria-current={isActive ? "true" : undefined}
                       className={
                         "relative z-10 w-1/2 rounded px-3 py-1 text-sm font-medium transition-colors " +
                         (isActive
@@ -419,6 +422,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={buildOrgUrl(activeOrg.slug, link.href)}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
                   onClick={() => setNavOpen(false)}
                   className={`block rounded px-3 py-2 font-medium transition-colors whitespace-nowrap ${
                     isActiveLink(link.href) ? "bg-beige/10" : "hover:bg-white/5"

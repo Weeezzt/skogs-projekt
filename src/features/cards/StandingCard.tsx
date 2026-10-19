@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 interface StandingCardProps {
@@ -32,7 +33,6 @@ export default function StandingCard({
             fill
             className="object-cover"
             sizes="288px"
-            priority
           />
         </div>
       )}
@@ -46,9 +46,12 @@ export default function StandingCard({
 
   if (href) {
     return (
-      <a href={href} className="block cursor-pointer">
+      <Link
+        href={href}
+        className="block cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
+      >
         {cardContent}
-      </a>
+      </Link>
     );
   }
 

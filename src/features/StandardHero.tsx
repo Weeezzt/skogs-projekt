@@ -30,7 +30,7 @@ export default function StandardHero(props: StandardHeroProps) {
           <a
             key={index}
             href={button.href}
-            className={`px-4 py-2 rounded-lg text-white ${button.bgColor} border border-transparent shadow-md hover:border-white `}
+            className={`px-4 py-2 rounded-lg ${button.bgColor} border border-transparent shadow-md hover:border-white `}
             aria-label={button.label}
             rel={
               button.href.startsWith("http") ? "noopener noreferrer" : undefined

@@ -90,7 +90,7 @@ export default function DocumentCard({
         <div className="mt-2 text-xs flex gap-2 text-beige/70">
           <button
             onClick={handleDownload}
-            className="flex items-center justify-center text-center bg-beige text-md font-semibold text-orange w-30 h-10 p-2 rounded-md border-2 border-orange cursor-pointer hover:border-beige hover:bg-orange hover:text-beige transition-colors"
+            className="flex items-center justify-center text-center bg-beige text-md font-semibold text-forest w-30 h-10 p-2 rounded-md border-2 border-orange cursor-pointer hover:border-beige hover:bg-orange hover:text-beige transition-colors"
           >
             Ladda ned <IoMdDownload className="text-xl" />
           </button>
