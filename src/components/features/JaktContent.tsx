@@ -159,6 +159,21 @@ export default function JaktContent() {
               allmänningsskogen.
             </li>
             <li>Se detaljerad information på Lantmäteriets fastighetskarta.</li>
+            {!isSorsele && (
+              <li>
+                Vi vill påminna alla småviltjägare om att kontakta{" "}
+                <a
+                  href={documentsForOrg.tarnaStensele[0].href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange font-semibold hover:underline"
+                >
+                  områdesansvarig
+                </a>{" "}
+                innan jakt. Detta för att stämma av så att småviltjakten inte
+                krockar med pågående älgjakt.
+              </li>
+            )}
           </ul>
         </InfoSection>
         <div className="w-full flex flex-col items-center my-10 px-2">
