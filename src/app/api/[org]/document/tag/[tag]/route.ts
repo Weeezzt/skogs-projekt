@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// Latest non-deleted document with the given tag (e.g. jakt-regler,
+// fiske-regler, omradesansvariga). Uploading a new one replaces it.
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ org: string }> }
+  { params }: { params: Promise<{ org: string; tag: string }> }
 ) {
-  const { org } = await params;
+  const { org, tag } = await params;
 
   const organization = await prisma.organization.findUnique({
     where: { slug: org },
@@ -22,7 +24,7 @@ export async function GET(
     where: {
       organizationId: organization.id,
       isDeleted: false,
-      tags: { has: "fiske-regler" },
+      tags: { has: tag },
     },
     orderBy: { uploadedAt: "desc" },
   });

@@ -5,14 +5,18 @@ import { useRef, useState } from "react";
 interface UploadRulesDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: "fiske" | "jakt";
+  tag: string; // newest document with this tag is the one shown on the site
+  label: string; // e.g. "jaktregler"
+  allowExcel?: boolean; // also accept .xls/.xlsx, not just PDF
   onUploaded: () => void;
 }
 
 export default function UploadRulesDocumentModal({
   isOpen,
   onClose,
-  type,
+  tag,
+  label,
+  allowExcel = false,
   onUploaded,
 }: UploadRulesDocumentModalProps) {
   const [file, setFile] = useState<File | null>(null);
@@ -21,9 +25,6 @@ export default function UploadRulesDocumentModal({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const params = useParams();
   const org = params.orgname;
-
-  const tag = type === "fiske" ? "fiske-regler" : "jakt-regler";
-  const label = type === "fiske" ? "fiskeregler" : "jaktregler";
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -83,11 +84,15 @@ export default function UploadRulesDocumentModal({
             onClick={() => fileInputRef.current?.click()}
             className="bg-orange text-forest font-semibold px-4 py-2 rounded-lg hover:opacity-90 font-semibold text-sm"
           >
-            Välj PDF
+            {allowExcel ? "Välj PDF eller Excel" : "Välj PDF"}
           </button>
           <input
             type="file"
-            accept="application/pdf"
+            accept={
+              allowExcel
+                ? "application/pdf,.pdf,.xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                : "application/pdf"
+            }
             ref={fileInputRef}
             onChange={handleFileChange}
             className="hidden"

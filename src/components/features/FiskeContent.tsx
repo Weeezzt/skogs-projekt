@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserSession } from "@/hooks/useUserSession";
 import UploadRulesDocumentModal from "@/components/modals/UploadRulesDocumentModal";
-import { fetchRulesPath } from "@/lib/fetchRulesPath";
+import { fetchDocumentPath } from "@/lib/fetchDocumentPath";
 
 const FALLBACK_SORSELE =
   "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+fiske+inom+S%C3%96A+2022.pdf";
@@ -45,14 +45,14 @@ export default function FiskeContent() {
 
   const loadPdfUrl = () => {
     if (!organisation) return;
-    fetchRulesPath(String(organisation), "fiske-regler").then((path) => {
+    fetchDocumentPath(String(organisation), "fiske-regler").then((path) => {
       if (path) setPdfUrl(path);
     });
   };
 
   useEffect(() => {
     if (!organisation) return;
-    fetchRulesPath(String(organisation), "fiske-regler").then((path) => {
+    fetchDocumentPath(String(organisation), "fiske-regler").then((path) => {
       if (path) setPdfUrl(path);
     });
   }, [organisation]);
@@ -113,7 +113,8 @@ export default function FiskeContent() {
       <UploadRulesDocumentModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        type="fiske"
+        tag="fiske-regler"
+        label="fiskeregler"
         onUploaded={loadPdfUrl}
       />
 

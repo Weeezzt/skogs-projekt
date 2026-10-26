@@ -6,8 +6,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserSession } from "@/hooks/useUserSession";
 import UploadRulesDocumentModal from "@/components/modals/UploadRulesDocumentModal";
-import { fetchRulesPath } from "@/lib/fetchRulesPath";
-import { ExternalLink, FileText, Map } from "lucide-react";
+import { fetchDocumentPath } from "@/lib/fetchDocumentPath";
+import { buttonRow, ghostButton } from "@/lib/buttonStyles";
+import { ExternalLink, FileSpreadsheet, FileText, Map } from "lucide-react";
 
 const FALLBACK_SORSELE =
   "https://allmskog-ac.s3.eu-north-1.amazonaws.com/uploads/sorsele/files/Jakt+%26+Fiske/Beslutade+regler+och+priser+f%C3%B6r+jakt+p%C3%A5+S%C3%96A+2026-27.pdf";
@@ -47,8 +48,9 @@ const documentsForOrg = {
   tarnaStensele: [
     {
       title: "Områdesansvariga per älgjaktsområde",
-      href: "/docs/tarna-stensele/jakt-files/Omradesansvariga_TSA_ASO_2024.pdf",
-      meta: "PDF · 131 kB",
+      // fallback; admins can upload a newer one (tag "omradesansvariga")
+      href: "/docs/tarna-stensele/jakt-files/Omradesansvariga_TSA_ASO_2026.pdf",
+      meta: "PDF",
       Icon: FileText,
     },
     {
@@ -66,6 +68,13 @@ const documentsForOrg = {
   ],
 };
 
+type UploadTag = "jakt-regler" | "omradesansvariga";
+
+const UPLOAD_LABELS: Record<UploadTag, string> = {
+  "jakt-regler": "jaktregler",
+  omradesansvariga: "områdesansvariga",
+};
+
 export default function JaktContent() {
   const params = useParams();
   const isSorsele = params.orgname === "sorsele";
@@ -76,21 +85,40 @@ export default function JaktContent() {
   const [pdfUrl, setPdfUrl] = useState<string>(
     isSorsele ? FALLBACK_SORSELE : FALLBACK_TSA,
   );
-  const [modalOpen, setModalOpen] = useState(false);
+  const [omradesUrl, setOmradesUrl] = useState<string>(
+    documentsForOrg.tarnaStensele[0].href,
+  );
+  const [uploadTag, setUploadTag] = useState<UploadTag | null>(null);
 
-  const loadPdfUrl = () => {
+  const loadDocument = (tag: UploadTag) => {
     if (!organisation) return;
-    fetchRulesPath(String(organisation), "jakt-regler").then((path) => {
-      if (path) setPdfUrl(path);
+    fetchDocumentPath(String(organisation), tag).then((path) => {
+      if (path) (tag === "jakt-regler" ? setPdfUrl : setOmradesUrl)(path);
     });
   };
 
   useEffect(() => {
     if (!organisation) return;
-    fetchRulesPath(String(organisation), "jakt-regler").then((path) => {
+    const org = String(organisation);
+    fetchDocumentPath(org, "jakt-regler").then((path) => {
       if (path) setPdfUrl(path);
     });
+    fetchDocumentPath(org, "omradesansvariga").then((path) => {
+      if (path) setOmradesUrl(path);
+    });
   }, [organisation]);
+
+  // Johan may upload the list as Excel; show that instead of "PDF"
+  const omradesIsExcel = /\.xlsx?$/i.test(omradesUrl);
+  const elgDocuments = [
+    {
+      ...documentsForOrg.tarnaStensele[0],
+      href: omradesUrl,
+      meta: omradesIsExcel ? "Excel" : "PDF",
+      Icon: omradesIsExcel ? FileSpreadsheet : FileText,
+    },
+    documentsForOrg.tarnaStensele[1],
+  ];
 
   const ctaButtons = [
     {
@@ -131,22 +159,34 @@ export default function JaktContent() {
 
 
       {isLoggedIn && user && (
-        <div className="w-full flex justify-center px-4 md:px-8">
+        <div className={`grid ${buttonRow} mx-auto`}>
           <button
-            onClick={() => setModalOpen(true)}
-            className="text-sm text-beige border border-beige rounded px-3 py-2 hover:border-orange cursor-pointer transition-colors"
+            onClick={() => setUploadTag("jakt-regler")}
+            className={ghostButton}
           >
             Uppdatera regeldokument
           </button>
+          {!isSorsele && (
+            <button
+              onClick={() => setUploadTag("omradesansvariga")}
+              className={ghostButton}
+            >
+              Uppdatera områdesansvariga
+            </button>
+          )}
         </div>
       )}
 
-      <UploadRulesDocumentModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        type="jakt"
-        onUploaded={loadPdfUrl}
-      />
+      {uploadTag && (
+        <UploadRulesDocumentModal
+          isOpen
+          onClose={() => setUploadTag(null)}
+          tag={uploadTag}
+          label={UPLOAD_LABELS[uploadTag]}
+          allowExcel={uploadTag === "omradesansvariga"}
+          onUploaded={() => loadDocument(uploadTag)}
+        />
+      )}
 
       <div className="w-full flex flex-col items-center">
         <InfoSection title="Allmänna regler" id="allmanna-regler">
@@ -163,7 +203,7 @@ export default function JaktContent() {
               <li>
                 Vi vill påminna alla småviltjägare om att kontakta{" "}
                 <a
-                  href={documentsForOrg.tarnaStensele[0].href}
+                  href={omradesUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-orange font-semibold hover:underline"
@@ -204,7 +244,7 @@ export default function JaktContent() {
                 Dokument för älgjakt
               </h3>
               <ul className="flex flex-col gap-3">
-                {documentsForOrg.tarnaStensele.slice(0, 2).map(
+                {elgDocuments.map(
                   ({ href, title, meta, Icon }) => (
                     <li key={href}>
                       <a
@@ -219,7 +259,8 @@ export default function JaktContent() {
                             {title}
                           </span>
                           <span className="block text-sm text-beige/60">
-                            {meta} · öppnas i ny flik
+                            {meta} ·{" "}
+                            {meta === "Excel" ? "laddas ned" : "öppnas i ny flik"}
                           </span>
                         </span>
                         <ExternalLink
