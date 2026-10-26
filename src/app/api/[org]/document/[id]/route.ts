@@ -8,6 +8,9 @@ export async function GET(
   { params }: { params: Promise<{ org: string; id: string }> }
 ) {
   const { id, org } = await params;
+  if (!/^\d+$/.test(id)) {
+    return NextResponse.json({ error: "Document not found" }, { status: 404 });
+  }
 
   const document = await prisma.document.findFirst({
     where: {
