@@ -36,7 +36,7 @@ export async function GET(
       id: Number(id),
       organizationId: organization.id,
     },
-    include: { documents: true },
+    include: { documents: { where: { isDeleted: false } } },
   });
 
   if (!news) {
@@ -107,7 +107,7 @@ export async function PUT(
       id: Number(id),
       organizationId: organization.id,
     },
-    include: { documents: true },
+    include: { documents: { where: { isDeleted: false } } },
   });
 
   if (!existingNews) {
@@ -155,7 +155,7 @@ export async function PUT(
           ContentType: image.type || "application/octet-stream",
         })
       );
-      imageUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+      imageUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key.split("/").map(encodeURIComponent).join("/")}`;
     } catch (err) {
       console.error("S3 upload error:", err);
       return NextResponse.json(
@@ -186,7 +186,7 @@ export async function PUT(
       image: imageUrl,
       ...(documentsUpdate && { documents: documentsUpdate }),
     },
-    include: { documents: true },
+    include: { documents: { where: { isDeleted: false } } },
   });
 
   return NextResponse.json({ success: true, news: updatedNews, imageUrl });

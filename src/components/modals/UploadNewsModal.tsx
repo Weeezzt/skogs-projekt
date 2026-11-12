@@ -1,5 +1,5 @@
 import { useParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import { DocumentDTO } from "@/types/dtos";
 
@@ -57,18 +57,19 @@ function NewsForm({
     }
   };
 
-  const handleOpenDocPicker = async () => {
+  // Load once on open: fetching on <select> click left the list empty on mobile
+  useEffect(() => {
     if (!org) return;
-    try {
-      setError(null);
-      const res = await fetch(`/api/${org}/document`);
-      if (!res.ok) throw new Error("Kunde inte hämta dokument");
-      const data = await res.json();
-      setDocsData(data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Något gick fel när dokument hämtades");
-    }
-  };
+    fetch(`/api/${org}/document`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Kunde inte hämta dokument");
+        return res.json();
+      })
+      .then((data) => setDocsData(data || []))
+      .catch((err) =>
+        setError(err instanceof Error ? err.message : "Något gick fel när dokument hämtades")
+      );
+  }, [org]);
 
   // ---- Markdown helpers ----
   const insertAtCursor = (
@@ -280,7 +281,6 @@ function NewsForm({
           Koppla till dokument (valfritt)
         </label>
         <select
-          onClick={handleOpenDocPicker}
           value={selectedDoc || "Välj dokument"}
           onChange={(e) => setSelectedDoc(e.target.value)}
           className="mb-4 border border-forest rounded px-3 py-2 w-full cursor-pointer hover:bg-gray-100"

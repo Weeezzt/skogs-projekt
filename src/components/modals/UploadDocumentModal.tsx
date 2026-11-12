@@ -18,6 +18,7 @@ export default function UploadDocumentModal({
   const [newFolder, setNewFolder] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const isMobile = Mobile();
 
@@ -73,17 +74,21 @@ export default function UploadDocumentModal({
 
     files.forEach((file) => formData.append("files", file));
 
+    setUploading(true);
     try {
-      await fetch(`/api/${org}/document`, {
+      const res = await fetch(`/api/${org}/document`, {
         method: "POST",
         body: formData,
       });
+      if (!res.ok) throw new Error();
       setFiles([]);
       setSelectedFolder("");
       setNewFolder("");
       onClose();
     } catch {
       alert("Kunde inte ladda upp dokument.");
+    } finally {
+      setUploading(false);
     }
   };
   if (!isOpen) return null;
@@ -185,9 +190,9 @@ export default function UploadDocumentModal({
           <button
             onClick={handleUpload}
             className="px-4 py-2 bg-orange text-white rounded hover:bg-orange/90 cursor-pointer text-sm font-semibold"
-            disabled={files.length === 0 || (!selectedFolder && !newFolder)}
+            disabled={uploading || files.length === 0 || (!selectedFolder && !newFolder)}
           >
-            Ladda upp
+            {uploading ? "Laddar upp..." : "Ladda upp"}
           </button>
         </div>
       </div>

@@ -173,7 +173,8 @@ export async function POST(
 }
 
 function contentDispositionAttachment(filename: string) {
-  const ascii = filename.replace(/["\\]/g, "_");
+  // HTTP headers must be ASCII: Mac filenames (decomposed å/ä/ö) or "–" make S3 PutObject throw ERR_INVALID_CHAR
+  const ascii = filename.replace(/[^\x20-\x7e]|["\\]/g, "_");
   const utf8 = encodeURIComponent(filename);
   return `attachment; filename="${ascii}"; filename*=UTF-8''${utf8}`;
 }

@@ -26,7 +26,7 @@ export async function GET(
     },
     orderBy: [{ publishedAt: "desc" }],
     take: 3,
-    include: { documents: true },
+    include: { documents: { where: { isDeleted: false } } },
   });
 
   if (!latest) {

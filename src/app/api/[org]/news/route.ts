@@ -36,7 +36,7 @@ export async function GET(
   const news: NewsDTO[] = await prisma.news.findMany({
     where: { organizationId: organization.id },
     orderBy: { publishedAt: "desc" },
-    include: { documents: true }, // include related documents
+    include: { documents: { where: { isDeleted: false } } }, // include related documents
   });
 
   return NextResponse.json(news);
@@ -93,7 +93,7 @@ export async function POST(
           ContentType: image.type || "application/octet-stream",
         })
       );
-      imageUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+      imageUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key.split("/").map(encodeURIComponent).join("/")}`;
     } catch (err) {
       console.error("S3 upload error:", err); // <-- Add this line
       return NextResponse.json(
