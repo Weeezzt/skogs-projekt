@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { parseMemberInput } from "@/lib/memberInput";
 
 // Always serve fresh
 export const revalidate = 0; // or: export const dynamic = "force-dynamic"
@@ -81,4 +84,39 @@ export async function GET(
   });
 
   return NextResponse.json(members);
+}
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ org: string }> }
+) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { org } = await params;
+  const organization = await prisma.organization.findUnique({
+    where: { slug: org },
+    select: { id: true },
+  });
+  if (!organization) {
+    return NextResponse.json(
+      { error: "Organization not found" },
+      { status: 404 }
+    );
+  }
+
+  const data = parseMemberInput(await req.json().catch(() => null));
+  if (!data) {
+    return NextResponse.json(
+      { error: "Name and role are required" },
+      { status: 400 }
+    );
+  }
+
+  const member = await prisma.member.create({
+    data: { ...data, imageUrl: "/profile-placeholder.png", organizationId: organization.id },
+  });
+  return NextResponse.json(member, { status: 201 });
 }

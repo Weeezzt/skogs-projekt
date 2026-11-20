@@ -4,6 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import ProfileCard from "@/features/cards/ProfileCard";
 import StandardHero from "@/features/StandardHero";
+import MemberModal, { MemberFields } from "@/components/modals/MemberModal";
+import { useUserSession } from "@/hooks/useUserSession";
+import { ghostButton } from "@/lib/buttonStyles";
 
 type Member = {
   id: number;
@@ -28,6 +31,10 @@ export default function StyrelseMedlemmarPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reload, setReload] = useState(0);
+  // undefined = closed, null = new member
+  const [editing, setEditing] = useState<MemberFields | null | undefined>();
+  const { isLoggedIn } = useUserSession();
 
   useEffect(() => {
     let cancelled = false;
@@ -46,7 +53,7 @@ export default function StyrelseMedlemmarPage() {
     return () => {
       cancelled = true;
     };
-  }, [orgSlug]);
+  }, [orgSlug, reload]);
 
   return (
     <main className="w-full max-w-5xl mx-auto py-8 px-4">
@@ -55,6 +62,27 @@ export default function StyrelseMedlemmarPage() {
         subtitle="Kontaktuppgifter till styrelse och förvaltning."
         imageSrc="/stämma.jpg"
       />
+
+      {isLoggedIn && (
+        <div className="flex justify-center mb-6">
+          <button
+            type="button"
+            onClick={() => setEditing(null)}
+            className={ghostButton}
+          >
+            Lägg till medlem
+          </button>
+        </div>
+      )}
+
+      {editing !== undefined && (
+        <MemberModal
+          org={orgSlug}
+          member={editing}
+          onClose={() => setEditing(undefined)}
+          onSaved={() => setReload((n) => n + 1)}
+        />
+      )}
 
       {loading && (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -89,6 +117,7 @@ export default function StyrelseMedlemmarPage() {
               address={m.address || ""}
               phone={m.phone || ""}
               email={m.email || ""}
+              onEdit={isLoggedIn ? () => setEditing(m) : undefined}
             />
           ))}
         </div>
